@@ -25,6 +25,32 @@ export function updatePlatformArticle(data) { // -删除
   return request({
     url: '/platform/updatePlatformArticle',
     method: 'post',
-    params: data
+    data
   })
 }
+
+export function fetchPlatDetailList(query) { 
+  return request({
+    url: '/platdetail/fetchPlatDetailList',
+    method: 'get',
+    params: query
+  })
+}
+
+
+export function createPlatDetailArticle(data) { 
+  return request({
+    url: '/platdetail/createPlatDetailArticle',
+    method: 'post',
+    data
+  })
+}
+
+export function updatePlatDetailArticle(data) {
+  return request({
+    url: '/platdetail/updatePlatDetailArticle',
+    method: 'post',
+    data
+  })
+}
+

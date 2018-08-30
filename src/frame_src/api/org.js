@@ -1,4 +1,11 @@
 import request from '@/frame_src/utils/request'
+export function fetchPartyList(query) { // 查询单位信息
+  return request({
+    url: '/org/fetchPartyList',
+    method: 'get',
+    params: query
+  })
+}
 export function fetchOrgList(query) { // 查询组织结构信息
   return request({
     url: '/org/fetchOrgList',

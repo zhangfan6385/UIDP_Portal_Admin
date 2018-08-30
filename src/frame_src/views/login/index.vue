@@ -17,7 +17,7 @@
     {{radio}}<i class="el-icon-arrow-down el-icon--right"></i>
   </span>
   <el-dropdown-menu slot="dropdown">
-    <div v-for="item in list">
+    <div v-for="item in list" :key="item.key">
         <el-dropdown-item  :command="item.key">{{item.key}}</el-dropdown-item> 
     </div>
   </el-dropdown-menu>
@@ -71,15 +71,15 @@ import LangSelect from "@/frame_src/components/LangSelect";
 import LogInUser from "./logInUser";
 import { Message } from "element-ui";
 import { GetTitle } from "@/frame_src/api/title";
-const userOptions = [
-  { key: "ptr账号", user_code: "ptrUser" },
-  { key: "员工账号", user_code: "user" },
-  { key: "本地账号", user_code: "localUser" }
-];
-const userOptionsKeyValue = userOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.user_code;
-  return acc;
-}, {});
+// const userOptions = [
+//   { key: "ptr账号", user_code: "ptrUser" },
+//   { key: "员工账号", user_code: "user" },
+//   { key: "本地账号", user_code: "localUser" }
+// ];
+// const userOptionsKeyValue = userOptions.reduce((acc, cur) => {
+//   acc[cur.key] = cur.user_code;
+//   return acc;
+// }, {});
 export default {
   components: { LangSelect, LogInUser },
   name: "login",
@@ -118,6 +118,7 @@ export default {
       list: [],
       sysmessage: "测试平台",
       copyright: "",
+      CONF_CODE:"'PTR_IDENT','LOCAL_IDENT','SYS_NAME','CopyRight','CLOUD_ORG'"
     }
   },
   methods: {
@@ -197,11 +198,8 @@ export default {
       this.$router.push({ path: "/" });
     },
     GetTitle() {
-      GetTitle().then(response => {
-        //console.log(response.data.copyright.CONF_VALUE);
-        //console.log(response.data.itemtype);
-        //console.log(response.data.cloudorg.CONF_VALUE);
-        console.log(response.data)
+      const query = { CONF_CODE: this.CONF_CODE }
+      GetTitle(query).then(response => {
         this.copyright = response.data.copyright.CONF_VALUE;
         this.sysmessage = response.data.sysname.CONF_VALUE;
         this.$store.state.user.UseOrg = Boolean(

@@ -91,8 +91,8 @@ router.beforeEach((to, from, next) => {
           } else {}
             */
           fetchPermission(query).then(response => {
-            const menus = response.data.items
-            console.log(menus)
+            const menus = response.data
+            //const menus = response.data.items//假数据
             const routeStru = generateRouteStruc(menus)
             if (routeStru) {
               routeStru.push({ path: '*', redirect: '/404', hidden: true })

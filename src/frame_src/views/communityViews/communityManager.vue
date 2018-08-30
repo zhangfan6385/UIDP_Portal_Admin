@@ -2,62 +2,53 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
 
-            <el-input style="width: 200px;" class="filter-item" placeholder="请输入标题" v-model="listQuery.NOTICE_CODE"></el-input>
+            <el-input style="width: 200px;" class="filter-item" placeholder="请输入标题" v-model="listQuery.TITLE_NAME"></el-input>
             <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('commonTable.search')}}</el-button>
      </div>
         <el-card class="box-card">
-            <el-table :key='tableKey'  max-height="100%" :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="150px" align="center" label="帖子编号">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_CODE}}</span>
-                    </template>
-                </el-table-column>
-
+            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+              
                 <el-table-column min-width="290px" align="center" label="帖子标题">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_VERSION}}</span>
+                        <span>{{scope.row.TITLE_NAME}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column width="100px" align="center" label="帖子类型">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
+                        <span>{{scope.row.POST_TYPE}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="200px" align="center" label="发布人">
+                <el-table-column width="200px" align="center" label="发帖人">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_RUNREQUIRE}}</span>
+                        <span>{{scope.row.USER_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="发日期">
+                <el-table-column width="140px" align="center" label="发帖日期">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_CREATEDATE}}</span>
+                        <span>{{scope.row.SEND_DATE}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column width="140px" align="center" label="所需积分">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_CREATEORGNAME}}</span>
+                        <span>{{scope.row.SCORE}}</span>
                     </template>
                 </el-table-column>
-                 <el-table-column width="140px" align="center" label="悬赏积分">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_CREATEORGNAME}}</span>
-                    </template>
-                </el-table-column>
+               
                  <el-table-column width="140px" align="center" label="查看次数">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_CREATEORGNAME}}</span>
+                        <span>{{scope.row.BROWSE_NUM}}</span>
                     </template>
                 </el-table-column>
                  <el-table-column width="140px" align="center" label="评论次数">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_CREATEORGNAME}}</span>
+                        <span>{{scope.row.COMMONT_COUNT}}</span>
                     </template>
                 </el-table-column>
                  <el-table-column width="140px" align="center" label="收藏次数">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_CREATEORGNAME}}</span>
+                        <span>{{scope.row.COLLECTION_COUNT}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center"  fixed="right" :label="$t('commonTable.actions')" width="80px" class-name="small-padding fixed-width">
@@ -87,7 +78,7 @@
 </template>
 <script>
 import {
-    fetchCommunityList ////记住修改API
+    getCommunityPostList ////记住修改API
 } from "@/frame_src/api/community";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
 // import { parseTime } from '@/frame_src/utils'
@@ -142,7 +133,7 @@ export default {
     methods: {
         getList() {
             this.listLoading = true;
-            fetchCommunityList(this.listQuery).then(response => {
+            getCommunityPostList(this.listQuery).then(response => {
                 if (response.data.code === 2000) {
                     this.list = response.data.items;
                     this.total = response.data.total;

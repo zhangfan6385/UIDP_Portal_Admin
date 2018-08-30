@@ -1,45 +1,30 @@
 <template>
     <div class="app-container calendar-list-container"> 
     <div class="filter-container">
-       <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" :placeholder="$t('configTable.CONF_NAME')" v-model="listQuery.CONF_NAME">
-      </el-input>
-
-       <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" :placeholder="$t('configTable.CONF_CODE')" v-model="listQuery.CONF_CODE">
-      </el-input>  
-      
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('configTable.search')}}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('configTable.add')}}</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">{{$t('configTable.export')}}</el-button>
- 
+      <el-input @keyup.enter.native="handleFilter" style="width: 180px;" class="filter-item" placeholder="操作描述" v-model="listQuery.OPER_TYPE_NAME"></el-input>
+      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('commonTable.search')}}</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('commonTable.add')}}</el-button>
     </div>
     <el-card class="box-card">
       <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName"   v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
-      style="width: 100%">
+      style="width: 100%" >
 
-      <el-table-column width="180px" align="center" :label="$t('configTable.CONF_CODE')">
+      <el-table-column type="selection" width="50"></el-table-column>
+      <el-table-column width="140px" align="center" label="操作描述">
         <template slot-scope="scope">
-          <span>{{scope.row.CONF_CODE}}</span>
+          <span>{{scope.row.OPER_TYPE_NAME}}</span>
         </template>
       </el-table-column>
-
-      <el-table-column width="180px" align="center" :label="$t('configTable.CONF_VALUE')">
+        <el-table-column width="140px" align="center" label="分值">
         <template slot-scope="scope">
-          <span>{{scope.row.CONF_VALUE}}</span>
+          <span>{{scope.row.SCORE}}</span>
         </template>
       </el-table-column>
-
-       <el-table-column width="180px" align="center" :label="$t('configTable.CONF_NAME')">
+     
+      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <span>{{scope.row.CONF_NAME}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" :label="$t('configTable.actions')" width="180px" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('configTable.edit')}}</el-button>
-          <!--
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{$t('configTable.delete')}}</el-button>
-          -->
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('commonTable.edit')}}</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{$t('commonTable.delete')}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -51,25 +36,21 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
     
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 400px; margin-left:20px;'>
-    <el-form-item v-if="dialogStatus=='create'"  :label="$t('configTable.CONF_CODE')" prop="CONF_CODE">
-       <el-input v-model="temp.CONF_CODE"></el-input>
-    </el-form-item>
-    <el-form-item v-else  :label="$t('configTable.CONF_CODE')" prop="CONF_CODE">
-     <span>{{temp.CONF_CODE}}</span>
-    </el-form-item>
-    <el-form-item :label="$t('configTable.CONF_VALUE')" prop="CONF_VALUE">
-      <el-input v-model="temp.CONF_VALUE" ></el-input>
-    </el-form-item>
+        
+        <el-form-item  label="操作" prop="OPER_TYPE_NAME">
+            <el-input v-model="temp.OPER_TYPE_NAME"></el-input>
+        </el-form-item>
 
-    <el-form-item  :label="$t('configTable.CONF_NAME')" prop="CONF_NAME">
-      <el-input v-model="temp.CONF_NAME"></el-input>
-    </el-form-item> 
+        <el-form-item  label="分值" prop="SCORE">
+            <el-input v-model="temp.SCORE"></el-input>
+        </el-form-item>
+
          
       </el-form> 
         <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{$t('configTable.cancel')}}</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('configTable.confirm')}}</el-button>
-        <el-button v-else type="primary" @click="updateData">{{$t('configTable.confirm')}}</el-button>
+        <el-button @click="dialogFormVisible = false">{{$t('commonTable.cancel')}}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('commonTable.confirm')}}</el-button>
+        <el-button v-else type="primary" @click="updateData">{{$t('commonTable.confirm')}}</el-button>
       </div>
     </el-dialog>
  
@@ -77,74 +58,65 @@
 </template>
 <script>
 import {
-  fetchConfigList,
-  createConfigArticle,
-  updateConfigData,
-  updateConfigArticle
-} from '@/frame_src/api/config'
+  fetchScoreConfigList,
+  createScoreConfigArticle,
+  updateScoreConfigData,
+  updateScoreConfigArticle
+} from '@/frame_src/api/scoreConfig'
+import { getToken } from '@/frame_src/utils/auth'
 import waves from '@/frame_src/directive/waves' // 水波纹指令
 // import { parseTime } from '@/frame_src/utils'
-
 export default {
-  name: 'uidpConfigManager',
+  name: 'scoreConfig',
   directives: {
     waves
   },
   data() {
     return {
+      together:false,
       tableKey: 0,
-      list: null,
+      list: [],
       total: null,
       listLoading: true,
-      listUpdate: {
-        field: undefined,
-        CONF_CODE: undefined
-      },
       listQuery: {
         page: 1,
-        limit: 20,
-        CONF_NAME: undefined,
-        CONF_VALUE:''
+        limit: 10,
+        OPER_TYPE_NAME: ""
       },
-      statusOptions: ['published', 'draft', 'deleted'],
-
-      editConfig: false,
       temp: {
-        CONF_CODE: '',
-        CONF_NAME: '',
-        CONF_VALUE: '',
+        OPER_TYPE_NAME:'',
+        SCORE:'',
+        CREATER:''
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '修改配置',
-        create: '创建配置'
+        update: '修改积分配置',
+        create: '创建积分配置'
       },
-      dialogPvVisible: false,
-      pvData: [],
-      rules: {
 
-        CONF_CODE: [
-          { required: true, message: '配置项不能为空', trigger: 'change' }
+      rules: {
+        OPER_TYPE_NAME: [
+          { required: true, message: '操作类型不能为空', trigger: 'change' }
         ],
-        CONF_VALUE: [
-          { required: true, message: '配置值不能为空', trigger: 'change' }
+        SCORE: [
+          { required: true, message: '积分设置不能为空', trigger: 'change' }
         ]
       },
-      downloadLoading: false
     }
   },
   methods: {
     getList() {
-      this.listLoading = true
-      fetchConfigList(this.listQuery).then(response => {
+      this.listLoading = false;
+      fetchScoreConfigList(this.listQuery).then(response => {
         if (response.data.code === 2000) {
           this.list = response.data.items
           this.total = response.data.total
           this.listLoading = false
         } else {
           this.listLoading = false
-          this.$notify({   position: 'bottom-right',
+          this.$notify({   
+            position: 'bottom-right',
             title: '失败',
             message: response.data.message,
             type: 'error',
@@ -155,11 +127,11 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        CONF_CODE: '',
-        CONF_NAME: '',
-        CONF_VALUE: '',
+        OPER_TYPE_NAME:'',
+        SCORE:''
       }
     },
+
     handleUpdate(row) { // 修改数据弹出修改表单
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
@@ -181,7 +153,7 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           const tempData = Object.assign({}, this.temp) // 这样就不会共用同一个对象
-          updateConfigData(tempData).then(response => {
+          updateScoreConfigData(tempData).then(response => {
             var message = response.data.message
             var title = '失败'
             var type = 'error'
@@ -189,16 +161,10 @@ export default {
               this.getList()
               title = '成功'
               type = 'success'
-              // for (const v of this.list) {
-              //   if (v.CONF_CODE === this.temp.CONF_CODE) {
-              //     const index = this.list.indexOf(v)
-              //     this.list.splice(index, 1, this.temp)
-              //     break
-              //   }
-              // }
             }
             this.dialogFormVisible = false
-            this.$notify({   position: 'bottom-right',
+            this.$notify({   
+              position: 'bottom-right',
               title: title,
               message: message,
               type: type,
@@ -209,10 +175,8 @@ export default {
       })
     },
     handleDelete(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.listUpdate.CONF_CODE = this.temp.CONF_CODE
-      this.listUpdate.field = 'deletaStatus'
-      updateConfigArticle(this.listUpdate).then(response => {
+      const query = { SCORE_CONF_ID: row.SCORE_CONF_ID }
+      updateScoreConfigArticle(query).then(response => {
         this.message = response.data.message
         this.title = '失败'
         this.type = 'error'
@@ -236,7 +200,7 @@ export default {
         if (valid) {
           // this.temp.userId = parseInt(Math.random() * 100) + 1024 // mock a id
           // this.temp.author = "ppp" //当前登陆人
-          createConfigArticle(this.temp).then(response => {
+          createSynchroConfigArticle(this.temp).then(response => {
             var message = response.data.message
             var title = '失败'
             var type = 'error'
@@ -265,50 +229,31 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
-    handleDownload() { // 导出
-      this.downloadLoading = true
-      import('@/frame_src/vendor/Export2Excel').then(excel => {
-        const tHeader = [
-          '配置项说明',
-          '配置项',
-          '配置值'
-        ]
-        const filterVal = [
-          'CONF_NAME',
-          'CONF_CODE',
-          'CONF_VALUE'
-        ]
-        const data = this.formatJson(filterVal, this.list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: '平台基本配置信息表'
-        })
-        this.downloadLoading = false
-      })
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v =>
-        filterVal.map(j => {
-          return v[j]
-        })
-      )
-    },
+  
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
-    }, tableRowClassName({ row, rowIndex }) {
+    }, 
+    tableRowClassName({ row, rowIndex }) {
       if (rowIndex === 0) {
         return 'el-button--primary is-active'// 'warning-row'
       } // 'el-button--primary is-plain'// 'warning-row'
       return ''
     }
   },
+
   created() {
     // var token = this.$store.state.user.name; 获取登陆信息的 俩种方式
     // var status = this.$store.getters.name;
     // alert(token+"ddd"+status);
     this.getList()
+  },
+  computed: {
+    headers() {
+      return {
+        'X-Token': getToken()
+      }
+    }
   }
 }
 </script>

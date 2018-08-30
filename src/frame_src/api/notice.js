@@ -24,6 +24,31 @@ export function updateNoticeArticle(data) { // -删除
   return request({
     url: '/notice/updateNoticeArticle',
     method: 'post',
-    params: data
+    data
+  })
+}
+
+export function fetchNoticeDetailList(query) { 
+  return request({
+    url: '/noticedetail/fetchNoticeDetailList',
+    method: 'get',
+    params: query
+  })
+}
+
+
+export function createNoticeDetailArticle(data) { 
+  return request({
+    url: '/noticedetail/createNoticeDetailArticle',
+    method: 'post',
+    data
+  })
+}
+
+export function updateNoticeDetailArticle(data) {
+  return request({
+    url: '/noticedetail/updateNoticeDetailArticle',
+    method: 'post',
+    data
   })
 }

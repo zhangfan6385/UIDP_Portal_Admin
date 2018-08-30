@@ -1,29 +1,55 @@
 import request from '@/frame_src/utils/request'
-export function fetchComponentsList(query) { // 公告查询
+export function fetchComponentList(query) { // 公告查询
   return request({
-    url: '/components/fetchComponentsList',
+    url: '/component/fetchComponentList',
     method: 'get',
     params: query
   })
 }
-export function createComponentsArticle(data) { // 创建公告主表信息
+export function createComponentArticle(data) { // 创建公告主表信息
   return request({
-    url: '/components/createComponentsArticle',
+    url: '/component/createComponentArticle',
     method: 'post',
     data
   })
 }
-export function updateComponentsData(data) { // 修改公告主表信息
+export function updateComponentData(data) { // 修改公告主表信息
   return request({
-    url: '/components/updateComponentsData',
+    url: '/component/updateComponentData',
     method: 'post',
     data
   })
 }
-export function updateComponentsArticle(data) { // -删除
+export function updateComponentArticle(data) { // -删除
   return request({
-    url: '/components/updateComponentsArticle',
+    url: '/component/updateComponentArticle',
     method: 'post',
     params: data
   })
+}
+
+  export function fetchComponentDetailList(query) { 
+    return request({
+      url: '/componentdetail/fetchComponentDetailList',
+      method: 'get',
+      params: query
+    })
+  }
+  
+  
+  export function createComponentDetailArticle(data) { 
+    return request({
+      url: '/componentdetail/createComponentDetailArticle',
+      method: 'post',
+      data
+    })
+  }
+  
+  export function updateComponentDetailArticle(data) {
+    return request({
+      url: '/componentdetail/updateComponentDetailArticle',
+      method: 'post',
+      data
+    })
+  
 }

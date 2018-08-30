@@ -1,3 +1,5 @@
+import { platform } from "os";
+
 export default {
   route: {
     dashboard: '首页',
@@ -361,7 +363,7 @@ export default {
     notice_code:'公告编号',
     notice_title:'公告标题',
     notice_content:'公告内容',
-    notice_createby:'发布人',
+    creater:'发布人',
     notice_orgname:'发布单位',
     notice_datetime:'发布时间',
     search: '搜索',
@@ -396,6 +398,10 @@ export default {
     project_checkdate:'计划验收日期',
     project_url:'项目地址',
     project_isonline:'是否上线',
+    project_partyaperson:'甲方联系人',
+    project_partyaphone:'联系电话',
+    project_partybperson:'乙方联系人',
+    project_partybphone:'联系电话',
     search: '搜索',
     add: '添加',
     status: '状态',
@@ -428,5 +434,63 @@ export default {
     save:'保 存',
     author: '操作人',
     check: '审核'
+  },
+  platformTable:{
+    dynamicTips1: '固定表头, 按照表头顺序排序',
+    dynamicTips2: '不固定表头, 按照点击顺序排序',
+    dragTips1: '默认顺序',
+    dragTips2: '拖拽后顺序',
+    plat_code:'平台编号',
+    plat_name:'平台名称',
+    plat_version:'平台版本',
+    plat_publishdate:'发布日期',
+    plat_size:'文件大小',
+    software_language:'软件语言',
+    suit_plat:'适用平台',
+    application_browser:'应用浏览器',
+    plat_runrequire:'平台运行要求',
+    plat_type:'平台类型',
+    manage_org_name:'管理部门',
+    manage_tel:'联系电话',
+    creater:'创建人',
+    create_date:'创建日期'
+  },
+  componentTable:{
+    dynamicTips1: '固定表头, 按照表头顺序排序',
+    dynamicTips2: '不固定表头, 按照点击顺序排序',
+    dragTips1: '默认顺序',
+    dragTips2: '拖拽后顺序',
+    component_code:'组件编号',
+    component_name:'组件名称',
+    component_content:'组件说明',
+    download_times:'下载次数',
+    manage_org_name:'管理部门名称',
+    manage_tel:'管理电话',
+    component_size:'组件大小',
+    software_language:'组件语言',
+    suit_plat:'适用平台',
+    application_browser:'应用浏览器',
+    component_publishdate:'发布日期',
+    creater:'创建人',
+    create_date:'创建日期'
+  },
+  serviceTable:{
+    dynamicTips1: '固定表头, 按照表头顺序排序',
+    dynamicTips2: '不固定表头, 按照点击顺序排序',
+    dragTips1: '默认顺序',
+    dragTips2: '拖拽后顺序',
+    service_code:'服务编号',
+    service_name:'服务名称',
+    service_content:'服务说明',
+    service_times:'调用次数',
+    manage_org_name:'管理部门名称',
+    manage_tel:'管理电话',
+    service_url:'服务地址',
+    data_format:'数据格式',
+    suit_plat:'适用平台',
+    service_publishdate:'发布日期',
+    creater:'创建人',
+    create_date:'创建日期'
   }
+
 }

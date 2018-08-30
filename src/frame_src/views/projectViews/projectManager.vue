@@ -12,7 +12,7 @@
         <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
 
-                <el-table-column width="150px" align="center" :label="$t('projectTable.project_code')">
+                <el-table-column width="100px" align="center" :label="$t('projectTable.project_code')">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CODE}}</span>
                     </template>
@@ -22,40 +22,40 @@
                         <span>{{scope.row.PROJECT_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="150px" align="center" :label="$t('projectTable.project_partya')">
+                <el-table-column width="100px" align="center" :label="$t('projectTable.project_partya')">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PROJECT_PARTYA}}</span>
+                        <span>{{scope.row.PROJECT_PARTYA_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="150pxpx" align="center" :label="$t('projectTable.project_partyb')">
+                <el-table-column width="100pxpx" align="center" :label="$t('projectTable.project_partyb')">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PROJECT_PARTYB}}</span>
+                        <span>{{scope.row.PROJECT_PARTYB_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" :label="$t('projectTable.project_amount')">
+                <el-table-column width="100px" align="center" :label="$t('projectTable.project_amount')">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_AMOUNT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" :label="$t('projectTable.project_form')">
+                <el-table-column width="100px" align="center" :label="$t('projectTable.project_form')">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_FORM}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" :label="$t('projectTable.project_setdate')">
-                    <template slot-scope="scope">
+                <el-table-column width="160px" align="center" :label="$t('projectTable.project_setdate')" prop="PROJECT_SETDATE" :formatter="dateFormat">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_SETDATE}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
-                <el-table-column width="140px" align="center" :label="$t('projectTable.project_contractdate')">
-                    <template slot-scope="scope">
+                <el-table-column width="160px" align="center" :label="$t('projectTable.project_contractdate')" prop="PROJECT_CONTRACTDATE" :formatter="dateFormat">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CONTRACTDATE}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
-                <el-table-column width="140px" align="center" :label="$t('projectTable.project_checkdate')">
-                    <template slot-scope="scope">
+                <el-table-column width="160px" align="center" :label="$t('projectTable.project_checkdate')"  prop="PROJECT_CHECKDATE" :formatter="dateFormat">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CHECKDATE}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
                 <el-table-column min-width="140px" align="center" :label="$t('projectTable.project_url')">
                     <template slot-scope="scope">
@@ -67,16 +67,18 @@
                         <span>{{scope.row.PROJECT_ISONLINE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" fixed="right" :label="$t('projectTable.actions')" width="80px" class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                        <el-button type="primary" size="mini"  @click="handleUpdate(scope.row)">{{$t('projectTable.edit')}}</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" fixed="right" :label="$t('projectTable.actions')" width="80px" class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                        <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">{{$t('projectTable.delete')}}</el-button>
-                    </template>
-                </el-table-column>
+      <el-table-column
+      align="center"
+      fixed="right"
+      label="操作"
+      width="150">
+      <template slot-scope="scope">
+  <el-button type="primary" size="mini"  @click="handleUpdate(scope.row)">{{$t('projectTable.edit')}}</el-button>
+   <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">{{$t('projectTable.delete')}}</el-button>
+
+      </template>
+    </el-table-column>
+
             </el-table>
         </el-card>
         <div class="pagination-container">
@@ -86,7 +88,7 @@
         <!--添加或者修改-->
         <el-dialog :visible.sync="editVisible" :title="textMap[dialogStatus]" width="800px">
             <el-card>
-                <el-form :rules="rules" ref="dataForm" :model="temp" label-position="center" label-width="100px" style='width: 99%;'>
+                <el-form :rules="rules" ref="dataForm" :model="temp" label-position="center" label-width="120px" style='width: 99%;'>
                     <el-row>
                         <el-col :span="12">
                             <el-form-item :label="$t('projectTable.project_code')+':'" prop="PROJECT_CODE">
@@ -95,19 +97,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item :label="$t('projectTable.project_name')+':'" prop="PROJECT_NAME">
-                                <el-input v-model="temp.PROJECT_NAME" width="400px"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="12">
-                            <el-form-item :label="$t('projectTable.project_partya')+':'" prop="PROJECT_PARTYA">
-                                <el-input v-model="temp.PROJECT_PARTYA"></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="12">
-                            <el-form-item :label="$t('projectTable.project_partyb')+':'" prop="PROJECT_PARTYB">
-                                <el-input v-model="temp.PROJECT_PARTYB" width="400px"></el-input>
+                                <el-input v-model="temp.PROJECT_NAME"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -130,39 +120,77 @@
                     </el-row>
                     <el-row>
                         <el-col :span="12">
+                            <el-form-item :label="$t('projectTable.project_partya')+':'" >
+                                <el-select-tree v-model="temp.PROJECT_PARTYA_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
+                                  placeholder="甲方单位" style="width: 100%;" >
+                                </el-select-tree>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item :label="$t('projectTable.project_partyb')+':'" prop="PROJECT_PARTYB">
+                                <el-select-tree v-model="temp.PROJECT_PARTYB_ID" :treeData.sync="menuSelectBTree" :propNames="defaultProps" clearable
+                                  placeholder="乙方单位" style="width: 100%;">
+                                </el-select-tree>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+
+                    <el-row>
+                        <el-col :span="12">
                             <el-form-item :label="$t('projectTable.project_setdate')+':'" prop="PROJECT_SETDATE">
-                                <el-input v-model="temp.PROJECT_SETDATE"></el-input>
+                                    <el-date-picker type="date" placeholder="选择日期" v-model="temp.PROJECT_SETDATE" style="width: 100%;"></el-date-picker>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item :label="$t('projectTable.project_contractdate')+':'" prop="PROJECT_CONTRACTDATE">
-                                <el-input v-model="temp.PROJECT_CONTRACTDATE" width="400px"></el-input>
+                                <el-date-picker type="date" placeholder="选择日期" v-model="temp.PROJECT_CONTRACTDATE" style="width: 100%;"></el-date-picker>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="12">
                             <el-form-item :label="$t('projectTable.project_checkdate')+':'" prop="PROJECT_CHECKDATE">
-                                <el-input v-model="temp.PROJECT_CHECKDATE"></el-input>
+                                <el-date-picker type="date" placeholder="选择日期" v-model="temp.PROJECT_CHECKDATE" style="width: 100%;"></el-date-picker>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
+                        <el-form-item :label="$t('projectTable.project_isonline')+':'" prop="PROJECT_ISONLINE">
+                        <el-radio class="radio" v-model="temp.PROJECT_ISONLINE" :label="1">是</el-radio>
+                        <el-radio class="radio" v-model="temp.PROJECT_ISONLINE" :label="0">否</el-radio>
+                    </el-form-item>
+                          
+                        </el-col>
+                    </el-row>
+                     <el-row>
+                        <el-col :span="24">
                             <el-form-item :label="$t('projectTable.project_url')+':'" prop="PROJECT_URL">
-                                <el-input v-model="temp.PROJECT_URL" width="400px"></el-input>
+                                <el-input v-model="temp.PROJECT_URL" ></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                      <el-row>
+                        <el-col :span="12">
+                            <el-form-item :label="$t('projectTable.project_partyaperson')+':'" prop="CONTACT_PARTYA_NAME">
+                                <el-input v-model="temp.CONTACT_PARTYA_NAME"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item :label="$t('projectTable.project_partyaphone')+':'" prop="CONTACT_PARTYA_PHONE">
+                                <el-input v-model="temp.CONTACT_PARTYA_PHONE"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                      <el-row>
                         <el-col :span="12">
-                    <el-form-item :label="$t('projectTable.project_isonline')+':'" prop="PROJECT_ISONLINE">
-                        <el-select v-model="temp.PROJECT_ISONLINE" placeholder="请选择" style="width: 100%;">
-                            <el-option label="否" value=0></el-option>
-                            <el-option label="是" value=1></el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item :label="$t('projectTable.project_partybperson')+':'" prop="CONTACT_PARTYB_NAME">
+                                <el-input v-model="temp.CONTACT_PARTYB_NAME"></el-input>
+                            </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            </el-col>
+                            <el-form-item :label="$t('projectTable.project_partybphone')+':'" prop="CONTACT_PARTYB_PHONE">
+                                <el-input v-model="temp.CONTACT_PARTYB_PHONE"></el-input>
+                            </el-form-item>
+                        </el-col>
                     </el-row>
                 </el-form>
                 <div style="text-align:center">
@@ -176,16 +204,32 @@
 
 </template>
 <script>
+import panel from '@/frame_src/components/TreeList/panel.vue'
+import selectTree from '@/frame_src/components/TreeList/selectTree.vue'
+import treeter from '@/frame_src/components/TreeList/treeter'
+import merge from 'element-ui/src/utils/merge'
 import {
-    fetchProjectList ////记住修改API
+    fetchProjectList,
+    createProjectArticle,
+    updateProjectData,
+    updateProjectArticle
 } from "@/frame_src/api/project";
+import {
+    fetchPartyList
+} from "@/frame_src/api/org";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
 // import { parseTime } from '@/frame_src/utils'
+import Moment from 'moment';
 import { getToken } from "@/frame_src/utils/auth";
 export default {
-    name: "uidpConfigManager",
+    name: "projectManager",
     directives: {
         waves
+    },
+    mixins: [treeter],
+    components: {
+      'imp-panel': panel,
+      'el-select-tree': selectTree
     },
     data() {
         return {
@@ -193,9 +237,14 @@ export default {
             list: null,
             total: null,
             listLoading: false,
-            listUpdate: {
-                field: undefined,
-                RESULT_ID: undefined
+            // listUpdate: {
+            //     field: undefined,
+            //     RESULT_ID: undefined
+            // },
+            defaultProps: {
+                children: 'children',
+                label: 'ORG_SHORT_NAME',
+                id: 'id'
             },
             listQuery: {
                 page: 1,
@@ -203,19 +252,30 @@ export default {
                 PROJECT_CODE: "",
                 PROJECT_NAME: ""
             },
+            menuSelectATree: [],
+            menuSelectBTree: [],
             temp: {
                 PROJECT_ID: "",
                 PROJECT_CODE: "",
                 PROJECT_NAME: "",
-                PROJECT_PARTYA: "",
-                PROJECT_PARTYB: "",
+                PROJECT_PARTYA_ID:"",
+                PROJECT_PARTYA_CODE:"",
+                PROJECT_PARTYA_NAME: "",
+                PROJECT_PARTYB_ID: "",
+                PROJECT_PARTYB_CODE:"",
+                PROJECT_PARTYB_NAME:"",
                 PROJECT_AMOUNT: "",
                 PROJECT_FORM: "",
                 PROJECT_SETDATE: "",
                 PROJECT_CONTRACTDATE: "",
                 PROJECT_CHECKDATE: "",
                 PROJECT_URL: "",
-                PROJECT_ISONLINE: ""
+                PROJECT_ISONLINE: "0",
+                CONTACT_PARTYA_NAME:"",
+                CONTACT_PARTYA_PHONE:"",
+                CONTACT_PARTYB_NAME:"",
+                CONTACT_PARTYB_PHONE:"",
+                CREATER:""
             },
             textMap: {
                 update: "修改项目",
@@ -238,6 +298,38 @@ export default {
         };
     },
     methods: {
+           dateFormat:function(row, column) {
+               var date = row[column.property];
+          if (date == undefined) {
+             return "";
+          }
+          return Moment(date).format("YYYY-MM-DD HH:mm:ss");
+            },
+            resetTemp(){  
+             this.temp={
+                PROJECT_ID: "",
+                PROJECT_CODE: "",
+                PROJECT_NAME: "",
+                PROJECT_PARTYA_ID:"",
+                PROJECT_PARTYA_CODE:"",
+                PROJECT_PARTYA_NAME: "",
+                PROJECT_PARTYB_ID: "",
+                PROJECT_PARTYB_CODE:"",
+                PROJECT_PARTYB_NAME:"",
+                PROJECT_AMOUNT: "",
+                PROJECT_FORM: "",
+                PROJECT_SETDATE: "",
+                PROJECT_CONTRACTDATE: "",
+                PROJECT_CHECKDATE: "",
+                PROJECT_URL: "",
+                PROJECT_ISONLINE: "0",
+                CONTACT_PARTYA_NAME:"",
+                CONTACT_PARTYA_PHONE:"",
+                CONTACT_PARTYB_NAME:"",
+                CONTACT_PARTYB_PHONE:"",
+                CREATER:""
+            }
+        },
         getList() {
             this.listLoading = true;
             fetchProjectList(this.listQuery).then(response => {
@@ -257,19 +349,119 @@ export default {
                 }
             });
         },
+        loadPartyA() {
+        const query = { sysCode: '100' }
+        fetchPartyList(query).then(response => {
+          this.menuSelectATree =JSON.parse(response.data)
+        })
+       },
+       loadPartyB() {
+        const query = { sysCode: '200' }
+        fetchPartyList(query).then(response => {
+          this.menuSelectBTree = JSON.parse(response.data)
+        })
+       },
         handleCreate() {
+            this.resetTemp()
             this.editVisible = true;
             this.dialogStatus = "create";
+            this.loadPartyA()
+            this.loadPartyB()
         },
-        handleUpdate() {
+        handleUpdate(row) {
+            this.loadPartyA()
+            this.loadPartyB()
+            this.temp = Object.assign({}, row) // copy obj
             this.editVisible = true;
             this.dialogStatus = "update";
+            //this.content=row.NOTICE_CONTENT
+            this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+            })
         },
-        handleUdelete() {},
-        createData() {
-            console.log(this.temp.PROJECT_FORM);
+        handleDelete(row) {
+                //this.temp = Object.assign({}, row) // copy obj
+                const query = { PROJECT_ID: row.PROJECT_ID }
+                updateProjectArticle(query).then(response => {
+                this.message = response.data.message
+                this.title = '失败'
+                this.type = 'error'
+                if (response.data.code === 2000) {
+                // const index = this.list.indexOf(row)
+                // this.list.splice(index, 1)
+                this.getList()
+                this.title = '成功'
+                this.type = 'success'
+                }
+                this.$notify({   position: 'bottom-right',
+                title: this.title,
+                message: this.message,
+                type: this.type,
+                duration: 2000
+                })
+            })
+           },
+           createData() { // 创建
+            this.$refs['dataForm'].validate(valid => {
+                if (valid) {
+                // this.temp.userId = parseInt(Math.random() * 100) + 1024 // mock a id
+                // this.temp.author = "ppp" //当前登陆人
+                // this.temp.NOTICE_ORGID=this.$store.state.user.departId
+                // this.temp.NOTICE_ORGNAME=this.$store.state.user.departName
+                this.temp.CREATER=this.$store.state.user.name
+                createProjectArticle(this.temp).then(response => {
+                    var message = response.data.message
+                    var title = '失败'
+                    var type = 'error'
+                    if (response.data.code === 2000) {
+                    this.getList()
+                    title = '成功'
+                    type = 'success'
+                    // this.list.unshift(this.temp)
+                    }
+                    this.editVisible = false
+                    this.$notify({   position: 'bottom-right',
+                    title: title,
+                    message: message,
+                    type: type,
+                    duration: 2000
+                    })
+                })
+                }
+            })
         },
-        updateData() {},
+    updateData() {
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp) // 这样就不会共用同一个对象
+          //tempData.NOTICE_CONTENT=this.content
+          updateProjectData(tempData).then(response => {
+            var message = response.data.message
+            var title = '失败'
+            var type = 'error'
+            if (response.data.code === 2000) {
+              this.getList()
+              title = '成功'
+              type = 'success'
+              // for (const v of this.list) {
+              //   if (v.CONF_CODE === this.temp.CONF_CODE) {
+              //     const index = this.list.indexOf(v)
+              //     this.list.splice(index, 1, this.temp)
+              //     break
+              //   }
+              // }
+            }
+            this.editVisible = false
+            this.$notify({   position: 'bottom-right',
+              title: title,
+              message: message,
+              type: type,
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
         handleSizeChange(val) {
             this.listQuery.limit = val;
             this.getList();

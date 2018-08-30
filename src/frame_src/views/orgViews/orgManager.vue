@@ -182,10 +182,10 @@ export default {
         orgCode: '', // name: '',
         orgName: '', // enName
         orgNameFull: '', // enName
-        orgAddr: '', // enName
+        //orgAddr: '', // enName
         phone: '', // enName
-        phoneS: '', // enName
-        phoneFax: '',
+        orgShortName: '', // enName
+        //phoneFax: '',
         ISINVALID: '',
         remark: '',
         orgShortName:null
@@ -194,7 +194,8 @@ export default {
   },
   methods: {
      getorg() {
-      GetTitle().then(response => {
+      const query = { CONF_CODE: "'PTR_IDENT','LOCAL_IDENT','SYS_NAME','CopyRight','CLOUD_ORG'" }
+      GetTitle(query).then(response => {
         this.Useorg= Boolean(
           response.data.cloudorg.CONF_VALUE
         );
@@ -212,10 +213,10 @@ export default {
         orgCode: '', // name: '',
         orgName: '', // enName
         orgNameFull: '', // enName
-        orgAddr: '', // enName
+        //orgAddr: '', // enName
         phone: '', // enName
-        phoneS: '', // enName
-        phoneFax: '',
+        //phoneS: '', // enName
+        //phoneFax: '',
         ISINVALID: '1',
         remark: '',
         orgShortName:''
@@ -231,8 +232,7 @@ export default {
             if (response.data.code === 2000) {
               title = '成功'
               type = 'success'
-              this.newAdd()
-              this.load()
+
             }
             this.$notify({   position: 'bottom-right',
               title: title,
@@ -240,6 +240,8 @@ export default {
               type: type,
               duration: 2000
             })
+            this.newAdd();
+            this.load();
             this.$refs['form'].resetFields();
           })
         }

@@ -12,7 +12,7 @@
         <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
 
-                <el-table-column width="150px" align="center" :label="$t('noticeTable.notice_code')">
+                <el-table-column width="100px" align="center" :label="$t('noticeTable.notice_code')">
                     <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_CODE}}</span>
                     </template>
@@ -24,43 +24,47 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column width="100px" align="center" :label="$t('noticeTable.notice_createby')">
+                <el-table-column width="100px" align="center" :label="$t('noticeTable.creater')">
                     <template slot-scope="scope">
-                        <span>{{scope.row.NOTICE_CREATEBY}}</span>
+                        <span>{{scope.row.CREATER}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="200px" align="center" :label="$t('noticeTable.notice_orgname')">
+                <el-table-column width="150px" align="center" :label="$t('noticeTable.notice_orgname')">
                     <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_ORGNAME}}</span>
                     </template>
                 </el-table-column>
-
-                <el-table-column width="140px" align="center" :label="$t('noticeTable.notice_datetime')">
-                    <template slot-scope="scope">
+                <el-table-column width="160px" align="center" :label="$t('noticeTable.notice_datetime')" prop="NOTICE_DATETIME" :formatter="dateFormat">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_DATETIME}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
-                <el-table-column align="center" fixed="right" :label="$t('noticeTable.actions')" width="80px" class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" fixed="right" :label="$t('noticeTable.actions')" width="80px" class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" fixed="right" :label="$t('noticeTable.actions')" width="80px" class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" fixed="right" :label="$t('noticeTable.actions')" width="80px" class-name="small-padding fixed-width">
-                    <template slot-scope="scope">
-                        <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
-                    </template>
-                </el-table-column>
+    <!-- <el-table-column
+      fixed="right"
+      label="操作"
+      width="120">
+      <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>    
+            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
+            <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
+      </template>
+    </el-table-column> -->
+      <el-table-column
+      align="center"
+      fixed="right"
+      label="操作"
+      width="300">
+      <template slot-scope="scope">
+     <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>    
+            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
+            <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
+
+      </template>
+    </el-table-column>
+
             </el-table>
         </el-card>
         <div class="pagination-container">
@@ -78,8 +82,7 @@
                         <el-input v-model="temp.NOTICE_TITLE" width="400px" :disabled="true"></el-input>
                     </el-form-item>
                  <el-form-item :label="$t('noticeTable.notice_content')+':'" prop="NOTICE_CONTENT">
-                       <div>
-                           adsfadfas
+                       <div v-html="temp.NOTICE_CONTENT">
                        </div>
                     </el-form-item>
                     </el-form>
@@ -88,18 +91,26 @@
         <!--修改-->
         <el-dialog :visible.sync="editVisible" :title="textMap[dialogStatus]" width="800px">
         <el-card>
-                <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
+                <el-form :rules="rules" ref="dataFormInfo" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
                     <el-form-item :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
                         <el-input v-model="temp.NOTICE_CODE"></el-input>
                     </el-form-item>
                     <el-form-item :label="$t('noticeTable.notice_title')+':'" prop="NOTICE_TITLE">
                         <el-input v-model="temp.NOTICE_TITLE" width="400px"></el-input>
                     </el-form-item>
+                    <el-form-item :label="$t('noticeTable.notice_datetime')+':'" prop="NOTICE_DATETIME">
+                        <!-- <el-date-picker type="date" placeholder="发布时间" v-model="temp.NOTICE_DATETIME" style="width: 100%;"></el-date-picker> -->
+                         <el-date-picker
+      v-model="temp.NOTICE_DATETIME"
+      type="datetime"
+      value-format="yyyy-MM-dd HH:mm:ss"
+      default-time="12:00:00">
+    </el-date-picker>
+                        
+                    </el-form-item>
                     <el-form-item :label="$t('noticeTable.notice_content')+':'" prop="NOTICE_CONTENT">
-                       
-                            <quill-editor>
-                            </quill-editor>
-                
+                        <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.NOTICE_CONTENT">
+                        </quillEditor>
                     </el-form-item>
                     </el-form>
                      <div style="text-align:center">
@@ -111,29 +122,50 @@
         </el-dialog>
         <!--上传-->
         <el-dialog :visible.sync="uploadVisible" :title="$t('noticeTable.upload')">
-            <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
+            <!-- <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'> -->
 
                 <el-card>
-                    <el-upload class="upload-demo" ref="upload" :action="urlUpload" :on-preview="handlePreview" :on-remove="handleRemove" :on-exceed="handleExceed" :on-success="handleSuccess" :before-remove="beforeRemove" :headers="headers" :file-list="fileList">
+                    <!-- <el-upload class="upload-demo" ref="upload" :action="urlUpload" :on-preview="handlePreview" :on-remove="handleRemove" :on-exceed="handleExceed" :on-success="handleSuccess" :before-remove="beforeRemove" :headers="headers" :file-list="fileList">
                         <el-button class="filter-item" type="primary" icon="el-icon-edit">点击上传</el-button>
-                    </el-upload>
+                    </el-upload> -->
+                     <el-upload
+            class="upload-demo"
+            multiple
+            :action="urlUpload"
+            :data="filedata"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            :before-remove="beforeRemove"
+            :headers="headers"
+            :file-list="fileList">
+            <el-button   class="filter-item"  type="primary" icon="el-icon-edit">点击上传</el-button>
+          </el-upload>
                 </el-card>
 
-            </el-form>
+             <!-- </el-form>-->
         </el-dialog>
     </div>
 
 </template>
 <script>
 import {
-    fetchNoticeList ////记住修改API
+    fetchNoticeList,
+    createNoticeArticle,
+    updateNoticeData,
+    updateNoticeArticle,
+    fetchNoticeDetailList,
+    createNoticeDetailArticle,
+    updateNoticeDetailArticle
 } from "@/frame_src/api/notice";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
 // import { parseTime } from '@/frame_src/utils'
-import quillEditor from "@/frame_src/components/QuillEditor";
+ import quillEditor from "@/frame_src/components/QuillEditor";
+
+import Moment from 'moment';
 import { getToken } from "@/frame_src/utils/auth";
 export default {
-    name: "uidpConfigManager",
+    name: "noticeManager",
     directives: {
         waves
     },
@@ -143,10 +175,6 @@ export default {
             list: null,
             total: null,
             listLoading: true,
-            listUpdate: {
-                field: undefined,
-                RESULT_ID: undefined
-            },
             listQuery: {
                 page: 1,
                 limit: 10,
@@ -160,7 +188,14 @@ export default {
                 NOTICE_CONTENT: "",
                 NOTICE_ORGID: "",
                 NOTICE_ORGNAME: "",
-                NOTICE_CREATEBY: ""
+                NOTICE_DATETIME:"",
+                CREATER: "",
+                NOTICE_ORGID:"",
+                NOTICE_ORGNAME:""
+            },
+            filedata:{
+            noticeId:"",
+            creater:""
             },
             textMap: {
                 update: "修改公告",
@@ -180,15 +215,35 @@ export default {
                 ]
             },
             dialogStatus:'',
-            urlUpload: process.env.BASE_API + "user/uploadUserArticle",
+            urlUpload: process.env.BASE_API + "noticedetail/uploadNoticeFile",
             fileList: [],
-
+            listQuery: {
+                    page: 1,
+                    limit: 20,
+                    NOTICE_CODE: '',
+                    NOTICE_TITLE: '',
+                    NOTICE_CONTENT: '',
+                    NOTICE_DATETIME: '',
+                    NOTICE_ORGID: '',
+                    NOTICE_ORGNAME:'',
+                    CREATER:'',
+                    BEGIN_NOTICE_DATETIME:'',
+                    END_NOTICE_DATETIME:'',
+                },
+            //content:''
         };
     },
     components: {
         quillEditor
     },
     methods: {
+         dateFormat:function(row, column) {
+               var date = row[column.property];
+          if (date == undefined) {
+             return "";
+          }
+          return Moment(date).format("YYYY-MM-DD HH:mm:ss");
+            },
         getList() {
             this.listLoading = true;
             fetchNoticeList(this.listQuery).then(response => {
@@ -208,26 +263,132 @@ export default {
                 }
             });
         },
-        handleDetail() {
+        resetTemp(){  
+             this.temp = {
+                NOTICE_ID: "",
+                NOTICE_CODE: "",
+                NOTICE_TITLE: "",
+                NOTICE_CONTENT: "",
+                NOTICE_ORGID: "",
+                NOTICE_ORGNAME: "",
+                CREATER: "",
+                NOTICE_ORGID:"",
+                NOTICE_ORGNAME:""
+             }
+        },
+        EditorChange(data){
+            this.temp.NOTICE_CONTENT=data.editorContent
+        },
+        handleDetail(row) {
             this.detailVisible = true;
-            
+            this.temp = Object.assign({}, row) // copy obj
         },
         handleCreate(){
-             this.editVisible = true;
+            this.resetTemp()
+            this.editVisible = true;
             this.dialogStatus='create'
+            this.$nextTick(() => {
+            this.$refs['dataFormInfo'].clearValidate()
+            })
         },
-        handleUpdate() {
+        handleUpdate(row) {
+            this.temp = Object.assign({}, row) // copy obj
             this.editVisible = true;
             this.dialogStatus='update'
+            //this.content=row.NOTICE_CONTENT
+            this.$nextTick(() => {
+            this.$refs['dataFormInfo'].clearValidate()
+      })
         },
-        handleUpload() {
+        handleUpload(row) {
             this.uploadVisible = true;
+            this.filedata.noticeId=row.NOTICE_ID;
+            this.filedata.creater=this.$store.state.user.name;
+            this.load()
         },
-        handleUdelete() {
-
+    handleDelete(row) {
+        //this.temp = Object.assign({}, row) // copy obj
+        const query = { NOTICE_ID: row.NOTICE_ID }
+        updateNoticeArticle(query).then(response => {
+        this.message = response.data.message
+        this.title = '失败'
+        this.type = 'error'
+        if (response.data.code === 2000) {
+          // const index = this.list.indexOf(row)
+          // this.list.splice(index, 1)
+          this.getList()
+          this.title = '成功'
+          this.type = 'success'
+        }
+        this.$notify({   position: 'bottom-right',
+          title: this.title,
+          message: this.message,
+          type: this.type,
+          duration: 2000
+        })
+      })
+    },
+        createData() { // 创建
+            this.$refs['dataFormInfo'].validate(valid => {
+                if (valid) {
+                // this.temp.userId = parseInt(Math.random() * 100) + 1024 // mock a id
+                // this.temp.author = "ppp" //当前登陆人
+                this.temp.NOTICE_ORGID=this.$store.state.user.departId
+                this.temp.NOTICE_ORGNAME=this.$store.state.user.departName
+                this.temp.CREATER=this.$store.state.user.name
+                createNoticeArticle(this.temp).then(response => {
+                    var message = response.data.message
+                    var title = '失败'
+                    var type = 'error'
+                    if (response.data.code === 2000) {
+                    this.getList()
+                    title = '成功'
+                    type = 'success'
+                    // this.list.unshift(this.temp)
+                    }
+                    this.editVisible = false
+                    this.$notify({   position: 'bottom-right',
+                    title: title,
+                    message: message,
+                    type: type,
+                    duration: 2000
+                    })
+                })
+                }
+            })
         },
-        createData(){},
-        updateData(){},
+    updateData() {
+      this.$refs['dataFormInfo'].validate(valid => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp) // 这样就不会共用同一个对象
+          //tempData.NOTICE_CONTENT=this.content
+          updateNoticeData(tempData).then(response => {
+            var message = response.data.message
+            var title = '失败'
+            var type = 'error'
+            if (response.data.code === 2000) {
+              this.getList()
+              title = '成功'
+              type = 'success'
+              // for (const v of this.list) {
+              //   if (v.CONF_CODE === this.temp.CONF_CODE) {
+              //     const index = this.list.indexOf(v)
+              //     this.list.splice(index, 1, this.temp)
+              //     break
+              //   }
+              // }
+            }
+            this.editVisible = false
+            this.$notify({   position: 'bottom-right',
+              title: title,
+              message: message,
+              type: type,
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
         handleSizeChange(val) {
             this.listQuery.limit = val;
             this.getList();
@@ -247,14 +408,52 @@ export default {
             return "";
         },
         //upload
-        handleRemove(file, fileList) {},
+         load() { // 查询数据
+      this.fileList=[];
+      const query={NOTICE_ID:this.filedata.noticeId}
+      fetchNoticeDetailList(query).then(response => {
+          response.data.items.forEach(element => {
+            var obj={};
+            var fileobj={
+                id:'',
+                name:'',
+                url:''
+            },
+            obj=JSON.parse(JSON.stringify(element));
+            fileobj.id=obj.NOTICE_DETAIL_ID
+            fileobj.name=obj.FILE_NAME
+            fileobj.url=obj.FILE_URL 
+            this.fileList.push(fileobj)
+          });
+      })
+    },
+        handleRemove(file, fileList) {
+        const query = { NOTICE_DETAIL_ID: file.id}
+        updateNoticeDetailArticle(query).then(response => {
+        this.message = response.data.message
+        this.title = '失败'
+        this.type = 'error'
+        if (response.data.code === 2000) {
+
+          this.load()
+          this.title = '成功'
+          this.type = 'success'
+        }
+        this.$notify({   position: 'bottom-right',
+          title: this.title,
+          message: this.message,
+          type: this.type,
+          duration: 2000
+        })
+      })
+        },
         handlePreview(file) {},
         handleSuccess(res, file, fileList) {
             var message = res.message;
             var title = "失败";
             var type = "error";
             if (res.code === 2000) {
-                this.getList();
+                //this.getList();
                 this.load();
                 title = "成功";
                 type = "success";

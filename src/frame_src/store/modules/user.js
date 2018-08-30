@@ -19,6 +19,7 @@ const user = {
     },
     sysCode: '1',
     sysName: '大港油田软件研发平台',
+    departId:'',
     departCode: '',
     departName: '',
     userId: '',
@@ -76,6 +77,9 @@ const user = {
     SET_DEPART_NAME: (state, departName) => {
       state.departName = departName
     },
+    SET_DEPART_ID: (state, departId)=>{
+      state.departId = departId
+    },
     SET_USER_SEX: (state, userSex) => {
       state.userSex = userSex
     },
@@ -92,7 +96,11 @@ const user = {
       commit('SET_SYS_NAME', sysName)
     }, setDepartCode({ commit }, departCode) {
       commit('SET_DEPART_CODE', departCode)
-    }, setDepartName({ commit }, departName) {
+    },
+    setDepartId({ commit }, departId) {
+      commit('SET_DEPART_ID', departId)
+    },
+     setDepartName({ commit }, departName) {
       commit('SET_DEPART_NAME', departName)
     }, setRoleLevel({ commit }, roleLevel) {
       commit('SET_ROLE_LEVEL', roleLevel)
@@ -145,6 +153,7 @@ const user = {
           commit('SET_SYS_NAME', data.sysName)// 设置当前系统名称
           commit('SET_DEPART_CODE', data.departCode)
           commit('SET_DEPART_NAME', data.departName)
+          commit('SET_DEPART_ID', data.departId)
           commit('SET_USER_ID', data.userId)
           commit('SET_USER_SEX', data.userSex)
           commit('SET_CODE', data.userCode)
