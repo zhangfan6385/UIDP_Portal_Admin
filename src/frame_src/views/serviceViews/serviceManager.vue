@@ -31,9 +31,9 @@
                         <span>{{scope.row.SERVICE_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('serviceTable.suit_plat')">
+                <el-table-column width="100px" align="center"  :label="$t('serviceTable.original_url')">
                     <template slot-scope="scope">
-                        <span>{{scope.row.SUIT_PLAT}}</span>
+                        <span>{{scope.row.ORIGINAL_URL}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column width="100px" align="center"  :label="$t('serviceTable.data_format')">
@@ -114,17 +114,20 @@
                          </el-col>
                       </el-row>
                          <el-row>
-                        <el-col :span="12">
+                        <el-col :span="24">
                             <el-form-item label="服务地址：" prop="SERVICE_URL">
                         <el-input v-model="temp.SERVICE_URL"></el-input>
                     </el-form-item>
                         </el-col>
-                         <el-col :span="12">
-                    <el-form-item label="适用平台：" prop="SUIT_PLAT">
-                        <el-input v-model="temp.SUIT_PLAT"></el-input>
+                        
+                      </el-row>
+                        <el-row>
+                             <el-col :span="24">
+                    <el-form-item label="原始地址：" prop="ORIGINAL_URL">
+                        <el-input v-model="temp.ORIGINAL_URL"></el-input>
                     </el-form-item>
                          </el-col>
-                      </el-row>
+                        </el-row>
                          <el-row>
                         <el-col :span="12">
                              <el-form-item label="数据格式：" prop="DATA_FORMAT">
@@ -295,7 +298,7 @@ export default {
                 SERVICE_PUBLISHDATE: "",
                 REQUEST_METHOD:"",
                 SERVICE_TIMES:"",
-                SUIT_PLAT:"",
+                ORIGINAL_URL:"",
                 SERVICE_URL:"",
                 SERVICE_CONTENT: "",
                 DATA_FORMAT:"",
@@ -493,7 +496,7 @@ export default {
                 // this.temp.author = "ppp" //当前登陆人
                 // this.temp.NOTICE_ORGID=this.$store.state.user.departId
                 // this.temp.NOTICE_ORGNAME=this.$store.state.user.departName
-                this.temp.MANAGE_ROLE_ID=this.$store.state.user.roles
+                //this.temp.MANAGE_ROLE_ID=this.$store.state.user.roles
                 this.temp.CREATER=this.$store.state.user.name
                 createServiceArticle(this.temp).then(response => {
                     var message = response.data.message

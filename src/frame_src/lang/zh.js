@@ -487,7 +487,7 @@ export default {
     manage_tel:'管理电话',
     service_url:'服务地址',
     data_format:'数据格式',
-    suit_plat:'适用平台',
+    original_url:'适用平台',
     service_publishdate:'发布日期',
     creater:'创建人',
     create_date:'创建日期'

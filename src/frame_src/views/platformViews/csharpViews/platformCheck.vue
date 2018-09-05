@@ -134,7 +134,7 @@ export default {
                 CHECK_STATE: "",
                 CHECK_CONTENT: "",
                 CHECK_PERSON_ID: "",
-                CHECK_PERSON_NAME: ""
+                CHECK_PERSON_NAME: "",
             },
              record: {
                 USER_ID: "",
@@ -191,6 +191,9 @@ export default {
             this.record.APPLY_ID=row.APPLY_ID
             this.temp.CHECK_CONTENT=row.CHECK_CONTENT
             this.temp.CHECK_STATE=row.CHECK_STATE
+            // this.temp.CHECK_DATE=row.CHECK_DATE
+            // this.temp.SERVICE_CODE=row.SERVICE_CODE
+            // this.temp.APPLY_EXPIRET=row.APPLY_EXPIRET
             if(row.MANAGE_TEL!=""&&row.MANAGE_TEL!=null){this.managetel=row.MANAGE_TEL}
         },
       

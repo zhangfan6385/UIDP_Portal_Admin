@@ -61,7 +61,7 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="220">
                     <template slot-scope="scope">
-                        <el-button type="primary" v-if="scope.row.CHECK_STATE=='0'"  size="mini" @click="handleCheck(scope.row)">{{$t('commonTable.check')}}</el-button>
+                        <el-button type="primary"  size="mini" @click="handleCheck(scope.row)">{{$t('commonTable.check')}}</el-button>
                         <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('commonTable.delete')}}</el-button>
                     </template>
                 </el-table-column>
@@ -184,6 +184,8 @@ export default {
             this.projectName=row.PROJECT_NAME
             this.temp.APPLY_ID=row.APPLY_ID
             this.record.APPLY_ID=row.APPLY_ID
+            this.temp.CHECK_CONTENT=row.CHECK_CONTENT
+            this.temp.CHECK_STATE=row.CHECK_STATE
             if(row.MANAGE_TEL!=""&&row.MANAGE_TEL!=null){this.managetel=row.MANAGE_TEL}
         },
       

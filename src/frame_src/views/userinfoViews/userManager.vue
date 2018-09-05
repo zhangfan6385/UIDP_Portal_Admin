@@ -192,12 +192,15 @@
         <el-form-item label="账号" prop="USER_DOMAIN">
           <el-input v-model="temp.USER_DOMAIN"></el-input>
         </el-form-item>
-
-        <el-form-item :label="$t('userTable.USER_PASS')" prop="USER_PASS" >
+        <el-form-item label="用户类型" prop="USER_TYPE">
+            <el-radio v-model="temp.USER_TYPE" :label="0">管理员</el-radio>
+            <el-radio v-model="temp.USER_TYPE" :label="1">普通用户</el-radio>
+        </el-form-item>
+        <el-form-item ref="password" :label="$t('userTable.USER_PASS')" prop="USER_PASS" >
           <el-input v-model="temp.USER_PASS"  type="password" auto-complete="off" :placeholder="passwordTips" :disabled="passwordVisible"></el-input>
         </el-form-item>
 
-        <el-form-item label="确认密码" prop="USER_PASS2">
+        <el-form-item ref="repassword" label="确认密码" prop="USER_PASS2">
           <el-input type="password" v-model="temp.USER_PASS2" auto-complete="off" :placeholder="passwordTips1"  :disabled="passwordVisible"></el-input>
         </el-form-item>
 
@@ -374,6 +377,14 @@ const typeOptions = [
   { key: 0, type_name: "本地账号" },
   { key: 1, type_name: "PTR账号" }
 ];
+const userTypeOptions = [
+  { key: 0, user_type_name: "管理员" },
+  { key: 1, user_type_name: "普通用户" }
+];
+const userTypeKeyValue = userTypeOptions.reduce((acc, cur) => {
+  acc[cur.key] = cur.user_type_name;
+  return acc;
+}, {});
 // arr to obj ,such as { CN : "China", US : "USA" }
 const flagOptionsKeyValue = flagOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.flag_name;
@@ -387,9 +398,7 @@ const AUTHENTICATION_TYPEFilterOptionsKeyValue = typeOptions.reduce(
   (acc, cur) => {
     acc[cur.key] = cur.type_name;
     return acc;
-  },
-  {}
-);
+  }, {});
 export default {
   name: "userManager",
   directives: {
@@ -439,9 +448,11 @@ export default {
       roleTree: [],
       orgKey: undefined,
       passwordvalidate: 1,
-      passwordVisible: true,
-      passwordTips: "PTR账号无需输入此项",
-      passwordTips1: "PTR账号无需输入此项",
+      passwordVisible: false,
+      // passwordTips: "PTR账号无需输入此项",
+      // passwordTips1: "PTR账号无需输入此项",
+      passwordTips: "请输入密码",
+      passwordTips1: "请再次输入密码",
       defaultProps: {
         children: "children",
         label: "orgShortName",
@@ -485,6 +496,7 @@ export default {
       temp: {
         USER_ID: undefined,
         USER_CODE: "",
+        USER_TYPE:undefined,
         USER_NAME: "",
         ORG_NAME: "",
         USER_ALIAS: "",
@@ -500,7 +512,7 @@ export default {
         USER_DOMAIN: "",
         REMARK: "",
         USER_ERP: "",
-        AUTHENTICATION_TYPE: undefined,
+        AUTHENTICATION_TYPE: 0,
         ASSOCIATED_ACCOUNT: "",
         USER_SEX: undefined,
         orgName: "",
@@ -537,7 +549,10 @@ export default {
         ],
         USER_PASS2: [
           { required: true, validator: validateSurepassword, trigger: "blur" }
-        ]
+        ],
+        USER_TYPE: [
+            { required: true, message: '请选择用户类型', trigger: 'change' }
+        ],
       },
       downloadLoading: false
     };
@@ -680,6 +695,7 @@ export default {
       this.temp = {
         USER_ID: undefined,
         USER_CODE: "",
+        USER_TYPE:undefined,
         USER_NAME: "",
         USER_ALIAS: "",
         USER_PASS: "",
@@ -691,7 +707,7 @@ export default {
         EMAIL_OFFICE: "",
         USER_IP: "",
         USER_SEX: 1,
-        AUTHENTICATION_TYPE: 1,
+        AUTHENTICATION_TYPE: 0,
         FLAG: 1,
         ASSOCIATED_ACCOUNT: "",
         USER_DOMAIN: "",
@@ -1069,6 +1085,7 @@ export default {
       import("@/frame_src/vendor/Export2Excel").then(excel => {
         const tHeader = [
           "用户编号",
+          "用户类型",
           "用户名称",
           "用户别名",
           "电话-移动",
@@ -1084,6 +1101,7 @@ export default {
         ];
         const filterVal = [
           "USER_CODE",
+          "USER_TYPE",
           "USER_NAME",
           "USER_ALIAS",
           "PHONE_MOBILE",
@@ -1112,6 +1130,10 @@ export default {
           if (j === "FLAG") {
             return flagOptionsKeyValue[v[j]];
           }
+          if(j==="USER_TYPE")
+          {
+            return userTypeKeyValue[v[j]];
+          }
           if (j === "USER_SEX") {
             return sexOptionsKeyValue[v[j]];
           } else if (j === "AUTHENTICATION_TYPE") {
@@ -1137,15 +1159,24 @@ export default {
     },
     getvalue(value) {
       if (value === 0) {
+        this.$refs["dataForm"].resetFields();
         this.passwordvalidate = 0;
         this.passwordVisible = false;
         this.passwordTips = "请输入密码";
         this.passwordTips1 = "请再次输入密码";
+        // this.$refs['USER_PASS'].validate()
+        // this.$refs['USER_PASS2'].validate()
+        this.$refs['password'].validate();
+        this.$refs['repassword'].validate();
+
       } else {
+        this.$refs["dataForm"].resetFields();
         this.passwordvalidate = 1;
         this.passwordVisible = true;
         this.passwordTips = "PTR账号无需输入此项";
         this.passwordTips1 = "PTR账号无需输入此项";
+        this.$refs['password'].clearValidate();
+        this.$refs['repassword'].clearValidate();
       }
     }
   },

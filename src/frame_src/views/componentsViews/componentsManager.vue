@@ -133,7 +133,7 @@
                         </el-col>
                          <el-col :span="12">
                                 <el-form-item label="组件大小：" prop="COMPONENT_SIZE">
-                        <el-input v-model="temp.PLAT_SIZE"></el-input>
+                        <el-input v-model="temp.COMPONENT_SIZE"></el-input>
                     </el-form-item>
                          </el-col>
                       </el-row>
@@ -154,7 +154,7 @@
                          <el-row>
                         <el-col :span="24">
                               <el-form-item label="组件说明：" prop="COMPONENT_CONTENT">
-                        <el-input v-model="temp.PLAT_RUNREQUIRE" type="textarea" :rows="5"></el-input>
+                        <el-input v-model="temp.COMPONENT_CONTENT" type="textarea" :rows="5"></el-input>
                     </el-form-item>
                         </el-col>
 
@@ -493,7 +493,7 @@ export default {
                 // this.temp.author = "ppp" //当前登陆人
                 // this.temp.NOTICE_ORGID=this.$store.state.user.departId
                 // this.temp.NOTICE_ORGNAME=this.$store.state.user.departName
-                this.temp.MANAGE_ROLE_ID=this.$store.state.user.roles
+                //this.temp.MANAGE_ROLE_ID=this.$store.state.user.roles
                 this.temp.CREATER=this.$store.state.user.name
                 createComponentArticle(this.temp).then(response => {
                     var message = response.data.message

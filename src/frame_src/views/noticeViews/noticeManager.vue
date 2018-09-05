@@ -109,8 +109,17 @@
                         
                     </el-form-item>
                     <el-form-item :label="$t('noticeTable.notice_content')+':'" prop="NOTICE_CONTENT">
-                        <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.NOTICE_CONTENT">
+                   <!-- <div  v-loading="imageLoading"
+                       element-loading-text="请稍等，图片上传中"> -->
+                        <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.NOTICE_CONTENT" v-bind:apiUrl="urlPicUpload">
                         </quillEditor>
+                         <!-- 文件上传input 将它隐藏-->
+                           <!-- <el-upload style="display:none"  :action="urlUpload" :show-file-list="false" :before-upload='newEditorbeforeupload'  :on-success='newEditorSuccess'
+                           ref="uniqueId" id="uniqueId">
+                           </el-upload > -->
+                       <!-- </div> -->
+
+
                     </el-form-item>
                     </el-form>
                      <div style="text-align:center">
@@ -216,6 +225,7 @@ export default {
             },
             dialogStatus:'',
             urlUpload: process.env.BASE_API + "noticedetail/uploadNoticeFile",
+            urlPicUpload: process.env.BASE_API + "Values/uploadNoticePic",
             fileList: [],
             listQuery: {
                     page: 1,
@@ -236,7 +246,9 @@ export default {
     components: {
         quillEditor
     },
+
     methods: {
+       
          dateFormat:function(row, column) {
                var date = row[column.property];
           if (date == undefined) {
