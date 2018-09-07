@@ -2,70 +2,62 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
 
-            <el-input style="width: 200px;" class="filter-item" placeholder="请输入组件编号" v-model="listQuery.NOTICE_CODE"></el-input>
+            <el-input style="width: 200px;" class="filter-item" placeholder="请输入组件编号" v-model="listQuery.COMPONENT_CODE"></el-input>
             <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('commonTable.search')}}</el-button>
 
             <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('commonTable.add')}}</el-button>
         </div>
  <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="150px" align="center" :label="$t('componentTable.component_code')">
+                <el-table-column width="100" align="center" :label="$t('componentTable.component_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMPONENT_CODE}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="80px" align="center" :label="$t('componentTable.component_name')">
+                <el-table-column width="150" align="center" :label="$t('componentTable.component_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMPONENT_NAME}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="160px" align="center"  :label="$t('componentTable.component_publishdate')" prop="COMPONENT_PUBLISHDATE" :formatter="dateFormat">
+                <el-table-column width="120" align="center"  :label="$t('componentTable.component_publishdate')" prop="COMPONENT_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('componentTable.component_size')">
+                <el-table-column width="80" align="center"  :label="$t('componentTable.component_size')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMPONENT_SIZE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('componentTable.suit_plat')">
+                <el-table-column width="100" align="center"  :label="$t('componentTable.suit_plat')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SUIT_PLAT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('componentTable.application_browser')">
+                <el-table-column width="100" align="center"  :label="$t('componentTable.application_browser')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLICATION_BROWSER}}</span>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column width="100px" align="center"  :label="$t('platformTable.plat_type')">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.PLAT_TYPE}}</span>
-                    </template>
-                </el-table-column> -->
-                 <el-table-column width="100px" align="center" :label="$t('componentTable.manage_org_name')">
+                 <el-table-column width="150" align="center" :label="$t('componentTable.manage_org_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('componentTable.manage_tel')">
+                <el-table-column width="100" align="center"  :label="$t('componentTable.manage_tel')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_TEL}}</span>
                     </template>
                 </el-table-column> 
-                <el-table-column width="100px" align="center" :label="$t('componentTable.creater')">
+                <el-table-column width="100" align="center" :label="$t('componentTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="160px" align="center" :label="$t('componentTable.create_date')" prop="CREATE_DATE" :formatter="dateFormat">
-                    <!-- <template slot-scope="scope">
-                        <span>{{scope.row.CREATE_DATE}}</span>
-                    </template> -->
-                </el-table-column>
+                <!-- <el-table-column width="160px" align="center" :label="$t('componentTable.create_date')" prop="CREATE_DATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                </el-table-column> -->
                
  <el-table-column
       align="center"
@@ -357,7 +349,7 @@ export default {
           if (date == undefined) {
              return "";
           }
-          return Moment(date).format("YYYY-MM-DD HH:mm:ss");
+          return Moment(date).format("YYYY-MM-DD");
             },
         getList() {
             this.listLoading = true;
@@ -423,7 +415,11 @@ export default {
             });
         },
         handleDelete(row) {
-                //this.temp = Object.assign({}, row) // copy obj
+this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
                 const query = { COMPONENT_ID: row.COMPONENT_ID }
                 updateComponentArticle(query).then(response => {
                 this.message = response.data.message
@@ -443,8 +439,16 @@ export default {
                 duration: 2000
                 })
             })
+  }).catch(() => {
+        });
+               
            },
                handleRemove(file, fileList) {
+                   this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
         const query = { COMPONENT_DETAIL_ID: file.id }
         updateComponentArticle(query).then(response => {
         this.message = response.data.message
@@ -463,6 +467,8 @@ export default {
           duration: 2000
         })
       })
+  }).catch(() => {
+        });
         },
         handleFileDelete(row) {
                 //this.temp = Object.assign({}, row) // copy obj

@@ -12,59 +12,62 @@
         <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
 
-                <el-table-column width="100px" align="center" :label="$t('projectTable.project_code')">
+                <el-table-column width="100" align="center" :label="$t('projectTable.project_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CODE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="150px" align="center" :label="$t('projectTable.project_name')">
+                <el-table-column width="150" align="center" :label="$t('projectTable.project_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center" :label="$t('projectTable.project_partya')">
+                <el-table-column width="100" align="center" :label="$t('projectTable.project_partya')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_PARTYA_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100pxpx" align="center" :label="$t('projectTable.project_partyb')">
+                <el-table-column width="100" align="center" :label="$t('projectTable.project_partyb')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_PARTYB_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center" :label="$t('projectTable.project_amount')">
+                <el-table-column width="100" align="center" :label="$t('projectTable.project_amount')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_AMOUNT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center" :label="$t('projectTable.project_form')">
+                <el-table-column width="100" align="center" :label="$t('projectTable.project_form')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_FORM}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="160px" align="center" :label="$t('projectTable.project_setdate')" prop="PROJECT_SETDATE" :formatter="dateFormat">
+                <el-table-column width="110" align="center" :label="$t('projectTable.project_setdate')" prop="PROJECT_SETDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_SETDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="160px" align="center" :label="$t('projectTable.project_contractdate')" prop="PROJECT_CONTRACTDATE" :formatter="dateFormat">
+                <el-table-column width="110" align="center" :label="$t('projectTable.project_contractdate')" prop="PROJECT_CONTRACTDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CONTRACTDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="160px" align="center" :label="$t('projectTable.project_checkdate')"  prop="PROJECT_CHECKDATE" :formatter="dateFormat">
+                <el-table-column width="110" align="center" :label="$t('projectTable.project_checkdate')"  prop="PROJECT_CHECKDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CHECKDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column min-width="140px" align="center" :label="$t('projectTable.project_url')">
+                <el-table-column min-width="200" align="center" :label="$t('projectTable.project_url')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" :label="$t('projectTable.project_isonline')">
+                <el-table-column width="80" align="center" :label="$t('projectTable.project_isonline')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.PROJECT_ISONLINE}}</span>
+                        <!-- <span>{{scope.row.PROJECT_ISONLINE}}</span> -->
+                        <span v-if="scope.row.PROJECT_ISONLINE=='0'">否</span>
+                        <span v-if="scope.row.PROJECT_ISONLINE=='1'">是</span>
+                        <span v-else></span>
                     </template>
                 </el-table-column>
       <el-table-column
@@ -303,7 +306,7 @@ export default {
           if (date == undefined) {
              return "";
           }
-          return Moment(date).format("YYYY-MM-DD HH:mm:ss");
+          return Moment(date).format("YYYY-MM-DD");
             },
             resetTemp(){  
              this.temp={
@@ -380,8 +383,12 @@ export default {
             })
         },
         handleDelete(row) {
-                //this.temp = Object.assign({}, row) // copy obj
-                const query = { PROJECT_ID: row.PROJECT_ID }
+        this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+              const query = { PROJECT_ID: row.PROJECT_ID }
                 updateProjectArticle(query).then(response => {
                 this.message = response.data.message
                 this.title = '失败'
@@ -400,6 +407,11 @@ export default {
                 duration: 2000
                 })
             })
+
+  }).catch(() => {
+      
+        });
+              
            },
            createData() { // 创建
             this.$refs['dataForm'].validate(valid => {

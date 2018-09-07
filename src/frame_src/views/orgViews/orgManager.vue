@@ -270,7 +270,12 @@ export default {
       })
     },
     deleteSelected(id) { // 删除方法
-      this.listUpdate.id = this.form.id // 传递id
+    this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+ this.listUpdate.id = this.form.id // 传递id
       this.listUpdate.field = 'deletaStatus' // 传递判断参数
       updateOrgArticle(this.listUpdate).then(response => {
         var message = response.data.message
@@ -290,6 +295,9 @@ export default {
           duration: 2000
         })
       })
+  }).catch(() => {
+        });
+     
       // this.load();
     }, handleRemove(file, fileList) {
       console.log(file, fileList)

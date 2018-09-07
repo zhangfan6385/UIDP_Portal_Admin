@@ -8,57 +8,68 @@
         <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
               
-                <el-table-column min-width="290px" align="center" label="帖子标题">
+                <el-table-column min-width="300" align="center" label="帖子标题" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.TITLE_NAME}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="100px" align="center" label="帖子类型">
+                <el-table-column width="100" align="center" label="帖子类型"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.POST_TYPE}}</span>
+                        <!-- <span>{{scope.row.POST_TYPE}}</span> -->
+                        <span v-if="scope.row.POST_TYPE=='1'">经验分享</span>
+                        <span v-if="scope.row.POST_TYPE=='2'">求助</span>
+                        <span v-if="scope.row.POST_TYPE=='3'">问题反馈</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="200px" align="center" label="发帖人">
+                <el-table-column width="150" align="center" label="发帖人"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.USER_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="发帖日期">
+                <el-table-column width="160" align="center" label="发帖日期" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.SEND_DATE}}</span>
+                        <span>{{scope.row.SEND_DATE|parseTime}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="所需积分">
+                <el-table-column width="140" align="center" label="所需积分" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SCORE}}</span>
                     </template>
                 </el-table-column>
                
-                 <el-table-column width="140px" align="center" label="查看次数">
+                 <el-table-column width="80" align="center" label="查看次数" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.BROWSE_NUM}}</span>
                     </template>
                 </el-table-column>
-                 <el-table-column width="140px" align="center" label="评论次数">
+                 <el-table-column width="80" align="center" label="评论次数" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMMONT_COUNT}}</span>
                     </template>
                 </el-table-column>
-                 <el-table-column width="140px" align="center" label="收藏次数">
+                 <el-table-column width="80" align="center" label="收藏次数" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COLLECTION_COUNT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center"  fixed="right" :label="$t('commonTable.actions')" width="80px" class-name="small-padding fixed-width">
+                <!-- <el-table-column align="center"  fixed="right" :label="$t('commonTable.actions')" width="80px" class-name="small-padding fixed-width">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="handleDetail(scope.row)">查看详情</el-button>
+
                     </template>
                 </el-table-column>
                 <el-table-column align="center"  fixed="right" :label="$t('commonTable.actions')" width="80px" class-name="small-padding fixed-width">
                     <template slot-scope="scope">
-                        <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+        
+                    </template>
+                </el-table-column> -->
+
+
+                <el-table-column align="center" fixed="right" label="操作" width="180">
+                    <template slot-scope="scope">
+                            <el-button type="primary" size="mini" @click="handleDetail(scope.row)">查看详情</el-button>
+                            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -78,10 +89,11 @@
 </template>
 <script>
 import {
-    getCommunityPostList ////记住修改API
+    getCommunityPostList,
+    deletePost
 } from "@/frame_src/api/community";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
-// import { parseTime } from '@/frame_src/utils'
+import { parseTime } from "@/frame_src/utils/index.js";
 import { getToken } from "@/frame_src/utils/auth";
 export default {
     directives: {
@@ -130,6 +142,9 @@ export default {
             dialogStatus: ""
         };
     },
+    filters: {
+        parseTime
+    },
     methods: {
         getList() {
             this.listLoading = true;
@@ -153,7 +168,36 @@ export default {
         handleDetail() {
             this.detailVisible = true;
         },
-        handleUdelete() {},
+        
+        handleDelete(row) {
+            this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+                const query = { POST_ID: row.POST_ID }
+                deletePost(query).then(response => {
+                this.message = response.data.message
+                this.title = '失败'
+                this.type = 'error'
+                if (response.data.code === 2000) {
+                // const index = this.list.indexOf(row)
+                // this.list.splice(index, 1)
+                this.getList()
+                this.title = '成功'
+                this.type = 'success'
+                }
+                this.$notify({   position: 'bottom-right',
+                title: this.title,
+                message: this.message,
+                type: this.type,
+                duration: 2000
+                })
+            })
+  }).catch(() => {
+        });
+               
+        },
         handleSizeChange(val) {
             this.listQuery.limit = val;
             this.getList();

@@ -8,13 +8,17 @@
     <el-card class="box-card">
 
     <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-
-      <el-table-column width="140px" align="center" label="操作类型">
+      <el-table-column width="140px" align="center" label="操作编码" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <span>{{scope.row.OPER_TYPE}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column width="140px" align="center" label="操作类型" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span>{{scope.row.OPER_TYPE_NAME}}</span>
         </template>
       </el-table-column>
-        <el-table-column width="140px" align="center" label="分值">
+        <el-table-column width="140px" align="center" label="分值" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span>{{scope.row.SCORE}}</span>
         </template>
@@ -36,12 +40,15 @@
     
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 400px; margin-left:20px;'>
         
-    <el-form-item v-if="dialogStatus=='create'"  label="操作类型" prop="OPER_TYPE_NAME">
-       <el-input v-model="temp.OPER_TYPE_NAME"></el-input>
+    <el-form-item v-if="dialogStatus=='create'"  label="操作编码" prop="OPER_TYPE">
+       <el-input v-model="temp.OPER_TYPE"></el-input>
     </el-form-item>
-    <el-form-item v-else  label="操作类型"  prop="OPER_TYPE_NAME">
-     <span>{{temp.OPER_TYPE_NAME}}</span>
+    <el-form-item v-else  label="操作编码"  prop="OPER_TYPE">
+     <span>{{temp.OPER_TYPE}}</span>
     </el-form-item>
+            <el-form-item label="操作描述" prop="OPER_TYPE_NAME">
+            <el-input v-model="temp.OPER_TYPE_NAME"></el-input>
+        </el-form-item>
         <el-form-item  label="分值" prop="SCORE">
             <el-input v-model="temp.SCORE"></el-input>
         </el-form-item>
@@ -85,6 +92,7 @@ export default {
         OPER_TYPE_NAME: ""
       },
       temp: {
+        OPER_TYPE:'',
         OPER_TYPE_NAME:'',
         SCORE:'',
         CREATER:''
@@ -129,6 +137,7 @@ export default {
     resetTemp() {
       this.temp = {
         OPER_TYPE_NAME:'',
+        OPER_TYPE:'',
         SCORE:''
       }
     },
@@ -175,6 +184,11 @@ export default {
       })
     },
     handleDelete(row) {
+      this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
       const query = { SCORE_CONF_ID: row.SCORE_CONF_ID }
       updateScoreConfigArticle(query).then(response => {
         this.message = response.data.message
@@ -194,6 +208,9 @@ export default {
           duration: 2000
         })
       })
+  }).catch(() => {
+        });
+      
     },
     createData() { // 创建配置
       this.$refs['dataForm'].validate(valid => {

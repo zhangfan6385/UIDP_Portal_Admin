@@ -810,7 +810,12 @@ export default {
       }
     },
     handleDelete(row) {
-      this.temp = Object.assign({}, row); // copy obj
+      this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+ this.temp = Object.assign({}, row); // copy obj
       this.listUpdate.USER_ID = this.temp.USER_ID;
       this.listUpdate.field = "deletaStatus";
       updateUserArticle(this.listUpdate).then(response => {
@@ -831,6 +836,8 @@ export default {
           duration: 2000
         });
       });
+  }).catch(() => {
+        });
     },
     createData() {
       if (this.passwordvalidate === 1) {
@@ -1189,7 +1196,7 @@ export default {
       if (this.$store.state.user.roleLevel === "admin") {
         return true;
       } else {
-        return false;
+        return true;
       }
     },
     headers() {

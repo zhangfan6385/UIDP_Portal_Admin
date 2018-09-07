@@ -2,41 +2,41 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
 
-            <el-input style="width: 200px;" class="filter-item" placeholder="请输入服务编号" v-model="listQuery.NOTICE_CODE"></el-input>
+            <el-input style="width: 200px;" class="filter-item" placeholder="请输入服务编号" v-model="listQuery.SERVICE_CODE"></el-input>
             <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('commonTable.search')}}</el-button>
 
             <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('commonTable.add')}}</el-button>
         </div>
  <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="150px" align="center" :label="$t('serviceTable.service_code')">
+                <el-table-column width="100" align="center" :label="$t('serviceTable.service_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SERVICE_CODE}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="80px" align="center" :label="$t('serviceTable.service_name')">
+                <el-table-column width="150" align="center" :label="$t('serviceTable.service_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SERVICE_NAME}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="160px" align="center"  :label="$t('serviceTable.service_publishdate')" prop="SERVICE_PUBLISHDATE" :formatter="dateFormat">
+                <el-table-column width="120" align="center"  :label="$t('serviceTable.service_publishdate')" prop="SERVICE_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('serviceTable.service_url')">
+                <el-table-column width="120" align="center"  :label="$t('serviceTable.service_url')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SERVICE_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('serviceTable.original_url')">
+                <el-table-column width="120" align="center"  :label="$t('serviceTable.original_url')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.ORIGINAL_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('serviceTable.data_format')">
+                <el-table-column width="100" align="center"  :label="$t('serviceTable.data_format')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.DATA_FORMAT}}</span>
                     </template>
@@ -46,26 +46,23 @@
                         <span>{{scope.row.PLAT_TYPE}}</span>
                     </template>
                 </el-table-column> -->
-                 <el-table-column width="100px" align="center" :label="$t('serviceTable.manage_org_name')">
+                 <el-table-column width="100" align="center" :label="$t('serviceTable.manage_org_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('serviceTable.manage_tel')">
+                <el-table-column width="100" align="center"  :label="$t('serviceTable.manage_tel')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_TEL}}</span>
                     </template>
                 </el-table-column> 
-                <el-table-column width="100px" align="center" :label="$t('serviceTable.creater')">
+                <el-table-column width="100" align="center" :label="$t('serviceTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="160px" align="center" :label="$t('serviceTable.create_date')" prop="CREATE_DATE" :formatter="dateFormat">
-                    <!-- <template slot-scope="scope">
-                        <span>{{scope.row.CREATE_DATE}}</span>
-                    </template> -->
-                </el-table-column>
+                <!-- <el-table-column width="160px" align="center" :label="$t('serviceTable.create_date')" prop="CREATE_DATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                </el-table-column> -->
                
  <el-table-column
       align="center"
@@ -360,7 +357,7 @@ export default {
           if (date == undefined) {
              return "";
           }
-          return Moment(date).format("YYYY-MM-DD HH:mm:ss");
+          return Moment(date).format("YYYY-MM-DD");
             },
         getList() {
             this.listLoading = true;
@@ -426,8 +423,12 @@ export default {
             });
         },
         handleDelete(row) {
-                //this.temp = Object.assign({}, row) // copy obj
-                const query = { SERVICE_ID: row.SERVICE_ID }
+this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+  const query = { SERVICE_ID: row.SERVICE_ID }
                 updateServiceArticle(query).then(response => {
                 this.message = response.data.message
                 this.title = '失败'
@@ -446,8 +447,10 @@ export default {
                 duration: 2000
                 })
             })
+  }).catch(() => {
+        });
            },
-               handleRemove(file, fileList) {
+    handleRemove(file, fileList) {
         const query = { SERVICE_DETAIL_ID: file.id }
         updateServiceDetailArticle(query).then(response => {
         this.message = response.data.message
@@ -468,8 +471,12 @@ export default {
       })
         },
         handleFileDelete(row) {
-                //this.temp = Object.assign({}, row) // copy obj
-                const query = { SERVICE_DETAIL_ID: row.SERVICE_DETAIL_ID }
+this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+ const query = { SERVICE_DETAIL_ID: row.SERVICE_DETAIL_ID }
                 updateServiceDetailArticle(query).then(response => {
                 this.message = response.data.message
                 this.title = '失败'
@@ -488,6 +495,9 @@ export default {
                 // duration: 2000
                 // })
             })
+  }).catch(() => {
+        });
+               
            },
         createData() { // 创建
             this.$refs['dataForm'].validate(valid => {

@@ -186,7 +186,12 @@
         }
       },
       deleteSelected() {
-        const deleteQuery = { MENU_ID: [] }
+        this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+ const deleteQuery = { MENU_ID: [] }
         deleteQuery.MENU_ID.push(this.form.MENU_ID)
         deleteMenu(deleteQuery).then(response => {
           let type
@@ -206,6 +211,9 @@
           })
         })
       // this.load();
+  }).catch(() => {
+        });
+       
       },
       batchDelete() {
         var checkKeys = this.$refs.menuTree.getCheckedKeys()

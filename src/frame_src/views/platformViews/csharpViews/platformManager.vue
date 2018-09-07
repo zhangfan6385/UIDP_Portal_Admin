@@ -2,41 +2,41 @@
     <div class="app-container calendar-list-container">
         <div class="filter-container">
 
-            <el-input style="width: 200px;" class="filter-item" placeholder="请输入平台编号" v-model="listQuery.NOTICE_CODE"></el-input>
+            <el-input style="width: 200px;" class="filter-item" placeholder="请输入平台编号" v-model="listQuery.PLAT_CODE"></el-input>
             <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('commonTable.search')}}</el-button>
 
             <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('commonTable.add')}}</el-button>
         </div>
  <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="150px" align="center" :label="$t('platformTable.plat_code')">
+                <el-table-column width="150px" align="center" :label="$t('platformTable.plat_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_CODE}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="80px" align="center" :label="$t('platformTable.plat_version')">
+                <el-table-column width="80px" align="center" :label="$t('platformTable.plat_version')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_VERSION}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="160px" align="center"  :label="$t('platformTable.plat_publishdate')" prop="PLAT_PUBLISHDATE" :formatter="dateFormat">
+                <el-table-column width="160px" align="center"  :label="$t('platformTable.plat_publishdate')" prop="PLAT_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('platformTable.plat_size')">
+                <el-table-column width="100px" align="center"  :label="$t('platformTable.plat_size')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_SIZE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('platformTable.suit_plat')">
+                <el-table-column width="100px" align="center"  :label="$t('platformTable.suit_plat')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SUIT_PLAT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('platformTable.application_browser')">
+                <el-table-column width="100px" align="center"  :label="$t('platformTable.application_browser')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLICATION_BROWSER}}</span>
                     </template>
@@ -46,26 +46,24 @@
                         <span>{{scope.row.PLAT_TYPE}}</span>
                     </template>
                 </el-table-column> -->
-                 <el-table-column width="100px" align="center" :label="$t('platformTable.manage_org_name')">
+                 <el-table-column width="100px" align="center" :label="$t('platformTable.manage_org_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" align="center"  :label="$t('platformTable.manage_tel')">
+                <el-table-column width="100px" align="center"  :label="$t('platformTable.manage_tel')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_TEL}}</span>
                     </template>
                 </el-table-column> 
-                <el-table-column width="100px" align="center" :label="$t('platformTable.creater')">
+                <el-table-column width="100px" align="center" :label="$t('platformTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="160px" align="center" :label="$t('platformTable.create_date')" prop="CREATE_DATE" :formatter="dateFormat">
-                    <!-- <template slot-scope="scope">
-                        <span>{{scope.row.CREATE_DATE}}</span>
-                    </template> -->
-                </el-table-column>
+                <!-- <el-table-column width="160px" align="center" :label="$t('platformTable.create_date')" prop="CREATE_DATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+
+                </el-table-column> -->
                
  <el-table-column
       align="center"
@@ -354,12 +352,12 @@ export default {
           }
         },
         dateFormat:function(row, column) {
-               var date = row[column.property];
+          var date = row[column.property];
           if (date == undefined) {
              return "";
           }
-          return Moment(date).format("YYYY-MM-DD HH:mm:ss");
-            },
+          return Moment(date).format("YYYY-MM-DD");
+        },
         getList() {
             this.listLoading = true;
             fetchPlatformList(this.listQuery).then(response => {
@@ -405,7 +403,7 @@ export default {
             this.tempFile.fileType=''
             this.tempFile.fileName=''
             this.listLoading = true;
-            const query={PLAT_ID:this.tempFile.PLAT_ID}
+            const query={PLAT_ID:this.filedata.platId}
             fetchPlatDetailList(query).then(response => {
                 if (response.data.code === 2000) {
                     this.listdetail = response.data.items;
@@ -424,8 +422,12 @@ export default {
             });
         },
         handleDelete(row) {
-                //this.temp = Object.assign({}, row) // copy obj
-                const query = { PLAT_ID: row.PLAT_ID }
+            this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+const query = { PLAT_ID: row.PLAT_ID }
                 updatePlatformArticle(query).then(response => {
                 this.message = response.data.message
                 this.title = '失败'
@@ -444,9 +446,18 @@ export default {
                 duration: 2000
                 })
             })
+  }).catch(() => {
+        });
+                
            },
                handleRemove(file, fileList) {
-        const query = { PLAT_DETAIL_ID: file.id }
+
+                   this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+ const query = { PLAT_DETAIL_ID: file.id }
         updatePlatDetailArticle(query).then(response => {
         this.message = response.data.message
         this.title = '失败'
@@ -464,6 +475,9 @@ export default {
           duration: 2000
         })
       })
+  }).catch(() => {
+        });
+       
         },
         handleFileDelete(row) {
                 //this.temp = Object.assign({}, row) // copy obj

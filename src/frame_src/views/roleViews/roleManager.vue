@@ -173,7 +173,12 @@ export default {
       })
     },
     deleteSelected(id) {
-      this.listUpdate.id = this.form.id
+      this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+this.listUpdate.id = this.form.id
       this.listUpdate.field = 'deletaStatus'
       updateRoleArticle(this.listUpdate).then(response => {
         this.message = '删除失败'
@@ -195,6 +200,9 @@ export default {
         })
       })
       // this.load();
+  }).catch(() => {
+        });
+      
     },
     load() { // 查询左边角色信息
       this.listQuery.sysCode = this.$store.state.user.sysCode

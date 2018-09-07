@@ -6,57 +6,62 @@
         </div>
         <el-card class="box-card">
             <el-table :key='tableKey'  :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="150px" align="center" label="申请单位">
+                <el-table-column width="150" align="center" label="申请单位" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLY_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="150px" align="center" label="项目名称">
+                <el-table-column width="150" align="center" label="项目名称" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_NAME}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="100px" align="center" label="用途类型">
+                <el-table-column width="100" align="center" label="用途类型" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.APPLY_TYPE}}</span>
+                        <!-- <span>{{scope.row.APPLY_TYPE}}</span> -->
+                        <span v-if="scope.row.USE_TYPE=='0'">开发</span>
+                        <span v-if="scope.row.USE_TYPE=='1'">生产</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="200px" align="center" label="用途说明">
+                <el-table-column width="200" align="center" label="用途说明" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.USE_CONTENT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="联系人">
+                <el-table-column width="140" align="center" label="联系人" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLY_LINKMAN}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="联系电话">
+                <el-table-column width="140" align="center" label="联系电话" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLY_PHONE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="审核状态">
+                <el-table-column width="140" align="center" label="审核状态" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.CHECK_STATE}}</span>
+                        <!-- <span>{{scope.row.CHECK_STATE}}</span> -->
+                        <span v-if="scope.row.CHECK_STATE=='0'">未审核</span>
+                        <span v-if="scope.row.CHECK_STATE=='1'">通过</span>
+                        <span v-if="scope.row.CHECK_STATE=='2'">未通过</span>
                     </template>
                 </el-table-column>
-                <el-table-column min-width="140px" align="center" label="审核原因">
+                <el-table-column min-width="140" align="center" label="审核原因" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CHECK_CONTENT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="审核人">
+                <el-table-column width="100" align="center" label="审核人" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CHECK_PERSON_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140px" align="center" label="审核时间">
+                <el-table-column width="160" align="center" label="审核时间" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.CHECK_DATE}}</span>
+                        <span>{{scope.row.CHECK_DATE|parseTime}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="220">
@@ -101,7 +106,7 @@ import {
     updateApplyArticle
 } from "@/frame_src/api/apply";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
-// import { parseTime } from '@/frame_src/utils'
+import { parseTime } from "@/frame_src/utils/index.js";
 import { getToken } from "@/frame_src/utils/auth";
 export default {
     name: "platformCheck",
@@ -156,6 +161,9 @@ export default {
             //dialogStatus: "",
         };
     },
+    filters: {
+        parseTime
+    },
     methods: {
         getList() {
             this.listLoading = true;
@@ -197,7 +205,12 @@ export default {
         },
       
         handleDelete(row) {
-               const query = { APPLY_ID: row.APPLY_ID }
+            this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+ const query = { APPLY_ID: row.APPLY_ID }
                 updateApplyArticle(query).then(response => {
                 this.message = response.data.message
                 this.title = '失败'
@@ -216,6 +229,9 @@ export default {
                 duration: 2000
                 })
             })
+  }).catch(() => {
+        });
+              
         },
         updateData(){
         var result="";

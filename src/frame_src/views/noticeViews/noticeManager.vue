@@ -12,56 +12,44 @@
         <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
 
-                <el-table-column width="100px" align="center" :label="$t('noticeTable.notice_code')">
-                    <template slot-scope="scope">
+                <el-table-column width="120" align="center" :show-overflow-tooltip="true" prop="NOTICE_CODE" :label="$t('noticeTable.notice_code')">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_CODE}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
 
-                <el-table-column min-width="290px" align="center" :label="$t('noticeTable.notice_title')">
-                    <template slot-scope="scope">
+                <el-table-column width="200" align="center" :show-overflow-tooltip="true" prop="NOTICE_TITLE" :label="$t('noticeTable.notice_title')">
+                    <!-- <template slot-scope="scope" >
                         <span>{{scope.row.NOTICE_TITLE}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
 
-                <el-table-column width="100px" align="center" :label="$t('noticeTable.creater')">
-                    <template slot-scope="scope">
+                <el-table-column width="100" align="center" :show-overflow-tooltip="true" prop="CREATER" :label="$t('noticeTable.creater')">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
 
-                <el-table-column width="150px" align="center" :label="$t('noticeTable.notice_orgname')">
-                    <template slot-scope="scope">
+                <el-table-column width="200" align="center" :show-overflow-tooltip="true" prop="NOTICE_ORGNAME" :label="$t('noticeTable.notice_orgname')">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_ORGNAME}}</span>
-                    </template>
+                    </template> -->
                 </el-table-column>
-                <el-table-column width="160px" align="center" :label="$t('noticeTable.notice_datetime')" prop="NOTICE_DATETIME" :formatter="dateFormat">
+                <el-table-column width="160" align="center" :show-overflow-tooltip="true" :label="$t('noticeTable.notice_datetime')" prop="NOTICE_DATETIME" :formatter="dateFormat">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_DATETIME}}</span>
                     </template> -->
                 </el-table-column>
-    <!-- <el-table-column
-      fixed="right"
-      label="操作"
-      width="120">
-      <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>    
-            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
-            <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
-      </template>
-    </el-table-column> -->
       <el-table-column
       align="center"
       fixed="right"
       label="操作"
-      width="300">
+      width="290">
       <template slot-scope="scope">
-     <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>    
-            <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
-            <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
-
+        <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>    
+        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
+        <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
+        <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
       </template>
     </el-table-column>
 
@@ -74,7 +62,7 @@
         <!--详情-->
         <el-dialog :visible.sync="detailVisible" :title="$t('noticeTable.detail')" width="800px">
             <el-card>
-                <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
+                <!-- <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
                     <el-form-item :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
                         <el-input v-model="temp.NOTICE_CODE" :disabled="true"></el-input>
                     </el-form-item>
@@ -85,8 +73,44 @@
                        <div v-html="temp.NOTICE_CONTENT">
                        </div>
                     </el-form-item>
-                    </el-form>
-                    </el-card>
+                    </el-form> -->
+                        <el-form :rules="rules" ref="dataForm" :model="temp">
+        <el-row type="flex">
+            <el-col :span="2"></el-col>
+            <el-col :span="20">
+                <div class="noticecontent">
+                        <div slot="header" class="header" style="text-align:center;">
+                            {{temp.NOTICE_TITLE}}
+                            <!-- <div class="back">
+                                <el-button type="primary" @click="back" size="mini">后退</el-button>
+                            </div> -->
+                        </div>
+                        <div class="content">
+                            <el-row>
+                                <el-col :span="24">
+                                    <p v-html="temp.NOTICE_CONTENT"></p>
+                                </el-col>
+                            </el-row>
+                        </div>
+                        <el-row v-if="detailList.length>0">
+                            <el-col :span="24">
+                                附件：
+                                <a :href="baseurl+item.FILE_URL" v-for="(item,key) in detailList" :key="key">{{item.FILE_NAME}}</a>
+                            </el-col>
+                        </el-row>
+                        <div class="foot">
+                            <el-row>
+                                <el-col :span="24">
+                                    作者：{{temp.CREATER}} 发布时间：{{temp.CREATE_DATE | parseTime}}
+                                </el-col>
+                            </el-row>
+                        </div>
+
+                </div>
+            </el-col>
+        </el-row>
+    </el-form>
+            </el-card>
         </el-dialog>
         <!--修改-->
         <el-dialog :visible.sync="editVisible" :title="textMap[dialogStatus]" width="800px">
@@ -168,9 +192,8 @@ import {
     updateNoticeDetailArticle
 } from "@/frame_src/api/notice";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
-// import { parseTime } from '@/frame_src/utils'
- import quillEditor from "@/frame_src/components/QuillEditor";
-
+import quillEditor from "@/frame_src/components/QuillEditor";
+import { parseTime } from "@/frame_src/utils/index.js";
 import Moment from 'moment';
 import { getToken } from "@/frame_src/utils/auth";
 export default {
@@ -180,6 +203,7 @@ export default {
     },
     data() {
         return {
+            baseurl:process.env.BASE_API,
             tableKey: 0,
             list: null,
             total: null,
@@ -227,6 +251,7 @@ export default {
             urlUpload: process.env.BASE_API + "noticedetail/uploadNoticeFile",
             urlPicUpload: process.env.BASE_API + "Values/uploadNoticePic",
             fileList: [],
+            detailList:[],
             listQuery: {
                     page: 1,
                     limit: 20,
@@ -246,7 +271,9 @@ export default {
     components: {
         quillEditor
     },
-
+    filters: {
+        parseTime
+    },
     methods: {
        
          dateFormat:function(row, column) {
@@ -292,6 +319,16 @@ export default {
             this.temp.NOTICE_CONTENT=data.editorContent
         },
         handleDetail(row) {
+            this.detailList=[];
+            const query={NOTICE_ID:row.NOTICE_ID}
+        fetchNoticeDetailList(query).then(response => {
+            if (response.data.code === 2000) {
+                this.detailList=response.data.items;
+                } 
+            else {
+                this.detailList=[];
+            }
+      })
             this.detailVisible = true;
             this.temp = Object.assign({}, row) // copy obj
         },
@@ -319,8 +356,12 @@ export default {
             this.load()
         },
     handleDelete(row) {
-        //this.temp = Object.assign({}, row) // copy obj
-        const query = { NOTICE_ID: row.NOTICE_ID }
+         this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+         const query = { NOTICE_ID: row.NOTICE_ID }
         updateNoticeArticle(query).then(response => {
         this.message = response.data.message
         this.title = '失败'
@@ -339,6 +380,12 @@ export default {
           duration: 2000
         })
       })
+        }).catch(() => {
+        //   this.$message({
+        //     type: 'info',
+        //     message: '已取消删除'
+        //   });          
+        });
     },
         createData() { // 创建
             this.$refs['dataFormInfo'].validate(valid => {
@@ -512,5 +559,27 @@ export default {
 <style lang="scss" scoped>
 .quilldiv {
     height: 200px;
+}
+.noticecontent {
+    margin-top: 20px;
+    min-height: 500px;
+    .header {
+        font-size: 25px;
+        font-weight: bold;
+    }
+    .content {
+        font-size: 18px;
+    }
+    .foot {
+        float: right;
+        font-size: 12px;
+        color: gray;
+    }
+    .back {
+        float: right;
+    }
+    .el-card {
+        font-family: "微软雅黑";
+    }
 }
 </style>
