@@ -165,8 +165,10 @@ export default {
                 }
             });
         },
-        handleDetail() {
-            this.detailVisible = true;
+        handleDetail(row) {
+            // this.detailVisible = true;
+            let id = row.POST_ID.toString();
+            this.$router.push({ path: "/newscontent/" + id });
         },
         
         handleDelete(row) {

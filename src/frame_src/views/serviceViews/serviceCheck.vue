@@ -127,7 +127,8 @@ export default {
                 page: 1,
                 limit: 10,
                 PROJECT_NAME: "",
-                APPLY_ORG_NAME:""
+                APPLY_ORG_NAME:"",
+                MANAGE_ORG_CODE:this.$store.state.user.departCode
             },
 
             temp: {
@@ -186,9 +187,10 @@ export default {
         },
 
         handleCheck(row) {
-            console.log(row.SERVICE_CODE)
+
             this.editVisible = true
             this.record.PROJECT_ID=row.PROJECT_ID
+            this.record.USER_ID=row.APPLY_USERID
             this.temp.CHECK_PERSON_ID=this.$store.state.user.userId
             this.temp.CHECK_PERSON_NAME=this.$store.state.user.name
             this.temp.PLAT_VERSION=row.PLAT_VERSION
@@ -248,7 +250,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp) // 这样就不会共用同一个对象
           const postData=[]
-          this.record.USER_ID=this.$store.state.user.userId
+          //this.record.USER_ID=this.$store.state.user.userId
           this.record.RECORD_TITLE=this.platName+"使用申请"
           this.record.RECORD_CONTENT=`
           <table border="0" cellspacing="0" cellpadding="0" style="font-family:"微软雅黑",Helvetica,Arial,sans-serif;font-size:14px " width="100%">

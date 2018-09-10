@@ -132,9 +132,18 @@
                          <el-row>
                         <el-col :span="12">
                             <el-form-item :label="$t('componentTable.manage_org_name')+':'" >
-                                <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
+                                <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
                                   style="width: 100%;" >
-                                </el-select-tree>
+                                </el-select-tree> -->
+                                 <treeselect  
+ v-model="temp.MANAGE_ORG_ID" 
+ :multiple="false" 
+ :options="menuSelectATree" 
+ :normalizer="normalizer"
+ :disable-branch-nodes="false"
+  placeholder="管理部门"
+  noResultsText="未搜索到结果"
+/>
                             </el-form-item>
                         </el-col>
                          <el-col :span="12">
@@ -230,6 +239,8 @@ import panel from '@/frame_src/components/TreeList/panel.vue'
 import selectTree from '@/frame_src/components/TreeList/selectTree.vue'
 import treeter from '@/frame_src/components/TreeList/treeter'
 import merge from 'element-ui/src/utils/merge'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {
     fetchComponentList,
     createComponentArticle,
@@ -254,10 +265,19 @@ export default {
     mixins: [treeter],
     components: {
       'imp-panel': panel,
-      'el-select-tree': selectTree
+      'el-select-tree': selectTree,
+       Treeselect
     },
     data() {
         return {
+             normalizer(node) {
+      return {
+        id: node.id,
+        label: node.ORG_SHORT_NAME,
+        // children: node.children==null?[]:node.children,
+        children: node.children
+      }
+    },
             tableKey: 0,
             list: null,
             total: null,
@@ -277,7 +297,8 @@ export default {
                 page: 1,
                 limit: 10,
                 COMPONENT_CODE: "",
-                COMPONENT_NAME:""
+                COMPONENT_NAME:"",
+                MANAGE_ORG_CODE:this.$store.state.user.departCode
             },
             listdetail: null,
             temp: {
@@ -294,7 +315,7 @@ export default {
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
-                MANAGE_ORG_ID: "",
+                MANAGE_ORG_ID: this.$store.state.user.departId,
                 MANAGE_ROLE_ID: ""
             },
             tempFile:{
@@ -370,8 +391,27 @@ export default {
                 }
             });
         },
-
+  resetTemp(){  
+              this.temp={
+             COMPONENT_ID: "",
+                COMPONENT_CODE: "",
+                COMPONENT_NAME: "",
+                COMPONENT_PUBLISHDATE: "",
+                COMPONENT_SIZE:"",
+                SOFTWARE_LANGUAGE:"",
+                SUIT_PLAT:"",
+                APPLICATION_BROWSER:"",
+                COMPONENT_CONTENT: "",
+                DOWNLOAD_TIMES:"",
+                CREATER: "",
+                MANAGE_TEL: "",
+                MANAGE_ORG_NAME: "",
+                MANAGE_ORG_ID: this.$store.state.user.departId,
+                MANAGE_ROLE_ID: ""
+            }
+        },
         handleCreate() {
+            this.resetTemp()
             this.editVisible = true;
             this.dialogStatus = "create";
             this.loadPartyA()

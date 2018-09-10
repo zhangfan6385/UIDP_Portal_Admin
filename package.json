@@ -26,6 +26,7 @@
     "url": "https://github.com/zhangfan6385/Dgyt_test1/issues"
   },
   "dependencies": {
+    "@riophae/vue-treeselect": "0.0.37",
     "axios": "0.17.1",
     "babel-polyfill": "^6.26.0",
     "clipboard": "1.7.1",

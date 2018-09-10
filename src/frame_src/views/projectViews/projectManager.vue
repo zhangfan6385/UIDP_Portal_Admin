@@ -124,16 +124,34 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item :label="$t('projectTable.project_partya')+':'" >
-                                <el-select-tree v-model="temp.PROJECT_PARTYA_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
+                                <!-- <el-select-tree v-model="temp.PROJECT_PARTYA_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
                                   placeholder="甲方单位" style="width: 100%;" >
-                                </el-select-tree>
+                                </el-select-tree> -->
+                                <treeselect  
+ v-model="temp.PROJECT_PARTYA_ID" 
+ :multiple="false" 
+ :options="menuSelectATree" 
+ :normalizer="normalizer"
+ :disable-branch-nodes="false"
+  placeholder="甲方单位"
+  noResultsText="未搜索到结果"
+/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item :label="$t('projectTable.project_partyb')+':'" prop="PROJECT_PARTYB">
-                                <el-select-tree v-model="temp.PROJECT_PARTYB_ID" :treeData.sync="menuSelectBTree" :propNames="defaultProps" clearable
+                                <!-- <el-select-tree v-model="temp.PROJECT_PARTYB_ID" :treeData.sync="menuSelectBTree" :propNames="defaultProps" clearable
                                   placeholder="乙方单位" style="width: 100%;">
-                                </el-select-tree>
+                                </el-select-tree> -->
+                                                                <treeselect  
+ v-model="temp.PROJECT_PARTYB_ID" 
+ :multiple="false" 
+ :options="menuSelectBTree" 
+ :normalizer="normalizer"
+ :disable-branch-nodes="false"
+  placeholder="乙方单位"
+  noResultsText="未搜索到结果"
+/>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -211,6 +229,8 @@ import panel from '@/frame_src/components/TreeList/panel.vue'
 import selectTree from '@/frame_src/components/TreeList/selectTree.vue'
 import treeter from '@/frame_src/components/TreeList/treeter'
 import merge from 'element-ui/src/utils/merge'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {
     fetchProjectList,
     createProjectArticle,
@@ -232,10 +252,18 @@ export default {
     mixins: [treeter],
     components: {
       'imp-panel': panel,
-      'el-select-tree': selectTree
+      'el-select-tree': selectTree,
+            Treeselect
     },
     data() {
         return {
+    normalizer(node) {
+      return {
+        id: node.id,
+        label: node.ORG_SHORT_NAME,
+        children: node.children,
+      }
+    },
             tableKey: 0,
             list: null,
             total: null,
@@ -261,10 +289,10 @@ export default {
                 PROJECT_ID: "",
                 PROJECT_CODE: "",
                 PROJECT_NAME: "",
-                PROJECT_PARTYA_ID:"",
+                PROJECT_PARTYA_ID:null,
                 PROJECT_PARTYA_CODE:"",
                 PROJECT_PARTYA_NAME: "",
-                PROJECT_PARTYB_ID: "",
+                PROJECT_PARTYB_ID: null,
                 PROJECT_PARTYB_CODE:"",
                 PROJECT_PARTYB_NAME:"",
                 PROJECT_AMOUNT: "",
@@ -313,10 +341,10 @@ export default {
                 PROJECT_ID: "",
                 PROJECT_CODE: "",
                 PROJECT_NAME: "",
-                PROJECT_PARTYA_ID:"",
+                PROJECT_PARTYA_ID:null,
                 PROJECT_PARTYA_CODE:"",
                 PROJECT_PARTYA_NAME: "",
-                PROJECT_PARTYB_ID: "",
+                PROJECT_PARTYB_ID: null,
                 PROJECT_PARTYB_CODE:"",
                 PROJECT_PARTYB_NAME:"",
                 PROJECT_AMOUNT: "",

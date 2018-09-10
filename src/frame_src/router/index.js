@@ -30,6 +30,7 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: _import('frame_src/views/login/index'), hidden: true },
   { path: '/authredirect', component: _import('frame_src/views/login/authredirect'), hidden: true },
+  { path: '/newscontent/:id', component: _import('frame_src/views/communityViews/newscontent'), hidden: true},
   { path: '/404', component: _import('frame_src/views/errorPage/404'), hidden: true },
   { path: '/401', component: _import('frame_src/views/errorPage/401'), hidden: true },
   {
