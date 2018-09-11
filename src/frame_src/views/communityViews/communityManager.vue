@@ -6,15 +6,15 @@
             <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('commonTable.search')}}</el-button>
      </div>
         <el-card class="box-card">
-            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align:left;">
               
-                <el-table-column min-width="300" align="center" label="帖子标题" :show-overflow-tooltip="true">
+                <el-table-column min-width="300"  header-align="center" label="帖子标题" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.TITLE_NAME}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="100" align="center" label="帖子类型"  :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" label="帖子类型"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <!-- <span>{{scope.row.POST_TYPE}}</span> -->
                         <span v-if="scope.row.POST_TYPE=='1'">经验分享</span>
@@ -23,33 +23,33 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column width="150" align="center" label="发帖人"  :show-overflow-tooltip="true">
+                <el-table-column width="150" header-align="center" label="发帖人"  :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.USER_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="160" align="center" label="发帖日期" :show-overflow-tooltip="true">
+                <el-table-column width="160" header-align="center" label="发帖日期" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SEND_DATE|parseTime}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140" align="center" label="所需积分" :show-overflow-tooltip="true">
+                <el-table-column width="140" header-align="center" label="所需积分" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SCORE}}</span>
                     </template>
                 </el-table-column>
                
-                 <el-table-column width="80" align="center" label="查看次数" :show-overflow-tooltip="true">
+                 <el-table-column width="80" header-align="center" label="查看次数" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.BROWSE_NUM}}</span>
                     </template>
                 </el-table-column>
-                 <el-table-column width="80" align="center" label="评论次数" :show-overflow-tooltip="true">
+                 <el-table-column width="80" header-align="center" label="评论次数" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMMONT_COUNT}}</span>
                     </template>
                 </el-table-column>
-                 <el-table-column width="80" align="center" label="收藏次数" :show-overflow-tooltip="true">
+                 <el-table-column width="80" header-align="center" label="收藏次数" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COLLECTION_COUNT}}</span>
                     </template>

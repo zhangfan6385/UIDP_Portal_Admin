@@ -8,35 +8,35 @@
             <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('commonTable.add')}}</el-button>
         </div>
  <el-card class="box-card">
-            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="100" align="center" :label="$t('serviceTable.service_code')" :show-overflow-tooltip="true">
+            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align:left;">
+                <el-table-column width="100" header-align="center" :label="$t('serviceTable.service_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SERVICE_CODE}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="150" align="center" :label="$t('serviceTable.service_name')" :show-overflow-tooltip="true">
+                <el-table-column width="150" header-align="center" :label="$t('serviceTable.service_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SERVICE_NAME}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="120" align="center"  :label="$t('serviceTable.service_publishdate')" prop="SERVICE_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                <el-table-column width="120" header-align="center"  :label="$t('serviceTable.service_publishdate')" prop="SERVICE_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="120" align="center"  :label="$t('serviceTable.service_url')" :show-overflow-tooltip="true">
+                <el-table-column width="120" header-align="center" :label="$t('serviceTable.service_url')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SERVICE_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="120" align="center"  :label="$t('serviceTable.original_url')" :show-overflow-tooltip="true">
+                <el-table-column width="120" header-align="center" :label="$t('serviceTable.original_url')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.ORIGINAL_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('serviceTable.data_format')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('serviceTable.data_format')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.DATA_FORMAT}}</span>
                     </template>
@@ -46,17 +46,17 @@
                         <span>{{scope.row.PLAT_TYPE}}</span>
                     </template>
                 </el-table-column> -->
-                 <el-table-column width="100" align="center" :label="$t('serviceTable.manage_org_name')" :show-overflow-tooltip="true">
+                 <el-table-column width="100" header-align="center" :label="$t('serviceTable.manage_org_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('serviceTable.manage_tel')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center"  :label="$t('serviceTable.manage_tel')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_TEL}}</span>
                     </template>
                 </el-table-column> 
-                <el-table-column width="100" align="center" :label="$t('serviceTable.creater')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('serviceTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
                     </template>
@@ -306,7 +306,7 @@ export default {
                 limit: 10,
                 SERVICE_CODE: "",
                 SERVICE_NAME:"",
-                MANAGE_ORG_CODE:this.$store.state.user.departCode
+                MANAGE_ORG_CODE:this.$store.state.user.departCode==""?null:this.$store.state.user.departCode
             },
             listdetail: null,
             temp: {
@@ -323,7 +323,7 @@ export default {
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
-                MANAGE_ORG_ID: this.$store.state.user.departId,
+                MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
                 MANAGE_ROLE_ID: ""
             },
             tempFile:{
@@ -414,7 +414,7 @@ export default {
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
-                MANAGE_ORG_ID: this.$store.state.user.departId,
+                MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
                 MANAGE_ROLE_ID: ""
             }
         },

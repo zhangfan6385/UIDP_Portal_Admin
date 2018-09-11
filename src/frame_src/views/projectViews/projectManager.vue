@@ -10,59 +10,59 @@
             <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('projectTable.add')}}</el-button>
         </div>
         <el-card class="box-card">
-            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
+            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align:left;">
 
-                <el-table-column width="100" align="center" :label="$t('projectTable.project_code')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('projectTable.project_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CODE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="150" align="center" :label="$t('projectTable.project_name')" :show-overflow-tooltip="true">
+                <el-table-column width="150" header-align="center" :label="$t('projectTable.project_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center" :label="$t('projectTable.project_partya')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('projectTable.project_partya')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_PARTYA_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center" :label="$t('projectTable.project_partyb')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('projectTable.project_partyb')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_PARTYB_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center" :label="$t('projectTable.project_amount')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('projectTable.project_amount')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_AMOUNT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center" :label="$t('projectTable.project_form')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('projectTable.project_form')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_FORM}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="110" align="center" :label="$t('projectTable.project_setdate')" prop="PROJECT_SETDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                <el-table-column width="110" header-align="center" :label="$t('projectTable.project_setdate')" prop="PROJECT_SETDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_SETDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="110" align="center" :label="$t('projectTable.project_contractdate')" prop="PROJECT_CONTRACTDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                <el-table-column width="110" header-align="center" :label="$t('projectTable.project_contractdate')" prop="PROJECT_CONTRACTDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CONTRACTDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="110" align="center" :label="$t('projectTable.project_checkdate')"  prop="PROJECT_CHECKDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                <el-table-column width="110" header-align="center" :label="$t('projectTable.project_checkdate')"  prop="PROJECT_CHECKDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_CHECKDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column min-width="200" align="center" :label="$t('projectTable.project_url')" :show-overflow-tooltip="true">
+                <el-table-column min-width="200" header-align="center" :label="$t('projectTable.project_url')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="80" align="center" :label="$t('projectTable.project_isonline')" :show-overflow-tooltip="true">
+                <el-table-column width="80" header-align="center" :label="$t('projectTable.project_isonline')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <!-- <span>{{scope.row.PROJECT_ISONLINE}}</span> -->
                         <span v-if="scope.row.PROJECT_ISONLINE=='0'">否</span>

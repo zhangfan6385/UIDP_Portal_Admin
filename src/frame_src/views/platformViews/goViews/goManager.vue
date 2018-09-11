@@ -8,35 +8,35 @@
             <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('commonTable.add')}}</el-button>
         </div>
  <el-card class="box-card">
-            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="150" align="center" :label="$t('platformTable.plat_code')" :show-overflow-tooltip="true">
+            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align:left;">
+                <el-table-column width="150" header-align="center" :label="$t('platformTable.plat_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_CODE}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="80" align="center" :label="$t('platformTable.plat_version')" :show-overflow-tooltip="true">
+                <el-table-column width="80" header-align="center" :label="$t('platformTable.plat_version')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_VERSION}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="160" align="center"  :label="$t('platformTable.plat_publishdate')" prop="PLAT_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                <el-table-column width="160" header-align="center" :label="$t('platformTable.plat_publishdate')" prop="PLAT_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('platformTable.plat_size')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('platformTable.plat_size')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_SIZE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('platformTable.suit_plat')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('platformTable.suit_plat')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SUIT_PLAT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('platformTable.application_browser')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center"  :label="$t('platformTable.application_browser')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLICATION_BROWSER}}</span>
                     </template>
@@ -46,17 +46,17 @@
                         <span>{{scope.row.PLAT_TYPE}}</span>
                     </template>
                 </el-table-column> -->
-                 <el-table-column width="100" align="center" :label="$t('platformTable.manage_org_name')" :show-overflow-tooltip="true">
+                 <el-table-column width="100" header-align="center" :label="$t('platformTable.manage_org_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('platformTable.manage_tel')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('platformTable.manage_tel')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_TEL}}</span>
                     </template>
                 </el-table-column> 
-                <el-table-column width="100" align="center" :label="$t('platformTable.creater')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('platformTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
                     </template>
@@ -206,8 +206,8 @@
                             </el-upload>
                         </el-col>
                         <el-col :span="15">
-                            <el-table :data="listdetail" :header-cell-class-name="tableRowClassName" border max-height="320"  style="width: 100%;">
-                                <el-table-column align="center" label="文件名称" prop="FILE_NAME">
+                            <el-table :data="listdetail" :header-cell-class-name="tableRowClassName" border max-height="320"  style="width: 100%;text-align:left;">
+                                <el-table-column header-align="center" label="文件名称" prop="FILE_NAME">
                                 <!-- <template slot-scope="scope">
                                     <span>{{scope.row.FILE_NAME}}</span>
                                 </template> -->
@@ -303,7 +303,7 @@ export default {
                 PLAT_TYPE:1,//0:C#1:go
                 PLAT_CODE: "",
                 PLAT_NAME:"",
-                MANAGE_ORG_CODE:this.$store.state.user.departCode
+                MANAGE_ORG_CODE:this.$store.state.user.departCode==""?null:this.$store.state.user.departCode
             },
             listdetail: null,
             temp: {
@@ -320,7 +320,7 @@ export default {
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
-                MANAGE_ORG_ID: this.$store.state.user.departId,
+                MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
                 MANAGE_ROLE_ID: ""
             },
             tempFile:{
@@ -411,7 +411,7 @@ export default {
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
-                MANAGE_ORG_ID: this.$store.state.user.departId,
+                MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
                 MANAGE_ROLE_ID: ""
             }
         },

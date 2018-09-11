@@ -10,7 +10,7 @@
                         <div slot="header" class="cardheader">
                             <span>{{cardcontent.TITLE_NAME}}</span>
                             <div class="operation">
-                                <el-button size="mini" @click="delcard" type="danger">
+                                <el-button size="mini" @click="delcard" type="danger" v-if="userType===1">
                                     <i class="el-icon-warning"></i>删除本帖
                                 </el-button>
                                 <!-- <el-button size="mini" @click="collection" v-if="cardcontent.COLLECTION_STATE==='0'">
@@ -30,7 +30,9 @@
                                     <img src="../../../frame_src/imgs/userHead.png">
                                     <div class="logo">
                                         <el-button type="primary" size="mini">楼主</el-button>
-                                        <br> {{cardcontent.USER_NAME}}
+                                        <div class="username">
+                                            {{cardcontent.USER_NAME}}
+                                        </div>
                                     </div>
                                 </div>
                             </el-col>
@@ -44,7 +46,7 @@
                         <div class="foot">
                             <el-row>
                                 <el-col :span="24">
-                                    发表日期：{{cardcontent.SEND_DATE}}
+                                    发表日期：{{cardcontent.SEND_DATE|parseTime}}
                                 </el-col>
                             </el-row>
                         </div>
@@ -54,10 +56,12 @@
                         <el-row>
                             <el-col :span="6">
                                 <div class="userhead">
-                                    <!-- <img src="../../../app_src/imgs/userHead.png"> -->
+                                    <img src="../../../frame_src/imgs/userHead.png">
                                     <div class="logo">
                                         <el-button type="primary" size="mini">{{key+2}}楼</el-button>
-                                        <br> {{commit.USER_NAME}}
+                                        <div class="username">
+                                            {{commit.USER_NAME}}
+                                        </div>
                                     </div>
                                 </div>
                             </el-col>
@@ -71,8 +75,8 @@
                         <div class="foot">
                             <el-row>
                                 <el-col :span="24">
-                                    发表日期：{{commit.CREATE_DATE}}
-                                    <el-button type="text" @click="delcommit(commit)">删除</el-button>
+                                    发表日期：{{commit.CREATE_DATE|parseTime}}
+                                    <el-button type="text" @click="delcommit(commit)" v-if="userType===1">删除</el-button>
                                 </el-col>
                             </el-row>
                         </div>
@@ -92,13 +96,13 @@
                         <el-form ref="commit" :model="commit" label-width="80px" id="commit">
                             <el-form-item :label="type" :rules="rules.content">
                                 <div class="editor">
-                                    <quill-editor v-model="commit.CONTENT" ref="myQuillEditor" :options="commit.editorOption" @ready="onEditorReady($event)" height="500px"></quill-editor>
+                                    <!-- <quill-editor v-model="commit.CONTENT" ref="myQuillEditor" :options="commit.editorOption" @ready="onEditorReady($event)" height="500px"></quill-editor> -->
+                                    <quillEditor @listenToEditorChange="EditorChange" v-bind:content="commit.CONTENT" v-bind:apiUrl="urlPicUpload">
+                                    </quillEditor>
                                 </div>
-
                                 <el-form-item>
                                     <el-button type="primary" @click="submit">确认提交</el-button>
                                 </el-form-item>
-
                             </el-form-item>
                         </el-form>
                     </el-card>
@@ -119,12 +123,16 @@ import {
     delcard,
     updateLookTimes
 } from "@/frame_src/api/communityDetail";
-import { quillEditor } from "vue-quill-editor";
+//import { quillEditor } from "vue-quill-editor";
+import { parseTime } from "@/frame_src/utils/index.js";
+import quillEditor from "@/frame_src/components/QuillEditor";
 export default {
     data() {
         return {
+            urlPicUpload: process.env.BASE_API + "home/uploadCommunityPic",
             cardcontent: {},
             type: "",
+            userType: "",
             queryList: {
                 POST_ID: null,
                 USER_ID: null
@@ -158,7 +166,13 @@ export default {
             }
         };
     },
+     components: {
+        quillEditor
+    },
     methods: {
+        EditorChange(data){
+            this.commit.CONTENT=data.editorContent
+        },
         //获取帖子内容
         getCardDetail() {
             this.queryList.POST_ID = this.$route.params.id;
@@ -214,37 +228,52 @@ export default {
             if (this.$store.state.user.userId === null) {
                 this.$store.state.user.dialogLoginVisible = true;
             } else {
-                this.createList.COLLECTION_PERSON_ID = this.$store.state.user.userId;
-                this.createList.POST_ID = this.cardcontent.POST_ID;
-                delArticle(this.createList).then(response => {
-                    if (response.data.code === 2000) {
-                        this.$notify({
-                            position: "bottom-right",
-                            title: "取消收藏成功",
-                            message: response.data.message,
-                            type: "success",
-                            duration: 2000
-                        });
-                    } else {
-                        this.$notify({
-                            position: "bottom-right",
-                            title: "失败",
-                            message: response.data.message,
-                            type: "error",
-                            duration: 2000
-                        });
-                    }
+                this.$confirm("您确定取消收藏本帖吗?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    this.createList.COLLECTION_PERSON_ID = this.$store.state.user.userId;
+                    this.createList.POST_ID = this.cardcontent.POST_ID;
+                    delArticle(this.createList).then(response => {
+                        if (response.data.code === 2000) {
+                            this.$notify({
+                                position: "bottom-right",
+                                title: "取消收藏成功",
+                                message: response.data.message,
+                                type: "success",
+                                duration: 2000
+                            });
+                        } else {
+                            this.$notify({
+                                position: "bottom-right",
+                                title: "失败",
+                                message: response.data.message,
+                                type: "error",
+                                duration: 2000
+                            });
+                        }
+                    });
                 });
             }
         },
         onEditorReady(editor) {},
+          resetTemp(){  
+             this.commit={
+                POST_ID: "",
+                CONTENT: "",
+                FROM_UID: "", //当前登录人ID
+                //TO_UID:'',//主贴ID
+                IS_RIGHT_ANSWER: 0,
+                BONUS_POINTS: 0
+            }
+        },
         submit() {
             if (this.$store.state.user.userId === null) {
-                dialogLoginVisible = true;
+                this.$store.state.user.dialogLoginVisible = true;
             } else {
                 this.commit.POST_ID = this.cardcontent.POST_ID;
                 this.commit.FROM_UID = this.$store.state.user.userId;
-                //this.commit.FROM_UID = 1;
                 this.commit.TO_UID = this.cardcontent.USER_ID;
                 commit(this.commit).then(response => {
                     if (response.data.code === 2000) {
@@ -255,7 +284,9 @@ export default {
                             type: "success",
                             duration: 2000
                         });
+                        this.commit.CONTENT = "";
                         this.getCardDetail();
+                        this.resetTemp();
                     } else {
                         this.$notify({
                             position: "bottom-right",
@@ -275,59 +306,95 @@ export default {
             this.$router.go(-1);
         },
         delcard() {
-            this.delCardList.POST_ID = this.cardcontent.POST_ID;
-            delcard(this.delCardList).then(response => {
-                if (response.data.code === 2000) {
-                    this.$notify({
-                        position: "bottom-right",
-                        title: "删帖成功",
-                        message: response.data.message,
-                        type: "success",
-                        duration: 2000
-                    });
-                    this.$router.push({ path: "/community/main/index" });
-                } else {
-                    this.$notify({
-                        position: "bottom-right",
-                        title: "删帖失败",
-                        message: response.data.message,
-                        type: "error",
-                        duration: 2000
-                    });
-                }
+            this.$confirm("您确定删除本帖吗?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(() => {
+                this.delCardList.POST_ID = this.cardcontent.POST_ID;
+                delcard(this.delCardList).then(response => {
+                    if (response.data.code === 2000) {
+                        this.$notify({
+                            position: "bottom-right",
+                            title: "删帖成功",
+                            message: response.data.message,
+                            type: "success",
+                            duration: 2000
+                        });
+                        this.$router.push({ path: "/community/main/index" });
+                    } else {
+                        this.$notify({
+                            position: "bottom-right",
+                            title: "删帖失败",
+                            message: response.data.message,
+                            type: "error",
+                            duration: 2000
+                        });
+                    }
+                });
             });
         },
         delcommit(data) {
-            this.delComentList.COMMENT_ID = data.COMMENT_ID;
-            delcommit(this.delComentList).then(response => {
-                if (response.data.code === 2000) {
-                    this.$notify({
-                        position: "bottom-right",
-                        title: "删除成功",
-                        message: response.data.message,
-                        type: "success",
-                        duration: 2000
-                    });
-                    this.getCardDetail();
-                } else {
-                    this.$notify({
-                        position: "bottom-right",
-                        title: "失败",
-                        message: response.data.message,
-                        type: "error",
-                        duration: 2000
-                    });
-                }
+            this.$confirm("您确定删除本条评论吗?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(() => {
+                this.delComentList.COMMENT_ID = data.COMMENT_ID;
+                delcommit(this.delComentList).then(response => {
+                    if (response.data.code === 2000) {
+                        this.$notify({
+                            position: "bottom-right",
+                            title: "删除成功",
+                            message: response.data.message,
+                            type: "success",
+                            duration: 2000
+                        });
+                        this.getCardDetail();
+                    } else {
+                        this.$notify({
+                            position: "bottom-right",
+                            title: "失败",
+                            message: response.data.message,
+                            type: "error",
+                            duration: 2000
+                        });
+                    }
+                });
             });
         },
         update() {
             this.delCardList.POST_ID = this.$route.params.id;
-            updateLookTimes(this.delCardList)
+            updateLookTimes(this.delCardList);
+        },
+        getUserType() {
+            this.userType = this.$store.state.user.roleLv;
         }
     },
+    filters: {
+        parseTime
+    },
     computed: {
-        editor() {
-            return this.$refs.myQuillEditor.quill;
+        // editor() {
+        //     return this.$refs.myQuillEditor.quill;
+        // },
+        getCurrentUserId() {
+            return this.$store.state.user.userId;
+        },
+        getCurrentRoleLv(){
+            return this.$store.state.user.roleLevel
+        }
+    },
+    watch: {
+        getCurrentUserId(data) {
+            if (data != null) {
+                this.getCardDetail();
+            }
+        },
+        getCurrentRoleLv(data){
+            if(data!=null){
+                this.userType=data
+            }
         }
     },
     components: {
@@ -336,6 +403,7 @@ export default {
     mounted() {
         this.getCardDetail();
         this.update();
+        this.getUserType();
     }
 };
 </script>
@@ -375,6 +443,12 @@ export default {
             margin-top: 20px;
         }
     }
+    .username{
+        margin-top: 20px;
+        font-weight: bold;
+        font-family: '微软雅黑';
+        font-size: 15px;
+    }
     .commit {
         margin-top: 35px;
     }
@@ -406,6 +480,9 @@ export default {
     }
     .post {
         margin-top: 20px;
+    }
+    .editor {
+        min-height: 300px;
     }
 }
 </style>
