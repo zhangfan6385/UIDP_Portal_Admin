@@ -24,7 +24,7 @@ export function updateComponentArticle(data) { // -删除
   return request({
     url: '/component/updateComponentArticle',
     method: 'post',
-    params: data
+    data
   })
 }
 

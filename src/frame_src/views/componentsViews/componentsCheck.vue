@@ -128,7 +128,7 @@ export default {
                 limit: 10,
                 PROJECT_NAME: "",
                 APPLY_ORG_NAME:"",
-                MANAGE_ORG_CODE:this.$store.state.user.departCode
+                MANAGE_ORG_CODE:this.$store.state.user.departCode==""?null:this.$store.state.user.departCode
             },
 
             temp: {

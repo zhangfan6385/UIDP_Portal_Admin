@@ -24,7 +24,7 @@ export function updateServiceArticle(data) { // -删除
   return request({
     url: '/service/updateServiceArticle',
     method: 'post',
-    params: data
+    data
   })
 }
   export function fetchServiceDetailList(query) { 

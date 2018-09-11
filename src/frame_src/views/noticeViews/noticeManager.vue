@@ -95,7 +95,7 @@
                         <el-row v-if="detailList.length>0">
                             <el-col :span="24">
                                 附件：
-                                <a :href="baseurl+item.FILE_URL" v-for="(item,key) in detailList" :key="key">{{item.FILE_NAME}}</a>
+                                <a target="blank" :href="baseurl+item.FILE_URL" v-for="(item,key) in detailList" :key="key">{{item.FILE_NAME}}</a>
                             </el-col>
                         </el-row>
                         <div class="foot">

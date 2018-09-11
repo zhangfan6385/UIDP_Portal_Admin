@@ -298,7 +298,7 @@ export default {
                 limit: 10,
                 COMPONENT_CODE: "",
                 COMPONENT_NAME:"",
-                MANAGE_ORG_CODE:this.$store.state.user.departCode
+                MANAGE_ORG_CODE:this.$store.state.user.departCode==""?null:this.$store.state.user.departCode
             },
             listdetail: null,
             temp: {
@@ -315,7 +315,7 @@ export default {
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
-                MANAGE_ORG_ID: this.$store.state.user.departId,
+                MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
                 MANAGE_ROLE_ID: ""
             },
             tempFile:{
@@ -406,7 +406,7 @@ export default {
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
-                MANAGE_ORG_ID: this.$store.state.user.departId,
+                MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
                 MANAGE_ROLE_ID: ""
             }
         },
