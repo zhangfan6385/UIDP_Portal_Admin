@@ -327,7 +327,7 @@ export default {
                 SUIT_PLAT:"",
                 APPLICATION_BROWSER:"",
                 PLAT_RUNREQUIRE: "",
-                PLAT_TYPE:"",
+                PLAT_TYPE:1,
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
@@ -435,7 +435,7 @@ export default {
                 SUIT_PLAT:"",
                 APPLICATION_BROWSER:"",
                 PLAT_RUNREQUIRE: "",
-                PLAT_TYPE:"",
+                PLAT_TYPE:1,
                 CREATER: "",
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
@@ -611,7 +611,7 @@ const query = { PLAT_ID: row.PLAT_ID }
                 // this.temp.NOTICE_ORGNAME=this.$store.state.user.departName
                 //this.temp.MANAGE_ROLE_ID=this.$store.state.user.roles
                 this.temp.CREATER=this.$store.state.user.name
-                this.temp.PLAT_TYPE=0
+                this.temp.PLAT_TYPE=1
                 createPlatformArticle(this.temp).then(response => {
                     var message = response.data.message
                     var title = '失败'
