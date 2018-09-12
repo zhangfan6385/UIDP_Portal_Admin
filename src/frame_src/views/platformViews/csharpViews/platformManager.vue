@@ -8,35 +8,39 @@
             <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('commonTable.add')}}</el-button>
         </div>
  <el-card class="box-card">
-            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align:left;">
-                <el-table-column width="150px" header-align="center" :label="$t('platformTable.plat_code')" :show-overflow-tooltip="true">
+            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
+                <el-table-column width="150px" align="center" :label="$t('platformTable.plat_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_CODE}}</span>
                     </template>
                 </el-table-column>
-
-                <el-table-column width="80px" header-align="center" :label="$t('platformTable.plat_version')" :show-overflow-tooltip="true">
+                <el-table-column width="100px" align="center" :label="$t('platformTable.plat_name')" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.PLAT_NAME}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column width="80px" align="center" :label="$t('platformTable.plat_version')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_VERSION}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column width="160px" header-align="center"  :label="$t('platformTable.plat_publishdate')" prop="PLAT_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                <el-table-column width="160px" align="center"  :label="$t('platformTable.plat_publishdate')" prop="PLAT_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="100px" header-align="center"  :label="$t('platformTable.plat_size')" :show-overflow-tooltip="true">
+                <el-table-column width="100px" align="center"  :label="$t('platformTable.plat_size')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PLAT_SIZE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" header-align="center"  :label="$t('platformTable.suit_plat')" :show-overflow-tooltip="true">
+                <el-table-column width="100px" align="center"  :label="$t('platformTable.suit_plat')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SUIT_PLAT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" header-align="center"  :label="$t('platformTable.application_browser')" :show-overflow-tooltip="true">
+                <el-table-column width="100px" align="center"  :label="$t('platformTable.application_browser')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLICATION_BROWSER}}</span>
                     </template>
@@ -46,17 +50,17 @@
                         <span>{{scope.row.PLAT_TYPE}}</span>
                     </template>
                 </el-table-column> -->
-                 <el-table-column width="100px" header-align="center" :label="$t('platformTable.manage_org_name')" :show-overflow-tooltip="true">
+                 <el-table-column width="100px" align="center" :label="$t('platformTable.manage_org_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100px" header-align="center" :label="$t('platformTable.manage_tel')" :show-overflow-tooltip="true">
+                <el-table-column width="100px" align="center" :label="$t('platformTable.manage_tel')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_TEL}}</span>
                     </template>
                 </el-table-column> 
-                <el-table-column width="100px" header-align="center" :label="$t('platformTable.creater')" :show-overflow-tooltip="true">
+                <el-table-column width="100px" align="center" :label="$t('platformTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
                     </template>
@@ -137,7 +141,7 @@
                       </el-row>
                          <el-row>
                         <el-col :span="12">
-                            <el-form-item :label="$t('platformTable.manage_org_name')+':'" >
+                            <el-form-item :label="$t('platformTable.manage_org_name')+':'" prop="MANAGE_ORG_ID">
                                 <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
                                   style="width: 100%;" >
                                 </el-select-tree> -->
@@ -183,7 +187,7 @@
                     <el-row style="height:100%">
                         <el-col :span="9" style="height:100%">
                             <el-form-item label="文件类型：" prop="FILE_TYPE"  size="small" label-width="90px" style="margin-right:10px">
-                                <el-select v-model="tempFile.fileType" placeholder="请选择" style="width: 100%;">
+                                <el-select v-model="tempFile.fileType" placeholder="请选择" style="width: 100%;" @change="changeType">
                                     <el-option label="程序包" value="0"></el-option>
                                     <el-option label="文档" value="1"></el-option>
                                 </el-select>
@@ -193,16 +197,19 @@
                             </el-form-item>
                             <el-upload 
                             multiple
+                            :limit="limitNum"
                             :action="urlUpload"
+                            :disabled="isUse"
                             :data="filedata"
                             :on-remove="handleRemove"
                             :on-success="handleSuccess"
+                            :on-exceed="handleExceed"
                             :headers="headers"
                             class="upload-demo" 
                             ref="upload"
                             :auto-upload="false"
                             :file-list="fileList">
-                                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                                <el-button slot="trigger" size="small" type="primary" @click="selectFile">选取文件</el-button>
                                 <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
                             </el-upload>
                         </el-col>
@@ -276,7 +283,7 @@ export default {
     },
     data() {
         return {
-                normalizer(node) {
+    normalizer(node) {
       return {
         id: node.id,
         label: node.ORG_SHORT_NAME,
@@ -284,6 +291,9 @@ export default {
       }
     },
             tableKey: 0,
+            limitNum:10,
+            hasZip:false,
+            isUse:true,
             list: null,
             total: null,
             listLoading: true,
@@ -311,7 +321,7 @@ export default {
                 PLAT_ID: "",
                 PLAT_CODE: "",
                 PLAT_VERSION: "",
-                PLAT_PUBLISHDATE: "",
+                PLAT_PUBLISHDATE: null,
                 PLAT_SIZE:"",
                 SOFTWARE_LANGUAGE:"",
                 SUIT_PLAT:"",
@@ -322,7 +332,7 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: ""
+                MANAGE_ROLE_ID: null
             },
             tempFile:{
                 fileName:"",
@@ -337,13 +347,19 @@ export default {
             uploadVisible: false,
             downloadLoading: false,
             rules: {
-                FLAG: [
-                    {
-                        required: true,
-                        message: "FLAG is required",
-                        trigger: "change"
-                    }
-                ]
+            PLAT_NAME: [
+          { required: true, message: '平台名称不能为空', trigger: 'change' }
+        ],
+            PLAT_VERSION: [
+          { required: true, message: '平台版本不能为空', trigger: 'change' }
+        ],
+         PLAT_PUBLISHDATE: [
+          { required: true, message: '发布时间不能为空', trigger: 'change' }
+        ],
+         MANAGE_ORG_ID: [
+          { required: true, message: '管理部门不能为空', trigger: 'change' }
+        ]
+        
             },
             dialogStatus: "",
             urlUpload: process.env.BASE_API + "platdetail/uploadPlatFile",
@@ -378,6 +394,17 @@ export default {
           }
           return Moment(date).format("YYYY-MM-DD");
         },
+        changeType:function(target)
+        {
+            if(target==0)
+            {
+                this.limitNum=1
+            }
+            else{
+                this.limitNum=10
+            }
+            this.isUse=false
+        },
         getList() {
             this.listLoading = true;
             fetchPlatformList(this.listQuery).then(response => {
@@ -402,7 +429,7 @@ export default {
                 PLAT_ID: "",
                 PLAT_CODE: "",
                 PLAT_VERSION: "",
-                PLAT_PUBLISHDATE: "",
+                PLAT_PUBLISHDATE: null,
                 PLAT_SIZE:"",
                 SOFTWARE_LANGUAGE:"",
                 SUIT_PLAT:"",
@@ -413,7 +440,7 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: ""
+                MANAGE_ROLE_ID: null
             }
         },
         handleCreate() {
@@ -421,6 +448,9 @@ export default {
             this.editVisible = true;
             this.dialogStatus = "create";
             this.loadPartyA()
+            this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+            })
         },
         handleUpdate(row) {
             this.editVisible = true;
@@ -446,6 +476,17 @@ export default {
             fetchPlatDetailList(query).then(response => {
                 if (response.data.code === 2000) {
                     this.listdetail = response.data.items;
+                    if(this.listdetail.length>0){
+                         if(this.listdetail[0].FILE_TYPE==0){
+                             this.hasZip=true
+                         }
+                         else{
+                           this.hasZip=false  
+                         }
+                    }
+                    else{
+                       this.hasZip=false 
+                    }
                     // this.total = response.data.total;
                     this.listLoading = false;
                 } else {
@@ -459,6 +500,16 @@ export default {
                     });
                 }
             });
+        },
+        selectFile(){
+            if(this.tempFile.fileType=="")
+            {
+                 this.$message.warning(`请选择文件类型`); 
+                  this.isUse=true;
+            }
+            else{
+                this.isUse=false
+            }
         },
         handleDelete(row) {
             this.$confirm('确认删除记录吗?', '提示', {
@@ -489,37 +540,46 @@ const query = { PLAT_ID: row.PLAT_ID }
         });
                 
            },
+            
+            handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 ${this.limitNum}个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
                handleRemove(file, fileList) {
 
-                   this.$confirm('确认删除记录吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
- const query = { PLAT_DETAIL_ID: file.id }
-        updatePlatDetailArticle(query).then(response => {
-        this.message = response.data.message
-        this.title = '失败'
-        this.type = 'error'
-        if (response.data.code === 2000) {
+        //            this.$confirm('确认删除记录吗?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+//  const query = { PLAT_DETAIL_ID: file.id }
+//         updatePlatDetailArticle(query).then(response => {
+//         this.message = response.data.message
+//         this.title = '失败'
+//         this.type = 'error'
+//         if (response.data.code === 2000) {
 
-          this.load()
-          this.title = '成功'
-          this.type = 'success'
-        }
-        this.$notify({   position: 'bottom-right',
-          title: this.title,
-          message: this.message,
-          type: this.type,
-          duration: 2000
-        })
-      })
-  }).catch(() => {
-        });
+//           this.load()
+//           this.title = '成功'
+//           this.type = 'success'
+//         }
+//         this.$notify({   position: 'bottom-right',
+//           title: this.title,
+//           message: this.message,
+//           type: this.type,
+//           duration: 2000
+//         })
+//       })
+//   }).catch(() => {
+//         });
        
         },
         handleFileDelete(row) {
                 //this.temp = Object.assign({}, row) // copy obj
+        this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
                 const query = { PLAT_DETAIL_ID: row.PLAT_DETAIL_ID }
                 updatePlatDetailArticle(query).then(response => {
                 this.message = response.data.message
@@ -539,6 +599,8 @@ const query = { PLAT_ID: row.PLAT_ID }
                 // duration: 2000
                 // })
             })
+              }).catch(() => {
+        });
            },
         createData() { // 创建
             this.$refs['dataForm'].validate(valid => {
@@ -547,7 +609,7 @@ const query = { PLAT_ID: row.PLAT_ID }
                 // this.temp.author = "ppp" //当前登陆人
                 // this.temp.NOTICE_ORGID=this.$store.state.user.departId
                 // this.temp.NOTICE_ORGNAME=this.$store.state.user.departName
-                this.temp.MANAGE_ROLE_ID=this.$store.state.user.roles
+                //this.temp.MANAGE_ROLE_ID=this.$store.state.user.roles
                 this.temp.CREATER=this.$store.state.user.name
                 this.temp.PLAT_TYPE=0
                 createPlatformArticle(this.temp).then(response => {
@@ -625,7 +687,17 @@ const query = { PLAT_ID: row.PLAT_ID }
         submitUpload() {
             this.filedata.fileType=this.tempFile.fileType
             this.filedata.fileName=this.tempFile.fileName
+            if(this.filedata.fileType=="0")
+            {
+            if(!this.hasZip){
             this.$refs.upload.submit();
+            }
+            else{
+               this.$message.warning(`当前已存在程序包，无法上传`); 
+               this.fileList=[]
+            }
+            }
+            else{this.$refs.upload.submit();}
         },
          handleSuccess(res, file, fileList) {
             var message = res.message;

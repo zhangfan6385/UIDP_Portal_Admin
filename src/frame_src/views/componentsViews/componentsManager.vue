@@ -15,7 +15,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column width="150" align="center" :label="$t('componentTable.component_name')" :show-overflow-tooltip="true">
+                <el-table-column width="150" header-align="center" style="text-align:left;" :label="$t('componentTable.component_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMPONENT_NAME}}</span>
                     </template>
@@ -131,7 +131,7 @@
                       </el-row>
                          <el-row>
                         <el-col :span="12">
-                            <el-form-item :label="$t('componentTable.manage_org_name')+':'" >
+                            <el-form-item :label="$t('componentTable.manage_org_name')+':'" prop="MANAGE_ORG_ID">
                                 <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
                                   style="width: 100%;" >
                                 </el-select-tree> -->
@@ -305,7 +305,7 @@ export default {
                 COMPONENT_ID: "",
                 COMPONENT_CODE: "",
                 COMPONENT_NAME: "",
-                COMPONENT_PUBLISHDATE: "",
+                COMPONENT_PUBLISHDATE: null,
                 COMPONENT_SIZE:"",
                 SOFTWARE_LANGUAGE:"",
                 SUIT_PLAT:"",
@@ -316,7 +316,7 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: ""
+                MANAGE_ROLE_ID: null
             },
             tempFile:{
                 fileName:"",
@@ -331,13 +331,19 @@ export default {
             uploadVisible: false,
             downloadLoading: false,
             rules: {
-                FLAG: [
-                    {
-                        required: true,
-                        message: "FLAG is required",
-                        trigger: "change"
-                    }
-                ]
+            COMPONENT_NAME: [
+          { required: true, message: '组件名称不能为空', trigger: 'change' }
+        ],
+        //     PLAT_VERSION: [
+        //   { required: true, message: '平台版本不能为空', trigger: 'change' }
+        // ],
+         COMPONENT_PUBLISHDATE: [
+          { required: true, message: '发布时间不能为空', trigger: 'change' }
+        ],
+         MANAGE_ORG_ID: [
+          { required: true, message: '管理部门不能为空', trigger: 'change' }
+        ]
+        
             },
             dialogStatus: "",
             urlUpload: process.env.BASE_API + "componentdetail/uploadComponentFile",
@@ -396,7 +402,7 @@ export default {
              COMPONENT_ID: "",
                 COMPONENT_CODE: "",
                 COMPONENT_NAME: "",
-                COMPONENT_PUBLISHDATE: "",
+                COMPONENT_PUBLISHDATE: null,
                 COMPONENT_SIZE:"",
                 SOFTWARE_LANGUAGE:"",
                 SUIT_PLAT:"",
@@ -407,7 +413,7 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: ""
+                MANAGE_ROLE_ID: null
             }
         },
         handleCreate() {
@@ -415,6 +421,9 @@ export default {
             this.editVisible = true;
             this.dialogStatus = "create";
             this.loadPartyA()
+            this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+            })
         },
         handleUpdate(row) {
             this.editVisible = true;

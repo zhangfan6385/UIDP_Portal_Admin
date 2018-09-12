@@ -186,8 +186,8 @@
                         <el-col :span="9" style="height:100%">
                             <el-form-item label="文件类型：" prop="FILE_TYPE"  size="small" label-width="90px" style="margin-right:10px">
                                 <el-select v-model="tempFile.fileType" placeholder="请选择" style="width: 100%;">
-                                    <el-option label="程序包" value="0"></el-option>
-                                    <el-option label="文档" value="1"></el-option>
+                                    <!-- <el-option label="程序包" value="0"></el-option> -->
+                                    <el-option label="文档" value="1" selected></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="文件名称：" prop="FILE_NAME" label-width="90px" style="margin-right:10px">
@@ -328,7 +328,7 @@ export default {
             },
             tempFile:{
                 fileName:"",
-                fileType:"",
+                fileType:"1",
             },
             textMap: {
                 update: "修改服务信息",
@@ -352,7 +352,7 @@ export default {
             filedata:{
                 serviceId:"",
                 creater:"",
-                fileType:"",
+                fileType:"1",
                 fileName:""
             },
         };
@@ -441,7 +441,7 @@ export default {
         },
         load(){
             this.fileList=[]
-            this.tempFile.fileType=''
+            this.tempFile.fileType='1'
             this.tempFile.fileName=''
             this.listLoading = true;
             const query={SERVICE_ID:this.filedata.serviceId}

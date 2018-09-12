@@ -10,32 +10,32 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('noticeTable.add')}}</el-button>
         </div>
         <el-card class="box-card">
-            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align:left;">
+            <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
 
-                <el-table-column width="120" header-align="center" :show-overflow-tooltip="true" prop="NOTICE_CODE" :label="$t('noticeTable.notice_code')">
+                <el-table-column width="120" align="center" :show-overflow-tooltip="true" prop="NOTICE_CODE" :label="$t('noticeTable.notice_code')">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_CODE}}</span>
                     </template> -->
                 </el-table-column>
 
-                <el-table-column width="200" header-align="center" :show-overflow-tooltip="true" prop="NOTICE_TITLE" :label="$t('noticeTable.notice_title')">
+                <el-table-column width="200" header-align="center" style="text-align:left;" :show-overflow-tooltip="true" prop="NOTICE_TITLE" :label="$t('noticeTable.notice_title')">
                     <!-- <template slot-scope="scope" >
                         <span>{{scope.row.NOTICE_TITLE}}</span>
                     </template> -->
                 </el-table-column>
 
-                <el-table-column width="100" header-align="center" :show-overflow-tooltip="true" prop="CREATER" :label="$t('noticeTable.creater')">
+                <el-table-column width="100" align="center" :show-overflow-tooltip="true" prop="CREATER" :label="$t('noticeTable.creater')">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
                     </template> -->
                 </el-table-column>
 
-                <el-table-column width="200" header-align="center" :show-overflow-tooltip="true" prop="NOTICE_ORGNAME" :label="$t('noticeTable.notice_orgname')">
+                <el-table-column width="200" align="center" :show-overflow-tooltip="true" prop="NOTICE_ORGNAME" :label="$t('noticeTable.notice_orgname')">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_ORGNAME}}</span>
                     </template> -->
                 </el-table-column>
-                <el-table-column width="160" header-align="center" :show-overflow-tooltip="true" :label="$t('noticeTable.notice_datetime')" prop="NOTICE_DATETIME" :formatter="dateFormat">
+                <el-table-column width="160" align="center" :show-overflow-tooltip="true" :label="$t('noticeTable.notice_datetime')" prop="NOTICE_DATETIME" :formatter="dateFormat">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.NOTICE_DATETIME}}</span>
                     </template> -->
@@ -239,13 +239,12 @@ export default {
             uploadVisible: false,
             downloadLoading: false,
             rules: {
-                FLAG: [
-                    {
-                        required: true,
-                        message: "FLAG is required",
-                        trigger: "change"
-                    }
-                ]
+            NOTICE_TITLE: [
+          { required: true, message: '公告标题不能为空', trigger: 'change' }
+        ],
+            NOTICE_DATETIME: [
+          { required: true, message: '发布时间不能为空', trigger: 'change' }
+        ],
             },
             dialogStatus:'',
             urlUpload: process.env.BASE_API + "noticedetail/uploadNoticeFile",

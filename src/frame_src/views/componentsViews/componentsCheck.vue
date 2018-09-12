@@ -12,7 +12,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column width="150" align="center" label="项目名称" :show-overflow-tooltip="true">
+                <el-table-column width="150" header-align="center" style="text-align:left;" label="项目名称" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.PROJECT_NAME}}</span>
                     </template>
