@@ -209,7 +209,7 @@ export default {
         this.list = response.data.itemtype;
         this.radio = this.list[0].key;
         this.code = this.list[0].user_code;
-
+        document.title=this.sysmessage;
       });
     }
   },
