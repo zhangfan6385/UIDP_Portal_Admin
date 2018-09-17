@@ -6,9 +6,9 @@
         </div>
         <el-card class="box-card">
             <el-table :key='tableKey'  :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="100" align="center" label="申请单位" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" style="text-align:left;" label="组件名称" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.APPLY_ORG_NAME}}</span>
+                        <span>{{scope.row.COMPONENT_NAME}}</span>
                     </template>
                 </el-table-column>
 
@@ -57,6 +57,11 @@
                 <el-table-column width="100" align="center" label="联系人" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.APPLY_LINKMAN}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column width="100" align="center" label="申请单位" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.APPLY_ORG_NAME}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column width="100" align="center" label="联系电话" :show-overflow-tooltip="true">

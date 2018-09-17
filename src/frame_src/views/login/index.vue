@@ -348,7 +348,7 @@ $light_gray: #eee;
     margin-left: 150px;
     margin-bottom: 35px;
     color: gray;
-    font-family: "华文楷体";
+    font-family: "微软雅黑";
     font-size: 13px;
   }
 }
