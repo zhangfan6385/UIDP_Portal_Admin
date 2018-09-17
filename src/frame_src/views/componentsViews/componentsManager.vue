@@ -96,7 +96,7 @@
                        <el-row>
                         <el-col :span="12">
                             <el-form-item label="下载次数：" prop="DOWNLOAD_TIMES">
-                        <el-input v-model="temp.DOWNLOAD_TIMES"></el-input>
+                        <el-input   v-model="temp.DOWNLOAD_TIMES"></el-input>
                     </el-form-item>
                         </el-col>
                          <el-col :span="12">
@@ -342,8 +342,22 @@ export default {
         ],
          MANAGE_ORG_ID: [
           { required: true, message: '管理部门不能为空', trigger: 'change' }
-        ]
-        
+        ],
+        DOWNLOAD_TIMES:[{
+     validator:(rule,value,callback)=>{
+         if(value != ""){
+             if((/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value) == false){
+                 callback(new Error("请填写大于0的数字"));
+             }else{
+                 callback();
+             }
+         }else{
+             callback();
+         }
+
+     },
+     trigger:'change'
+ }]
             },
             dialogStatus: "",
             urlUpload: process.env.BASE_API + "componentdetail/uploadComponentFile",

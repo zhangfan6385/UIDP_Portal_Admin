@@ -339,13 +339,46 @@ export default {
             uploadVisible: false,
             downloadLoading: false,
             rules: {
+                  SERVICE_NAME: [
+          { required: true, message: '服务名称不能为空', trigger: 'change' }
+        ],
+        //     PLAT_VERSION: [
+        //   { required: true, message: '平台版本不能为空', trigger: 'change' }
+        // ],
+         SERVICE_PUBLISHDATE: [
+          { required: true, message: '发布时间不能为空', trigger: 'change' }
+        ],
+         MANAGE_ORG_ID: [
+          { required: true, message: '管理部门不能为空', trigger: 'change' }
+        ],
+          ORIGINAL_URL: [
+          { required: true, message: '原始地址不能为空', trigger: 'change' }
+        ],
+           SERVICE_URL: [
+          { required: true, message: '服务地址不能为空', trigger: 'change' }
+        ],
                 FLAG: [
                     {
                         required: true,
                         message: "FLAG is required",
                         trigger: "change"
                     }
-                ]
+                ],
+            SERVICE_TIMES:[{
+           validator:(rule,value,callback)=>{
+         if(value != ""){
+             if((/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value) == false){
+                 callback(new Error("请填写大于0的数字"));
+             }else{
+                 callback();
+             }
+         }else{
+             callback();
+         }
+
+     },
+     trigger:'change'
+            }]
             },
             dialogStatus: "",
             urlUpload: process.env.BASE_API + "servicedetail/uploadServiceFile",

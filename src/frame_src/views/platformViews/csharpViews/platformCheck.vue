@@ -31,17 +31,7 @@
                         <span>{{scope.row.USE_CONTENT}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="140" align="center" label="联系人" :show-overflow-tooltip="true">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.APPLY_LINKMAN}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column width="140" align="center" label="联系电话" :show-overflow-tooltip="true">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.APPLY_PHONE}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column width="140" align="center" label="审核状态" :show-overflow-tooltip="true">
+                 <el-table-column width="140" align="center" label="审核状态" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <!-- <span>{{scope.row.CHECK_STATE}}</span> -->
                             <span v-if="scope.row.CHECK_STATE=='0'">未审核</span>
@@ -49,11 +39,7 @@
                             <span v-if="scope.row.CHECK_STATE=='2'">未通过</span>
                     </template>
                 </el-table-column>
-                <el-table-column min-width="140" header-align="center" style="text-align:left;" label="审核原因" :show-overflow-tooltip="true">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.CHECK_CONTENT}}</span>
-                    </template>
-                </el-table-column>
+             
                 <el-table-column width="140" align="center" label="审核人" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CHECK_PERSON_NAME}}</span>
@@ -64,6 +50,22 @@
                         <span>{{scope.row.CHECK_DATE|parseTime}}</span>
                     </template>
                 </el-table-column>
+                   <el-table-column min-width="140" header-align="center" style="text-align:left;" label="审核原因" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.CHECK_CONTENT}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column width="140" align="center" label="联系人" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.APPLY_LINKMAN}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column width="140" align="center" label="联系电话" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.APPLY_PHONE}}</span>
+                    </template>
+                </el-table-column>
+               
                 <el-table-column align="center" fixed="right" label="操作" width="220">
                     <template slot-scope="scope">
                         <!-- <el-button type="primary" v-if="scope.row.CHECK_STATE=='0'"  size="mini" @click="handleCheck(scope.row)">{{$t('commonTable.check')}}</el-button> -->
@@ -93,7 +95,7 @@
                     <el-button @click="editVisible = false">{{$t('userTable.cancel')}}</el-button>
                     <!-- <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('commonTable.save')}}</el-button>
                     <el-button v-else type="primary" @click="updateData">{{$t('commonTable.save')}}</el-button> -->
-                    <el-button type="primary" @click="updateData">{{$t('commonTable.save')}}</el-button>
+                    <el-button type="primary" @click="updateData" :disabled="isable">{{$t('commonTable.save')}}</el-button>
                 </div>
             </el-card>
         </el-dialog>
@@ -132,7 +134,7 @@ export default {
                 APPLY_ORG_NAME:"",
                 MANAGE_ORG_CODE:this.$store.state.user.departCode
             },
-
+            isable:false,
             temp: {
                 APPLY_ID:"",
                 CHECK_STATE: "",
@@ -275,14 +277,17 @@ export default {
           postData.push(tempData)
           postData.push(this.record)
           //tempData.NOTICE_CONTENT=this.content
+          this.isable=true
           examineApplyData(postData).then(response => {
             var message = response.data.message
             var title = '失败'
             var type = 'error'
             if (response.data.code === 2000) {
+
               this.getList()
               title = '成功'
               type = 'success'
+
               // for (const v of this.list) {
               //   if (v.CONF_CODE === this.temp.CONF_CODE) {
               //     const index = this.list.indexOf(v)
@@ -292,6 +297,7 @@ export default {
               // }
             }
             this.editVisible = false
+            this.isable=false
             this.$notify({   position: 'bottom-right',
               title: title,
               message: message,

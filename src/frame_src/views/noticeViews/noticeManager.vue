@@ -95,7 +95,10 @@
                         <el-row v-if="detailList.length>0">
                             <el-col :span="24">
                                 附件：
-                                <a target="blank" :href="baseurl+item.FILE_URL" v-for="(item,key) in detailList" :key="key">{{item.FILE_NAME}}</a>
+                                <div style="margin-left:25px;" v-for="(item,key) in detailList" :key="key">
+                                    <el-button @click="downLoad(item)" type="primary" size="text">{{item.FILE_NAME}}</el-button>
+                                </div>
+                                <!-- <a target="blank" :href="baseurl+item.FILE_URL" v-for="(item,key) in detailList" :key="key">{{item.FILE_NAME}}</a> -->
                             </el-col>
                         </el-row>
                         <div class="foot">
@@ -196,6 +199,11 @@ import quillEditor from "@/frame_src/components/QuillEditor";
 import { parseTime } from "@/frame_src/utils/index.js";
 import Moment from 'moment';
 import { getToken } from "@/frame_src/utils/auth";
+import Quill from 'quill'
+var fonts = ['SimSun', 'SimHei','Microsoft-YaHei','KaiTi','FangSong','Arial','Times-New-Roman','sans-serif'];  
+    var Font = Quill.import('formats/font');  
+    Font.whitelist = fonts; //将字体加入到白名单 
+    Quill.register(Font, true);
 export default {
     name: "noticeManager",
     directives: {
@@ -274,7 +282,9 @@ export default {
         parseTime
     },
     methods: {
-       
+        downLoad(data) {
+            window.open(this.baseurl + data.FILE_URL);
+        },
          dateFormat:function(row, column) {
                var date = row[column.property];
           if (date == undefined) {
