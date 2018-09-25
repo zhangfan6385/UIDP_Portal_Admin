@@ -456,6 +456,9 @@ export default {
             this.editVisible = true;
             this.dialogStatus = "create";
             this.loadPartyA()
+            this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+            })
         },
         handleUpdate(row) {
             this.editVisible = true;

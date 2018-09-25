@@ -117,9 +117,11 @@ export default {
     },
     data() {
         return {
+            checkStatus:null,
             platName:"",
             projectName:"",
             managetel:"暂无电话",
+            applycompany:"",
             tableKey: 0,
             list: null,
             total: null,
@@ -166,6 +168,18 @@ export default {
         parseTime
     },
     methods: {
+         timeFormate(timeStamp) {
+      let year = new Date(timeStamp).getFullYear();
+      let month =new Date(timeStamp).getMonth() + 1 < 10? "0" + (new Date(timeStamp).getMonth() + 1): new Date(timeStamp).getMonth() + 1;
+      let date =new Date(timeStamp).getDate() < 10? "0" + new Date(timeStamp).getDate(): new Date(timeStamp).getDate();
+     // let hh =new Date(timeStamp).getHours() < 10? "0" + new Date(timeStamp).getHours(): new Date(timeStamp).getHours();
+     // let mm =new Date(timeStamp).getMinutes() < 10? "0" + new Date(timeStamp).getMinutes(): new Date(timeStamp).getMinutes();
+      // let ss =new Date(timeStamp).getSeconds() < 10? "0" + new Date(timeStamp).getSeconds(): new Date(timeStamp).getSeconds();
+      // return year + "年" + month + "月" + date +"日"+" "+hh+":"+mm ;
+     // this.nowTime = year + "年" + month + "月" + date +"日"+" "+hh+":"+mm ;
+     return year + "年" + month + "月" + date +"日";
+      // console.log(this.nowTime);
+    },
         getList() {
             this.listLoading = true;
             fetchApplyPlatList(this.listQuery).then(response => {
@@ -197,6 +211,10 @@ export default {
             this.projectName=row.PROJECT_NAME
             this.temp.APPLY_ID=row.APPLY_ID
             this.record.APPLY_ID=row.APPLY_ID
+            this.temp.CHECK_CONTENT=row.CHECK_CONTENT
+            this.temp.CHECK_STATE=row.CHECK_STATE
+            this.checkStatus=row.CHECK_STATE
+            this.applycompany=row.APPLY_ORG_NAME
             if(row.MANAGE_TEL!=""&&row.MANAGE_TEL!=null){this.managetel=row.MANAGE_TEL}
         },
       
@@ -230,12 +248,32 @@ this.$confirm('确认删除记录吗?', '提示', {
 
         },
         updateData(){
+        if(this.checkStatus==this.temp.CHECK_STATE)
+        {
+            // this.$message.warning(
+            //     `该组件已经审核，请勿重复操作！`
+            // )
+            this.editVisible = false
+            this.$notify({   position: 'bottom-right',
+                title: '提示',
+                message: '平台申请已经审核，请勿重复操作！',
+                type: 'warning',
+                duration: 2000
+            })
+            return false;
+        }
+        var timestamp=this.timeFormate(new Date())
         var result="";
         if(this.temp.CHECK_STATE=="1"){
-            result="审核通过！"
+            result="审核通过！请到软件开发平台资源库网站自行使用。"
         }
         else if(this.temp.CHECK_STATE=="2"){
             result="审核未通过，"+this.temp.CHECK_CONTENT+"如有问题请联系管理员,联系电话："+this.managetel
+        }
+        var sendTitle="尊敬的开发者"
+        if(this.applycompany!="")
+        {
+            sendTitle=this.applycompany;
         }
         this.$refs['dataForm'].validate(valid => {
         if (valid) {
@@ -252,11 +290,9 @@ this.$confirm('确认删除记录吗?', '提示', {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <p style="margin:0;font-size:14px;line-height:24px;font-family:"微软雅黑",Helvetica,Arial,sans-serif;margin-bottom: 20px"><br>尊敬的开发者：<br>
-                                        </p>
-                                        <p style="color:#000;margin:0;font-size:14px;line-height:24px;font-family:"微软雅黑",Helvetica,Arial,sans-serif;"><br>
-                                        
-                                        您在`+this.projectName+`项目申请的`+this.platName+result+`</p>
+                                        <p style="margin:0;font-size:14px;font-family:"微软雅黑",Helvetica,Arial,sans-serif;margin-bottom: 20px">`+sendTitle+`：<br/>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您在`+this.projectName+`项目申请的`+this.platName+result+`</p>
+                                        <p style="text-align:right;"><br>大港油田信息中心<br>`+timestamp+`</p>
                                     </td>
                                 </tr>
                             </tbody>
