@@ -27,7 +27,7 @@
       <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('commonTable.edit')}}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{$t('commonTable.delete')}}</el-button>
+          <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{$t('commonTable.delete')}}</el-button> -->
         </template>
       </el-table-column>
     </el-table>

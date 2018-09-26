@@ -324,6 +324,21 @@ export default {
           PROJECT_PARTYB_ID: [
           { required: true, message: '乙方单位不能为空', trigger: 'change' }
         ],
+        PROJECT_AMOUNT:[{
+     validator:(rule,value,callback)=>{
+         if(value != ""){
+             if((/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value) == false){
+                 callback(new Error("请填写大于0的数字"));
+             }else{
+                 callback();
+             }
+         }else{
+             callback();
+         }
+
+     },
+     trigger:'change'
+ }]
             },
             dialogStatus: "",
             urlUpload: process.env.BASE_API + "user/uploadUserArticle",

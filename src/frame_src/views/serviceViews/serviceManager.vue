@@ -211,9 +211,9 @@
                         <el-col :span="15">
                             <el-table :data="listdetail" :header-cell-class-name="tableRowClassName" border max-height="320"  style="width: 100%;">
                                 <el-table-column align="center" label="文件名称" prop="FILE_NAME">
-                                <!-- <template slot-scope="scope">
-                                    <span>{{scope.row.FILE_NAME}}</span>
-                                </template> -->
+                                <template slot-scope="scope">
+                                    <span style="color:blue"><a :href="baseurl+scope.row.FILE_URL" target="_blank">{{scope.row.FILE_NAME}}</a></span>
+                                </template>
                                 </el-table-column>
                                 <el-table-column  align="center" label="文件类型" prop="FILE_TYPE" :formatter="typeFormat">
                                     <!-- <template slot-scope="scope">
@@ -286,6 +286,7 @@ export default {
         children: node.children
       }
     },
+            baseurl:process.env.BASE_API,
             tableKey: 0,
             list: null,
             total: null,
@@ -473,6 +474,7 @@ export default {
             this.uploadVisible = true;
             this.filedata.serviceId=row.SERVICE_ID;
             this.filedata.creater=this.$store.state.user.name;
+            this.baseurl=process.env.BASE_API;
             this.load()
         },
         load(){

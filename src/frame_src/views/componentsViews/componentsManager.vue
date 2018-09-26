@@ -203,9 +203,9 @@
                         <el-col :span="15">
                             <el-table :data="listdetail" :header-cell-class-name="tableRowClassName" border max-height="320"  style="width: 100%;">
                                 <el-table-column align="center" label="文件名称" prop="FILE_NAME">
-                                <!-- <template slot-scope="scope">
-                                    <span>{{scope.row.FILE_NAME}}</span>
-                                </template> -->
+                                <template slot-scope="scope">
+                                    <span style="color:blue"><a :href="baseurl+scope.row.FILE_URL"  target="_blank">{{scope.row.FILE_NAME}}</a></span>
+                                </template>
                                 </el-table-column>
                                 <el-table-column  align="center" label="文件类型" prop="FILE_TYPE" :formatter="typeFormat">
                                     <!-- <template slot-scope="scope">
@@ -278,6 +278,7 @@ export default {
         children: node.children
       }
     },
+            baseurl:process.env.BASE_API,
             tableKey: 0,
             list: null,
             total: null,
@@ -452,6 +453,7 @@ export default {
             this.uploadVisible = true;
             this.filedata.componentId=row.COMPONENT_ID;
             this.filedata.creater=this.$store.state.user.name;
+            this.baseurl=process.env.BASE_API;
             this.load()
         },
         load(){
@@ -534,6 +536,11 @@ this.$confirm('确认删除记录吗?', '提示', {
         });
         },
         handleFileDelete(row) {
+            this.$confirm('确认删除记录吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
                 //this.temp = Object.assign({}, row) // copy obj
                 const query = { COMPONENT_DETAIL_ID: row.COMPONENT_DETAIL_ID }
                 updateComponentDetailArticle(query).then(response => {
@@ -554,6 +561,8 @@ this.$confirm('确认删除记录吗?', '提示', {
                 // duration: 2000
                 // })
             })
+             }).catch(() => {
+        });
            },
         createData() { // 创建
             this.$refs['dataForm'].validate(valid => {
