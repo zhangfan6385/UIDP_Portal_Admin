@@ -15,7 +15,7 @@
  
         <!-- <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange"> -->
 <!--  <el-button style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
-  -->
+                   -->
     </h3>
 
     <el-row slot="body" :gutter="24" style="margin-bottom: 20px;">
@@ -23,8 +23,8 @@
         <el-tree v-if="roleTree"
                  :data="roleTree"
                  ref="roleTree" 
-                 highlight-current
                  :render-content="renderContent"
+                 highlight-current
                  @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps"></el-tree>
       </el-col>
       <el-col :span="18" :xs="24" :sm="24" :md="18" :lg="18">
@@ -339,16 +339,26 @@ export default {
         // this.roleTree.push(...defaultValue.roleList);
       })
     },
-    renderContent(h, { node, data, store }) { // 左侧树的遍历
+    // renderContent(h, { node, data, store }) { // 左侧树的遍历
+    //   return (
+    //     <span>
+    //       <span>
+    //         <span>{node.label}</span>
+    //       </span>
+    //       <span class='render-content'>
+    //         <i class='fa fa-trash' on-click={ () => this.deleteSelected(data.id) }></i>
+    //       </span>
+    //     </span>)
+    // }
+     renderContent(h, { node, data, store }) {
+      // 给左边树进行遍历
       return (
         <span>
           <span>
             <span>{node.label}</span>
           </span>
-          <span class='render-content'>
-            <i class='fa fa-trash' on-click={ () => this.deleteSelected(data.id) }></i>
-          </span>
-        </span>)
+        </span>
+      );
     }
   },
   mounted(){

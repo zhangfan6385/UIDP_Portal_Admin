@@ -303,8 +303,8 @@ export default {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <p style="margin:0;font-size:14px;font-family:"微软雅黑",Helvetica,Arial,sans-serif;margin-bottom: 20px">`+sendTitle+`：<br/>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您在`+this.projectName+`项目申请的`+this.platName+result+`</p>
+                                        <p style="width: 100%;margin:0;font-size:14px;font-family:"微软雅黑",Helvetica,Arial,sans-serif;word-wrap:break-word;word-break:break-all;margin-bottom:20px">`+sendTitle+`：<br/>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您在`+this.projectName+`项目申请的<lable style="word-wrap:break-word;word-break:break-all;">`+this.platName+`</lable>`+result+`</p>
                                         <p style="text-align:right;"><br>大港油田信息中心<br>`+timestamp+`</p>
                                     </td>
                                 </tr>

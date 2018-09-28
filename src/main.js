@@ -19,7 +19,7 @@ import './frame_src/permission' // permission control
 import './frame_src/mock' // simulation data
 
 import * as filters from './frame_src/filters' // global filters
-
+import 'babel-polyfill'
 Vue.use(Element, {
   size: 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
