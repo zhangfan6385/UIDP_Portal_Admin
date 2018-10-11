@@ -43,7 +43,7 @@
        <br>
       <el-button type="primary" style="width:100%;margin-bottom:30px;background-color:#409EFF;border-color:#409EFF" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
       <div class="copyright">
-        ©{{copyright}}版权所有
+        ©{{copyright}}&nbsp;&nbsp;版权所有
       </div>
 
       <!-- <div class="tips">
@@ -347,7 +347,8 @@ $light_gray: #eee;
     bottom: 0px;
     margin-left: 150px;
     margin-bottom: 35px;
-    color: gray;
+    // color: gray;
+    color:#ffffff;
     font-family: "微软雅黑";
     font-size: 13px;
   }

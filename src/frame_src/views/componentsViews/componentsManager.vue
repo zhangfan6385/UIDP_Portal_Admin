@@ -9,7 +9,7 @@
         </div>
  <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
-                <el-table-column width="100" align="center" :label="$t('componentTable.component_code')" :show-overflow-tooltip="true">
+                <el-table-column width="110" align="center" :label="$t('componentTable.component_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMPONENT_CODE}}</span>
                     </template>
@@ -83,9 +83,15 @@
                 <el-form :rules="rules" ref="dataForm" :model="temp" label-position="center" label-width="120px" style='width: 99%; '>
                       <el-row>
                         <el-col :span="12">
-                             <el-form-item label="组件编号：" prop="COMPONENT_CODE">
+                             <!-- <el-form-item label="组件编号：" prop="COMPONENT_CODE">
                         <el-input v-model="temp.COMPONENT_CODE"></el-input>
-                    </el-form-item>
+                    </el-form-item> -->
+                    <el-form-item v-if="dialogStatus=='create'"  label="组件编号：" prop="COMPONENT_CODE">
+       <span>系统自动生成编号</span>
+    </el-form-item>
+    <el-form-item v-else  label="组件编号："  prop="COMPONENT_CODE">
+  <el-input v-model="temp.COMPONENT_CODE"></el-input>   
+    </el-form-item>
                         </el-col>
                          <el-col :span="12">
                              <el-form-item label="组件名称：" prop="COMPONENT_NAME">
@@ -155,7 +161,9 @@
                          <el-row>
                         <el-col :span="24">
                               <el-form-item label="组件说明：" prop="COMPONENT_CONTENT">
-                        <el-input v-model="temp.COMPONENT_CONTENT" type="textarea" :rows="5"></el-input>
+                        <!-- <el-input v-model="temp.COMPONENT_CONTENT" type="textarea" :rows="5"></el-input> -->
+                        <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.COMPONENT_CONTENT" v-bind:apiUrl="urlPicUpload">
+                        </quillEditor>
                     </el-form-item>
                         </el-col>
 
@@ -250,6 +258,7 @@ import {
     createComponentDetailArticle,
     updateComponentDetailArticle
 } from "@/frame_src/api/components";
+import quillEditor from "@/frame_src/components/QuillEditor";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
 // import { parseTime } from '@/frame_src/utils'
 import { getToken } from "@/frame_src/utils/auth";
@@ -257,6 +266,11 @@ import Moment from 'moment';
 import {
     fetchPartyList
 } from "@/frame_src/api/org";
+import Quill from 'quill'
+var fonts = ['SimSun', 'SimHei','Microsoft-YaHei','KaiTi','FangSong','Arial','Times-New-Roman','sans-serif'];  
+    var Font = Quill.import('formats/font');  
+    Font.whitelist = fonts; //将字体加入到白名单 
+    Quill.register(Font, true);
 export default {
     name: "componentsManager",
     directives: {
@@ -266,7 +280,8 @@ export default {
     components: {
       'imp-panel': panel,
       'el-select-tree': selectTree,
-       Treeselect
+       Treeselect,
+       quillEditor
     },
     data() {
         return {
@@ -279,6 +294,7 @@ export default {
       }
     },
             baseurl:process.env.BASE_API,
+            urlPicUpload: process.env.BASE_API + "Values/uploadComponentPic",
             tableKey: 0,
             list: null,
             total: null,
@@ -370,6 +386,7 @@ export default {
             },
         };
     },
+
     methods: {
         loadPartyA() {
         const query = { sysCode: '100' }
@@ -411,6 +428,9 @@ export default {
                     });
                 }
             });
+        },
+        EditorChange(data){
+            this.temp.COMPONENT_CONTENT=data.editorContent
         },
   resetTemp(){  
               this.temp={

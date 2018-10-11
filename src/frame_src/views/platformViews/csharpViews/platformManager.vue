@@ -165,7 +165,9 @@
                          <el-row>
                         <el-col :span="24">
                               <el-form-item label="平台运行需求：" prop="PLAT_RUNREQUIRE">
-                        <el-input v-model="temp.PLAT_RUNREQUIRE" type="textarea" :rows="5"></el-input>
+                        <!-- <el-input v-model="temp.PLAT_RUNREQUIRE" type="textarea" :rows="5"></el-input> -->
+                        <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.PLAT_RUNREQUIRE" v-bind:apiUrl="urlPicUpload">
+                        </quillEditor>
                     </el-form-item>
                         </el-col>
 
@@ -254,6 +256,7 @@ import treeter from '@/frame_src/components/TreeList/treeter'
 import merge from 'element-ui/src/utils/merge'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import quillEditor from "@/frame_src/components/QuillEditor";
 import {
     fetchPlatformList,
     createPlatformArticle,
@@ -270,6 +273,11 @@ import Moment from 'moment';
 import {
     fetchPartyList
 } from "@/frame_src/api/org";
+import Quill from 'quill'
+var fonts = ['SimSun', 'SimHei','Microsoft-YaHei','KaiTi','FangSong','Arial','Times-New-Roman','sans-serif'];  
+    var Font = Quill.import('formats/font');  
+    Font.whitelist = fonts; //将字体加入到白名单 
+    Quill.register(Font, true);
 export default {
     name: "uidpPlatformManager",
     directives: {
@@ -279,7 +287,8 @@ export default {
     components: {
       'imp-panel': panel,
       'el-select-tree': selectTree,
-        Treeselect
+        Treeselect,
+        quillEditor
     },
     data() {
         return {
@@ -291,6 +300,7 @@ export default {
       }
     },
             baseurl:process.env.BASE_API,
+            urlPicUpload: process.env.BASE_API + "Values/uploadPlatPic",
             tableKey: 0,
             limitNum:10,
             hasZip:false,
@@ -424,6 +434,9 @@ export default {
                     });
                 }
             });
+        },
+                EditorChange(data){
+            this.temp.PLAT_RUNREQUIRE=data.editorContent
         },
   resetTemp(){  
               this.temp={

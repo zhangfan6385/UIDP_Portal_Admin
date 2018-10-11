@@ -119,9 +119,15 @@
         <el-dialog :visible.sync="editVisible" :title="textMap[dialogStatus]" width="800px">
         <el-card>
                 <el-form :rules="rules" ref="dataFormInfo" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
-                    <el-form-item :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
+                    <!-- <el-form-item :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
                         <el-input v-model="temp.NOTICE_CODE"></el-input>
-                    </el-form-item>
+                    </el-form-item> -->
+                 <el-form-item v-if="dialogStatus=='create'"  :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
+       <span>系统自动生成编号</span>
+    </el-form-item>
+    <el-form-item v-else  :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
+  <el-input v-model="temp.NOTICE_CODE"></el-input>   
+    </el-form-item>
                     <el-form-item :label="$t('noticeTable.notice_title')+':'" prop="NOTICE_TITLE">
                         <el-input v-model="temp.NOTICE_TITLE" width="400px"></el-input>
                     </el-form-item>
