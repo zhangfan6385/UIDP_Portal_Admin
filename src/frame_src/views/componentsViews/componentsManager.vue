@@ -20,27 +20,23 @@
                         <span>{{scope.row.COMPONENT_NAME}}</span>
                     </template>
                 </el-table-column>
-
+                <el-table-column width="80" align="center"  :label="$t('componentTable.component_version')" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.COMPONENT_VERSION}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column width="120" align="center"  :label="$t('componentTable.component_publishdate')" prop="COMPONENT_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
                 </el-table-column>
+                
                 <el-table-column width="80" align="center"  :label="$t('componentTable.component_size')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.COMPONENT_SIZE}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('componentTable.suit_plat')" :show-overflow-tooltip="true">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.SUIT_PLAT}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column width="100" align="center"  :label="$t('componentTable.application_browser')" :show-overflow-tooltip="true">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.APPLICATION_BROWSER}}</span>
-                    </template>
-                </el-table-column>
+                
                  <el-table-column width="150" align="center" :label="$t('componentTable.manage_org_name')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.MANAGE_ORG_NAME}}</span>
@@ -51,6 +47,16 @@
                         <span>{{scope.row.MANAGE_TEL}}</span>
                     </template>
                 </el-table-column> 
+                <el-table-column width="100" align="center"  :label="$t('componentTable.suit_plat')" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.SUIT_PLAT}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column width="100" align="center"  :label="$t('componentTable.application_browser')" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.APPLICATION_BROWSER}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column width="100" align="center" :label="$t('componentTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
@@ -94,8 +100,18 @@
     </el-form-item>
                         </el-col>
                          <el-col :span="12">
+                             
+                         </el-col>
+                      </el-row>
+                      <el-row>
+                          <el-col :span="12">
                              <el-form-item label="组件名称：" prop="COMPONENT_NAME">
                         <el-input v-model="temp.COMPONENT_NAME"></el-input>
+                    </el-form-item>
+                         </el-col>
+                          <el-col :span="12">
+                             <el-form-item label="组件版本：" prop="COMPONENT_VERSION">
+                        <el-input v-model="temp.COMPONENT_VERSION"></el-input>
                     </el-form-item>
                          </el-col>
                       </el-row>
@@ -333,7 +349,8 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: null
+                MANAGE_ROLE_ID: null,
+                COMPONENT_VERSION:''
             },
             tempFile:{
                 fileName:"",
@@ -448,7 +465,8 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: null
+                MANAGE_ROLE_ID: null,
+                COMPONENT_VERSION:''
             }
         },
         handleCreate() {

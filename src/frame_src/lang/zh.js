@@ -472,7 +472,8 @@ export default {
     application_browser:'应用浏览器',
     component_publishdate:'发布日期',
     creater:'创建人',
-    create_date:'创建日期'
+    create_date:'创建日期',
+    component_version:'版本'
   },
   serviceTable:{
     dynamicTips1: '固定表头, 按照表头顺序排序',
@@ -490,7 +491,9 @@ export default {
     original_url:'原始地址',
     service_publishdate:'发布日期',
     creater:'创建人',
-    create_date:'创建日期'
+    create_date:'创建日期',
+    SERVER_VERSION:'服务版本',
+    SERVER_LANGUAGE:'开发语言'
   }
 
 }

@@ -9,7 +9,7 @@
         </div>
  <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;text-align:left;">
-                <el-table-column width="110" header-align="center" :label="$t('serviceTable.service_code')" :show-overflow-tooltip="true">
+                <el-table-column width="115" header-align="center" :label="$t('serviceTable.service_code')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.SERVICE_CODE}}</span>
                     </template>
@@ -21,7 +21,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column width="120" header-align="center"  :label="$t('serviceTable.service_publishdate')" prop="SERVICE_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
+                <el-table-column width="95" header-align="center"  :label="$t('serviceTable.service_publishdate')" prop="SERVICE_PUBLISHDATE" :formatter="dateFormat" :show-overflow-tooltip="true">
                     <!-- <template slot-scope="scope">
                         <span>{{scope.row.PLAT_PUBLISHDATE}}</span>
                     </template> -->
@@ -36,9 +36,9 @@
                         <span>{{scope.row.ORIGINAL_URL}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column width="100" header-align="center" :label="$t('serviceTable.data_format')" :show-overflow-tooltip="true">
+                <el-table-column width="100" header-align="center" :label="$t('serviceTable.SERVER_VERSION')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <span>{{scope.row.DATA_FORMAT}}</span>
+                        <span>{{scope.row.SERVER_VERSION}}</span>
                     </template>
                 </el-table-column>
                 <!-- <el-table-column width="100px" align="center"  :label="$t('platformTable.plat_type')">
@@ -59,6 +59,11 @@
                 <el-table-column width="100" header-align="center" :label="$t('serviceTable.creater')" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <span>{{scope.row.CREATER}}</span>
+                    </template>
+                </el-table-column>
+                 <el-table-column width="100" header-align="center" :label="$t('serviceTable.data_format')" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.DATA_FORMAT}}</span>
                     </template>
                 </el-table-column>
                 <!-- <el-table-column width="160px" align="center" :label="$t('serviceTable.create_date')" prop="CREATE_DATE" :formatter="dateFormat" :show-overflow-tooltip="true">
@@ -101,6 +106,18 @@
                          <el-col :span="12">
                              <el-form-item label="服务名称：" prop="SERVICE_NAME">
                         <el-input v-model="temp.SERVICE_NAME"></el-input>
+                    </el-form-item>
+                         </el-col>
+                      </el-row>
+                       <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="服务版本：" prop="SERVER_VERSION">
+                        <el-input v-model="temp.SERVER_VERSION"></el-input>
+                    </el-form-item>
+                        </el-col>
+                         <el-col :span="12">
+                    <el-form-item label="开发语言：" prop="SERVER_LANGUAGE">
+                            <el-input v-model="temp.SERVER_LANGUAGE"></el-input>
                     </el-form-item>
                          </el-col>
                       </el-row>
@@ -341,7 +358,9 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: ""
+                MANAGE_ROLE_ID: "",
+                SERVER_VERSION:'',
+                SERVER_LANGUAGE:''
             },
             tempFile:{
                 fileName:"",
@@ -468,7 +487,9 @@ export default {
                 MANAGE_TEL: "",
                 MANAGE_ORG_NAME: "",
                 MANAGE_ORG_ID: this.$store.state.user.departId==""?null:this.$store.state.user.departId,
-                MANAGE_ROLE_ID: ""
+                MANAGE_ROLE_ID: "",
+                SERVER_VERSION:'',
+                SERVER_LANGUAGE:''
             }
         },
         handleCreate() {
