@@ -602,8 +602,14 @@ export default {
       this.listUserLoading = true;
       fetchUserForLoginList(this.listUserQuery).then(response => {
         if (response.data.code === 2000) {
-          this.userList = response.data.items;
+          if(response.data.items.length>0){
+            this.userList = response.data.items;
           this.total2 = response.data.total;
+          }
+          else{
+            this.userList = null;
+          this.total2 = 0;
+          }
           this.listUserLoading = false;
         } else {
           this.listUserLoading = false;
@@ -677,8 +683,11 @@ export default {
     getParentUser(data) {//搜索关联账号
       fetchUserpParentList(data).then(response => {
         if (response.data.code === 2000) {
-          this.userList = response.data.items;
+          if(response.data.items.length>0){
+             this.userList = response.data.items;
           this.total2 = response.data.total;
+          }
+         
           this.listUserLoading = false;
         } else {
           this.listUserLoading = false;
@@ -955,6 +964,7 @@ export default {
             this.arr = [];
             this.getList();
             this.getListUser();
+            this.getParentUser(this.listUserQuery);
             this.userLoginVisible = false;
           }
           this.$notify({   position: 'bottom-right',
@@ -968,7 +978,7 @@ export default {
     },
     deleteRole() {
       // 给用户分配角色权限
-      if (this.multipleSelection.length <= 0) {
+      if (this.multipleSelection.length <= 0|| this.tableUserKey2 == null) {
         this.$notify({   position: 'bottom-right',
           title: "失败",
           message: "请选择用户",
@@ -983,6 +993,7 @@ export default {
         })
           .then(() => {
             this.userForLoginUpdate.arr = this.arr; // 右边选中的集合
+            this.userForLoginUpdate.LOGIN_ID = this.tableUserKey2;
             deleteUserForLoginArticle(this.userForLoginUpdate).then(
               response => {
                 // 给用户分配组织结构权限
@@ -995,6 +1006,7 @@ export default {
                   this.arr = [];
                   this.getList();
                   this.getListUser();
+                  this.getParentUser(this.listUserQuery);
                   this.userLoginVisible = false;
                 }
                 this.$notify({   position: 'bottom-right',
