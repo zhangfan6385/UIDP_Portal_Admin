@@ -7,7 +7,7 @@
 
             <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('noticeTable.search')}}</el-button>
 
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('noticeTable.add')}}</el-button>
+            <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('noticeTable.add')}}</el-button>
         </div>
         <el-card class="box-card">
             <el-table :key='tableKey' :data="list" :header-cell-class-name="tableRowClassName" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%;">
@@ -40,18 +40,14 @@
                         <span>{{scope.row.NOTICE_DATETIME}}</span>
                     </template> -->
                 </el-table-column>
-      <el-table-column
-      align="center"
-      fixed="right"
-      label="操作"
-      width="290">
-      <template slot-scope="scope">
-        <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>    
-        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
-        <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
-        <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
-      </template>
-    </el-table-column>
+                <el-table-column align="center" fixed="right" label="操作" width="290">
+                    <template slot-scope="scope">
+                        <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{$t('noticeTable.detail')}}</el-button>
+                        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('noticeTable.edit')}}</el-button>
+                        <el-button type="primary" size="mini" @click="handleUpload(scope.row)">{{$t('noticeTable.upload')}}</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{$t('noticeTable.delete')}}</el-button>
+                    </template>
+                </el-table-column>
 
             </el-table>
         </el-card>
@@ -74,118 +70,97 @@
                        </div>
                     </el-form-item>
                     </el-form> -->
-                        <el-form :rules="rules" ref="dataForm" :model="temp">
-        <el-row type="flex">
-            <el-col :span="2"></el-col>
-            <el-col :span="20">
-                <div class="noticecontent">
-                        <div slot="header" class="header" style="text-align:center;">
-                            {{temp.NOTICE_TITLE}}
-                            <!-- <div class="back">
+                <el-form :rules="rules" ref="dataForm" :model="temp">
+                    <el-row type="flex">
+                        <el-col :span="2"></el-col>
+                        <el-col :span="20">
+                            <div class="noticecontent">
+                                <div slot="header" class="header" style="text-align:center;">
+                                    {{temp.NOTICE_TITLE}}
+                                    <!-- <div class="back">
                                 <el-button type="primary" @click="back" size="mini">后退</el-button>
                             </div> -->
-                        </div>
-                        <div class="content">
-                            <el-row>
-                                <el-col :span="24">
-                                    <p v-html="temp.NOTICE_CONTENT"></p>
-                                </el-col>
-                            </el-row>
-                        </div>
-                        <el-row v-if="detailList.length>0">
-                            <el-col :span="24">
-                                附件：
-                                <div style="margin-left:25px;" v-for="(item,key) in detailList" :key="key">
-                                    <el-button @click="downLoad(item)" type="primary" size="text">{{item.FILE_NAME}}</el-button>
                                 </div>
-                                <!-- <a target="blank" :href="baseurl+item.FILE_URL" v-for="(item,key) in detailList" :key="key">{{item.FILE_NAME}}</a> -->
-                            </el-col>
-                        </el-row>
-                        <div class="foot">
-                            <el-row>
-                                <el-col :span="24">
-                                    作者：{{temp.CREATER}} 发布时间：{{temp.CREATE_DATE | parseTime}}
-                                </el-col>
-                            </el-row>
-                        </div>
+                                <div class="content">
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <p v-html="temp.NOTICE_CONTENT"></p>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                                <el-row v-if="detailList.length>0">
+                                    <el-col :span="24">
+                                        附件：
+                                        <div style="margin-left:25px;" v-for="(item,key) in detailList" :key="key">
+                                            <el-button @click="downLoad(item)" type="primary" size="text">{{item.FILE_NAME}}</el-button>
+                                        </div>
+                                        <!-- <a target="blank" :href="baseurl+item.FILE_URL" v-for="(item,key) in detailList" :key="key">{{item.FILE_NAME}}</a> -->
+                                    </el-col>
+                                </el-row>
+                                <div class="foot">
+                                    <el-row>
+                                        <el-col :span="24">
+                                            作者：{{temp.CREATER}} 发布时间：{{temp.CREATE_DATE | parseTime}}
+                                        </el-col>
+                                    </el-row>
+                                </div>
 
-                </div>
-            </el-col>
-        </el-row>
-    </el-form>
+                            </div>
+                        </el-col>
+                    </el-row>
+                </el-form>
             </el-card>
         </el-dialog>
         <!--修改-->
         <el-dialog :visible.sync="editVisible" :title="textMap[dialogStatus]" width="800px">
-        <el-card>
+            <el-card>
                 <el-form :rules="rules" ref="dataFormInfo" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
                     <!-- <el-form-item :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
                         <el-input v-model="temp.NOTICE_CODE"></el-input>
                     </el-form-item> -->
-                 <el-form-item v-if="dialogStatus=='create'"  :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
-       <span>系统自动生成编号</span>
-    </el-form-item>
-    <el-form-item v-else  :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
-  <el-input v-model="temp.NOTICE_CODE"></el-input>   
-    </el-form-item>
+                    <el-form-item v-if="dialogStatus=='create'" :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
+                        <span>系统自动生成编号</span>
+                    </el-form-item>
+                    <el-form-item v-else :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
+                        <el-input v-model="temp.NOTICE_CODE"></el-input>
+                    </el-form-item>
                     <el-form-item :label="$t('noticeTable.notice_title')+':'" prop="NOTICE_TITLE">
                         <el-input v-model="temp.NOTICE_TITLE" width="400px"></el-input>
                     </el-form-item>
                     <el-form-item :label="$t('noticeTable.notice_datetime')+':'" prop="NOTICE_DATETIME">
                         <!-- <el-date-picker type="date" placeholder="发布时间" v-model="temp.NOTICE_DATETIME" style="width: 100%;"></el-date-picker> -->
-                         <el-date-picker
-      v-model="temp.NOTICE_DATETIME"
-      type="datetime"
-      value-format="yyyy-MM-dd HH:mm:ss"
-      default-time="12:00:00">
-    </el-date-picker>
-                        
+                        <el-date-picker v-model="temp.NOTICE_DATETIME" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00">
+                        </el-date-picker>
                     </el-form-item>
-                    <el-form-item :label="$t('noticeTable.notice_content')+':'" prop="NOTICE_CONTENT">
-                   <!-- <div  v-loading="imageLoading"
-                       element-loading-text="请稍等，图片上传中"> -->
+                    <!-- <el-form-item :label="$t('noticeTable.notice_content')+':'" prop="NOTICE_CONTENT">
                         <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.NOTICE_CONTENT" v-bind:apiUrl="urlPicUpload">
                         </quillEditor>
-                         <!-- 文件上传input 将它隐藏-->
-                           <!-- <el-upload style="display:none"  :action="urlUpload" :show-file-list="false" :before-upload='newEditorbeforeupload'  :on-success='newEditorSuccess'
-                           ref="uniqueId" id="uniqueId">
-                           </el-upload > -->
-                       <!-- </div> -->
-
-
-                    </el-form-item>
-                    </el-form>
-                     <div style="text-align:center">
-                        <el-button @click="editVisible = false">{{$t('userTable.cancel')}}</el-button>
-                        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('noticeTable.save')}}</el-button>
-                        <el-button v-else type="primary" @click="updateData">{{$t('noticeTable.save')}}</el-button>
+                    </el-form-item> -->
+                    <div class="editor-container">
+                        <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
                     </div>
-                    </el-card>
+                </el-form>
+                <div style="text-align:center">
+                    <el-button @click="editVisible = false">{{$t('userTable.cancel')}}</el-button>
+                    <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('noticeTable.save')}}</el-button>
+                    <el-button v-else type="primary" @click="updateData">{{$t('noticeTable.save')}}</el-button>
+                </div>
+            </el-card>
         </el-dialog>
         <!--上传-->
         <el-dialog :visible.sync="uploadVisible" :title="$t('noticeTable.upload')">
             <!-- <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'> -->
 
-                <el-card>
-                    <!-- <el-upload class="upload-demo" ref="upload" :action="urlUpload" :on-preview="handlePreview" :on-remove="handleRemove" :on-exceed="handleExceed" :on-success="handleSuccess" :before-remove="beforeRemove" :headers="headers" :file-list="fileList">
+            <el-card>
+                <!-- <el-upload class="upload-demo" ref="upload" :action="urlUpload" :on-preview="handlePreview" :on-remove="handleRemove" :on-exceed="handleExceed" :on-success="handleSuccess" :before-remove="beforeRemove" :headers="headers" :file-list="fileList">
                         <el-button class="filter-item" type="primary" icon="el-icon-edit">点击上传</el-button>
                     </el-upload> -->
-                     <el-upload
-            class="upload-demo"
-            multiple
-            :action="urlUpload"
-            :data="filedata"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="handleSuccess"
-            :before-remove="beforeRemove"
-            :headers="headers"
-            :file-list="fileList">
-            <el-button   class="filter-item"  type="primary" icon="el-icon-edit">点击上传</el-button>
-          </el-upload>
-                </el-card>
+                <el-upload class="upload-demo" multiple :action="urlUpload" :data="filedata" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleSuccess" :before-remove="beforeRemove" :headers="headers" :file-list="fileList">
+                    <el-button class="filter-item" type="primary" icon="el-icon-edit">点击上传</el-button>
+                </el-upload>
+            </el-card>
 
-             <!-- </el-form>-->
+            <!-- </el-form>-->
         </el-dialog>
     </div>
 
@@ -201,15 +176,25 @@ import {
     updateNoticeDetailArticle
 } from "@/frame_src/api/notice";
 import waves from "@/frame_src/directive/waves"; // 水波纹指令
-import quillEditor from "@/frame_src/components/QuillEditor";
+//import quillEditor from "@/frame_src/components/QuillEditor";
 import { parseTime } from "@/frame_src/utils/index.js";
-import Moment from 'moment';
+import Moment from "moment";
 import { getToken } from "@/frame_src/utils/auth";
-import Quill from 'quill'
-var fonts = ['SimSun', 'SimHei','Microsoft-YaHei','KaiTi','FangSong','Arial','Times-New-Roman','sans-serif'];  
-    var Font = Quill.import('formats/font');  
-    Font.whitelist = fonts; //将字体加入到白名单 
-    Quill.register(Font, true);
+//import Quill from "quill";
+import UE from "../../components/ue.vue";
+var fonts = [
+    "SimSun",
+    "SimHei",
+    "Microsoft-YaHei",
+    "KaiTi",
+    "FangSong",
+    "Arial",
+    "Times-New-Roman",
+    "sans-serif"
+];
+// var Font = Quill.import("formats/font");
+// Font.whitelist = fonts; //将字体加入到白名单
+// Quill.register(Font, true);
 export default {
     name: "noticeManager",
     directives: {
@@ -217,7 +202,12 @@ export default {
     },
     data() {
         return {
-            baseurl:process.env.BASE_API,
+            defaultMsg: "&nbsp;",
+            config: {
+                initialFrameWidth: null,
+                initialFrameHeight: 350
+            },
+            baseurl: process.env.BASE_API,
             tableKey: 0,
             list: null,
             total: null,
@@ -235,14 +225,14 @@ export default {
                 NOTICE_CONTENT: "",
                 NOTICE_ORGID: "",
                 NOTICE_ORGNAME: "",
-                NOTICE_DATETIME:"",
+                NOTICE_DATETIME: "",
                 CREATER: "",
-                NOTICE_ORGID:"",
-                NOTICE_ORGNAME:""
+                NOTICE_ORGID: "",
+                NOTICE_ORGNAME: ""
             },
-            filedata:{
-            noticeId:"",
-            creater:""
+            filedata: {
+                noticeId: "",
+                creater: ""
             },
             textMap: {
                 update: "修改公告",
@@ -253,36 +243,45 @@ export default {
             uploadVisible: false,
             downloadLoading: false,
             rules: {
-            NOTICE_TITLE: [
-          { required: true, message: '公告标题不能为空', trigger: 'change' }
-        ],
-            NOTICE_DATETIME: [
-          { required: true, message: '发布时间不能为空', trigger: 'change' }
-        ],
+                NOTICE_TITLE: [
+                    {
+                        required: true,
+                        message: "公告标题不能为空",
+                        trigger: "change"
+                    }
+                ],
+                NOTICE_DATETIME: [
+                    {
+                        required: true,
+                        message: "发布时间不能为空",
+                        trigger: "change"
+                    }
+                ]
             },
-            dialogStatus:'',
+            dialogStatus: "",
             urlUpload: process.env.BASE_API + "noticedetail/uploadNoticeFile",
             urlPicUpload: process.env.BASE_API + "Values/uploadNoticePic",
             fileList: [],
-            detailList:[],
+            detailList: [],
             listQuery: {
-                    page: 1,
-                    limit: 20,
-                    NOTICE_CODE: '',
-                    NOTICE_TITLE: '',
-                    NOTICE_CONTENT: '',
-                    NOTICE_DATETIME: '',
-                    NOTICE_ORGID: '',
-                    NOTICE_ORGNAME:'',
-                    CREATER:'',
-                    BEGIN_NOTICE_DATETIME:'',
-                    END_NOTICE_DATETIME:'',
-                },
+                page: 1,
+                limit: 20,
+                NOTICE_CODE: "",
+                NOTICE_TITLE: "",
+                NOTICE_CONTENT: "",
+                NOTICE_DATETIME: "",
+                NOTICE_ORGID: "",
+                NOTICE_ORGNAME: "",
+                CREATER: "",
+                BEGIN_NOTICE_DATETIME: "",
+                END_NOTICE_DATETIME: ""
+            }
             //content:''
         };
     },
     components: {
-        quillEditor
+        //quillEditor,
+        UE
     },
     filters: {
         parseTime
@@ -291,13 +290,13 @@ export default {
         downLoad(data) {
             window.open(this.baseurl + data.FILE_URL);
         },
-         dateFormat:function(row, column) {
-               var date = row[column.property];
-          if (date == undefined) {
-             return "";
-          }
-          return Moment(date).format("YYYY-MM-DD HH:mm:ss");
-            },
+        dateFormat: function(row, column) {
+            var date = row[column.property];
+            if (date == undefined) {
+                return "";
+            }
+            return Moment(date).format("YYYY-MM-DD HH:mm:ss");
+        },
         getList() {
             this.listLoading = true;
             fetchNoticeList(this.listQuery).then(response => {
@@ -317,8 +316,16 @@ export default {
                 }
             });
         },
-        resetTemp(){  
-             this.temp = {
+        resetTemp() {
+            if (
+                this.temp.NOTICE_CONTENT != null ||
+                this.temp.NOTICE_CONTENT != ""
+            ) {
+                setTimeout(()=>{
+                    this.$refs.ue.setUEContent("&nbsp;");
+                },500)
+            }
+            this.temp = {
                 NOTICE_ID: "",
                 NOTICE_CODE: "",
                 NOTICE_TITLE: "",
@@ -326,143 +333,169 @@ export default {
                 NOTICE_ORGID: "",
                 NOTICE_ORGNAME: "",
                 CREATER: "",
-                NOTICE_ORGID:"",
-                NOTICE_ORGNAME:""
-             }
+                NOTICE_ORGID: "",
+                NOTICE_ORGNAME: ""
+            };
         },
-        EditorChange(data){
-            this.temp.NOTICE_CONTENT=data.editorContent
+        EditorChange(data) {
+            this.temp.NOTICE_CONTENT = data.editorContent;
         },
         handleDetail(row) {
-            this.detailList=[];
-            const query={NOTICE_ID:row.NOTICE_ID}
-        fetchNoticeDetailList(query).then(response => {
-            if (response.data.code === 2000) {
-                this.detailList=response.data.items;
-                } 
-            else {
-                this.detailList=[];
-            }
-      })
+            this.detailList = [];
+            const query = { NOTICE_ID: row.NOTICE_ID };
+            fetchNoticeDetailList(query).then(response => {
+                if (response.data.code === 2000) {
+                    this.detailList = response.data.items;
+                } else {
+                    this.detailList = [];
+                }
+            });
             this.detailVisible = true;
-            this.temp = Object.assign({}, row) // copy obj
+            this.temp = Object.assign({}, row); // copy obj
         },
-        handleCreate(){
-            this.resetTemp()
+        handleCreate() {
+            this.resetTemp();
             this.editVisible = true;
-            this.dialogStatus='create'
+            this.dialogStatus = "create";
             this.$nextTick(() => {
-            this.$refs['dataFormInfo'].clearValidate()
-            })
+                this.$refs["dataFormInfo"].clearValidate();
+            });
         },
         handleUpdate(row) {
-            this.temp = Object.assign({}, row) // copy obj
+            this.temp = Object.assign({}, row); // copy obj
+            //this.temp.NOTICE_CONTENT=this.$refs.ue.setUEContent();
             this.editVisible = true;
-            this.dialogStatus='update'
+            this.dialogStatus = "update";
             //this.content=row.NOTICE_CONTENT
+            //this.$refs.ue.setUEContent(this.temp.PLAT_RUNREQUIRE);
+            // let first=document.getElementsByClassName('view');
+            // first.innerHTML=this.temp.NOTICE_CONTENT
+            setTimeout(()=>{
+                this.$refs.ue.setUEContent(this.temp.NOTICE_CONTENT)
+            },2000);
+            
             this.$nextTick(() => {
-            this.$refs['dataFormInfo'].clearValidate()
-      })
+                this.$refs["dataFormInfo"].clearValidate();
+            });
         },
         handleUpload(row) {
             this.uploadVisible = true;
-            this.filedata.noticeId=row.NOTICE_ID;
-            this.filedata.creater=this.$store.state.user.name;
-            this.load()
+            this.filedata.noticeId = row.NOTICE_ID;
+            this.filedata.creater = this.$store.state.user.name;
+            this.load();
         },
-    handleDelete(row) {
-         this.$confirm('确认删除记录吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-         const query = { NOTICE_ID: row.NOTICE_ID }
-        updateNoticeArticle(query).then(response => {
-        this.message = response.data.message
-        this.title = '失败'
-        this.type = 'error'
-        if (response.data.code === 2000) {
-          // const index = this.list.indexOf(row)
-          // this.list.splice(index, 1)
-          this.getList()
-          this.title = '成功'
-          this.type = 'success'
-        }
-        this.$notify({   position: 'bottom-right',
-          title: this.title,
-          message: this.message,
-          type: this.type,
-          duration: 2000
-        })
-      })
-        }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        });
-    },
-        createData() { // 创建
-            this.$refs['dataFormInfo'].validate(valid => {
-                if (valid) {
-                // this.temp.userId = parseInt(Math.random() * 100) + 1024 // mock a id
-                // this.temp.author = "ppp" //当前登陆人
-                this.temp.NOTICE_ORGID=this.$store.state.user.departId
-                this.temp.NOTICE_ORGNAME=this.$store.state.user.departName
-                this.temp.CREATER=this.$store.state.user.name
-                createNoticeArticle(this.temp).then(response => {
-                    var message = response.data.message
-                    var title = '失败'
-                    var type = 'error'
-                    if (response.data.code === 2000) {
-                    this.getList()
-                    title = '成功'
-                    type = 'success'
-                    // this.list.unshift(this.temp)
-                    }
-                    this.editVisible = false
-                    this.$notify({   position: 'bottom-right',
-                    title: title,
-                    message: message,
-                    type: type,
-                    duration: 2000
-                    })
+        handleDelete(row) {
+            this.$confirm("确认删除记录吗?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    const query = { NOTICE_ID: row.NOTICE_ID };
+                    updateNoticeArticle(query).then(response => {
+                        this.message = response.data.message;
+                        this.title = "失败";
+                        this.type = "error";
+                        if (response.data.code === 2000) {
+                            // const index = this.list.indexOf(row)
+                            // this.list.splice(index, 1)
+                            this.getList();
+                            this.title = "成功";
+                            this.type = "success";
+                        }
+                        this.$notify({
+                            position: "bottom-right",
+                            title: this.title,
+                            message: this.message,
+                            type: this.type,
+                            duration: 2000
+                        });
+                    });
                 })
-                }
-            })
+                .catch(() => {
+                    //   this.$message({
+                    //     type: 'info',
+                    //     message: '已取消删除'
+                    //   });
+                });
         },
-    updateData() {
-      this.$refs['dataFormInfo'].validate(valid => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp) // 这样就不会共用同一个对象
-          //tempData.NOTICE_CONTENT=this.content
-          updateNoticeData(tempData).then(response => {
-            var message = response.data.message
-            var title = '失败'
-            var type = 'error'
-            if (response.data.code === 2000) {
-              this.getList()
-              title = '成功'
-              type = 'success'
-              // for (const v of this.list) {
-              //   if (v.CONF_CODE === this.temp.CONF_CODE) {
-              //     const index = this.list.indexOf(v)
-              //     this.list.splice(index, 1, this.temp)
-              //     break
-              //   }
-              // }
-            }
-            this.editVisible = false
-            this.$notify({   position: 'bottom-right',
-              title: title,
-              message: message,
-              type: type,
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
+        createData() {
+            // 创建
+            this.$refs["dataFormInfo"].validate(valid => {
+                if (valid) {
+                    // this.temp.userId = parseInt(Math.random() * 100) + 1024 // mock a id
+                    // this.temp.author = "ppp" //当前登陆人
+                    this.temp.NOTICE_ORGID = this.$store.state.user.departId;
+                    this.temp.NOTICE_ORGNAME = this.$store.state.user.departName;
+                    this.temp.CREATER = this.$store.state.user.name;
+                    this.temp.NOTICE_CONTENT = this.$refs.ue.getUEContent();
+                    if (
+                        this.temp.NOTICE_CONTENT === null ||
+                        this.temp.NOTICE_CONTENT === ""
+                    ) {
+                        this.temp.NOTICE_CONTENT = "&nbsp;";
+                    } 
+                    createNoticeArticle(this.temp).then(response => {
+                        var message = response.data.message;
+                        var title = "失败";
+                        var type = "error";
+                        if (response.data.code === 2000) {
+                            this.getList();
+                            title = "成功";
+                            type = "success";
+                            // this.list.unshift(this.temp)
+                        }
+                        this.editVisible = false;
+                        this.$notify({
+                            position: "bottom-right",
+                            title: title,
+                            message: message,
+                            type: type,
+                            duration: 2000
+                        });
+                    });
+                }
+            });
+        },
+        updateData() {
+            this.$refs["dataFormInfo"].validate(valid => {
+                if (valid) {
+                    this.temp.NOTICE_CONTENT = this.$refs.ue.getUEContent();
+                    if (
+                        this.temp.NOTICE_CONTENT === null ||
+                        this.temp.NOTICE_CONTENT === ""
+                    ) {
+                        this.temp.NOTICE_CONTENT = "&nbsp;";
+                    }
+                    const tempData = Object.assign({}, this.temp); // 这样就不会共用同一个对象
+                    updateNoticeData(tempData).then(response => {
+                        var message = response.data.message;
+                        var title = "失败";
+                        var type = "error";
+                        if (response.data.code === 2000) {
+                            this.getList();
+                            title = "成功";
+                            type = "success";
+                            // for (const v of this.list) {
+                            //   if (v.CONF_CODE === this.temp.CONF_CODE) {
+                            //     const index = this.list.indexOf(v)
+                            //     this.list.splice(index, 1, this.temp)
+                            //     break
+                            //   }
+                            // }
+                        }
+                        this.editVisible = false;
+                        this.$notify({
+                            position: "bottom-right",
+                            title: title,
+                            message: message,
+                            type: type,
+                            duration: 2000
+                        });
+                    });
+                }
+            });
+        },
         handleSizeChange(val) {
             this.listQuery.limit = val;
             this.getList();
@@ -482,44 +515,45 @@ export default {
             return "";
         },
         //upload
-         load() { // 查询数据
-      this.fileList=[];
-      const query={NOTICE_ID:this.filedata.noticeId}
-      fetchNoticeDetailList(query).then(response => {
-          response.data.items.forEach(element => {
-            var obj={};
-            var fileobj={
-                id:'',
-                name:'',
-                url:''
-            },
-            obj=JSON.parse(JSON.stringify(element));
-            fileobj.id=obj.NOTICE_DETAIL_ID
-            fileobj.name=obj.FILE_NAME
-            fileobj.url=obj.FILE_URL 
-            this.fileList.push(fileobj)
-          });
-      })
-    },
+        load() {
+            // 查询数据
+            this.fileList = [];
+            const query = { NOTICE_ID: this.filedata.noticeId };
+            fetchNoticeDetailList(query).then(response => {
+                response.data.items.forEach(element => {
+                    var obj = {};
+                    var fileobj = {
+                            id: "",
+                            name: "",
+                            url: ""
+                        },
+                        obj = JSON.parse(JSON.stringify(element));
+                    fileobj.id = obj.NOTICE_DETAIL_ID;
+                    fileobj.name = obj.FILE_NAME;
+                    fileobj.url = obj.FILE_URL;
+                    this.fileList.push(fileobj);
+                });
+            });
+        },
         handleRemove(file, fileList) {
-        const query = { NOTICE_DETAIL_ID: file.id}
-        updateNoticeDetailArticle(query).then(response => {
-        this.message = response.data.message
-        this.title = '失败'
-        this.type = 'error'
-        if (response.data.code === 2000) {
-
-          this.load()
-          this.title = '成功'
-          this.type = 'success'
-        }
-        this.$notify({   position: 'bottom-right',
-          title: this.title,
-          message: this.message,
-          type: this.type,
-          duration: 2000
-        })
-      })
+            const query = { NOTICE_DETAIL_ID: file.id };
+            updateNoticeDetailArticle(query).then(response => {
+                this.message = response.data.message;
+                this.title = "失败";
+                this.type = "error";
+                if (response.data.code === 2000) {
+                    this.load();
+                    this.title = "成功";
+                    this.type = "success";
+                }
+                this.$notify({
+                    position: "bottom-right",
+                    title: this.title,
+                    message: this.message,
+                    type: this.type,
+                    duration: 2000
+                });
+            });
         },
         handlePreview(file) {},
         handleSuccess(res, file, fileList) {
@@ -548,27 +582,26 @@ export default {
                 } 个文件，共选择了 ${files.length + fileList.length} 个文件`
             );
         },
-         beforeRemove(file, fileList) {
-        }
+        beforeRemove(file, fileList) {}
     },
     created() {
         this.listLoading = false;
         this.getList();
     },
-     computed: {
-    getRoleLevel() {
-      if (this.$store.state.user.roleLevel === "admin") {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    headers() {
-      return {
-        "X-Token": getToken()
-      };
+    computed: {
+        getRoleLevel() {
+            if (this.$store.state.user.roleLevel === "admin") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        headers() {
+            return {
+                "X-Token": getToken()
+            };
+        }
     }
-  }
 };
 </script>
 <style lang="scss" scoped>
