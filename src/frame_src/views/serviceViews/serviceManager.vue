@@ -527,7 +527,6 @@ export default {
                 SERVER_VERSION: "",
                 SERVER_LANGUAGE: ""
             };
-            this.$refs.ue.setUEContent("&nbsp;");
         },
         handleCreate() {
             

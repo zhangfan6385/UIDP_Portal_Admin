@@ -178,7 +178,7 @@
                     </el-row>
                 </el-form>
                 <div style="text-align:center">
-                    <el-button @click="editVisible = false">{{$t('userTable.cancel')}}</el-button>
+                    <el-button @click="cancel">{{$t('userTable.cancel')}}</el-button>
                     <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('commonTable.save')}}</el-button>
                     <el-button v-else type="primary" @click="updateData">{{$t('commonTable.save')}}</el-button>
                 </div>
@@ -497,13 +497,12 @@ export default {
                 MANAGE_ROLE_ID: null,
                 COMPONENT_VERSION: ""
             };
-            this.$refs.ue.setUEContent("&nbsp;");
         },
         handleCreate() {
             
             this.editVisible = true;
             this.dialogStatus = "create";
-            this.resetTemp();
+            //this.resetTemp();
             this.loadPartyA();
             this.$nextTick(() => {
                 this.$refs["dataForm"].clearValidate();
@@ -667,8 +666,9 @@ export default {
                             this.getList();
                             title = "成功";
                             type = "success";
-                            // this.list.unshift(this.temp)
+                            
                         }
+                        this.resetTemp();
                         this.editVisible = false;
                         this.$notify({
                             position: "bottom-right",
@@ -678,6 +678,7 @@ export default {
                             duration: 2000
                         });
                     });
+                    
                 }
             });
         },
@@ -709,6 +710,7 @@ export default {
                             //   }
                             // }
                         }
+                        this.resetTemp();
                         this.editVisible = false;
                         this.$notify({
                             position: "bottom-right",
@@ -720,6 +722,10 @@ export default {
                     });
                 }
             });
+        },
+        cancel(){
+            this.resetTemp();
+            this.editVisible = false;
         },
         handleSizeChange(val) {
             this.listQuery.limit = val;
