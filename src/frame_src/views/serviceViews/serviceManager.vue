@@ -499,12 +499,11 @@ export default {
         },
         resetTemp() {
             if (
-                this.temp.SERVICE_CONTENT != null ||
-                this.temp.SERVICE_CONTENT != ""
+                this.temp.SERVICE_CONTENT!=null||this.temp.SERVICE_CONTENT!=''
             ) {
                 setTimeout(() => {
                     this.$refs.ue.setUEContent("&nbsp;");
-                }, 500);
+                }, 1000);
             }
             this.temp = {
                 SERVICE_ID: "",
@@ -531,9 +530,10 @@ export default {
             this.$refs.ue.setUEContent("&nbsp;");
         },
         handleCreate() {
-            this.resetTemp();
+            
             this.editVisible = true;
             this.dialogStatus = "create";
+            this.resetTemp();
             this.loadPartyA();
             this.$nextTick(() => {
                 this.$refs["dataForm"].clearValidate();

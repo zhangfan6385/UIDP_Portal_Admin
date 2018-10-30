@@ -474,7 +474,7 @@ export default {
             ) {
                 setTimeout(() => {
                     this.$refs.ue.setUEContent("&nbsp;");
-                }, 500);
+                }, 1000);
             }
             this.temp = {
                 COMPONENT_ID: "",
@@ -500,9 +500,10 @@ export default {
             this.$refs.ue.setUEContent("&nbsp;");
         },
         handleCreate() {
-            this.resetTemp();
+            
             this.editVisible = true;
             this.dialogStatus = "create";
+            this.resetTemp();
             this.loadPartyA();
             this.$nextTick(() => {
                 this.$refs["dataForm"].clearValidate();
