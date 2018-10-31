@@ -141,7 +141,7 @@
                                 <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
                                   style="width: 100%;" >
                                 </el-select-tree> -->
-                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果" />
+                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果" :loadOptions="loadOptions"/>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
@@ -397,6 +397,46 @@ export default {
         };
     },
     methods: {
+        loadOptions({ action, parentNode, callback }) {
+            // Typically, do the AJAX stuff here.
+            // Once the server has responded,
+            // assign children options to the parent node & call the callback.
+            this.loadPartyA()
+            if (action === LOAD_CHILDREN_OPTIONS) {
+                switch (parentNode.id) {
+                    case "success": {
+                        simulateAsyncOperation(() => {
+                            parentNode.children = [
+                                {
+                                    id: "child",
+                                    label: ""
+                                }
+                            ];
+                            callback();
+                        });
+                        break;
+                    }
+                    case "no-children": {
+                        simulateAsyncOperation(() => {
+                            parentNode.children = null;
+                            callback();
+                        });
+                        break;
+                    }
+                    case "failure": {
+                        simulateAsyncOperation(() => {
+                            callback(
+                                new Error(
+                                    "Failed to load options: network error."
+                                )
+                            );
+                        });
+                        break;
+                    }
+                    default: /* empty */
+                }
+            }
+        },
         loadPartyA() {
             const query = { sysCode: "100" };
             fetchPartyList(query).then(response => {

@@ -153,7 +153,7 @@
                                 <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
                                   style="width: 100%;" >
                                 </el-select-tree> -->
-                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果" />
+                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果" :loadOptions="loadOptions" />
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
@@ -244,7 +244,7 @@ import panel from "@/frame_src/components/TreeList/panel.vue";
 import selectTree from "@/frame_src/components/TreeList/selectTree.vue";
 import treeter from "@/frame_src/components/TreeList/treeter";
 import merge from "element-ui/src/utils/merge";
-import Treeselect from "@riophae/vue-treeselect";
+import { Treeselect, LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {
     fetchComponentList,
@@ -424,6 +424,46 @@ export default {
     },
 
     methods: {
+        loadOptions({ action, parentNode, callback }) {
+            // Typically, do the AJAX stuff here.
+            // Once the server has responded,
+            // assign children options to the parent node & call the callback.
+            this.loadPartyA()
+            if (action === LOAD_CHILDREN_OPTIONS) {
+                switch (parentNode.id) {
+                    case "success": {
+                        simulateAsyncOperation(() => {
+                            parentNode.children = [
+                                {
+                                    id: "child",
+                                    label: ""
+                                }
+                            ];
+                            callback();
+                        });
+                        break;
+                    }
+                    case "no-children": {
+                        simulateAsyncOperation(() => {
+                            parentNode.children = null;
+                            callback();
+                        });
+                        break;
+                    }
+                    case "failure": {
+                        simulateAsyncOperation(() => {
+                            callback(
+                                new Error(
+                                    "Failed to load options: network error."
+                                )
+                            );
+                        });
+                        break;
+                    }
+                    default: /* empty */
+                }
+            }
+        },
         loadPartyA() {
             const query = { sysCode: "100" };
             fetchPartyList(query).then(response => {
@@ -499,11 +539,10 @@ export default {
             };
         },
         handleCreate() {
-            
             this.editVisible = true;
             this.dialogStatus = "create";
             //this.resetTemp();
-            this.loadPartyA();
+            //this.loadPartyA();
             this.$nextTick(() => {
                 this.$refs["dataForm"].clearValidate();
             });
@@ -666,7 +705,6 @@ export default {
                             this.getList();
                             title = "成功";
                             type = "success";
-                            
                         }
                         this.resetTemp();
                         this.editVisible = false;
@@ -678,7 +716,6 @@ export default {
                             duration: 2000
                         });
                     });
-                    
                 }
             });
         },
@@ -723,7 +760,7 @@ export default {
                 }
             });
         },
-        cancel(){
+        cancel() {
             this.resetTemp();
             this.editVisible = false;
         },
