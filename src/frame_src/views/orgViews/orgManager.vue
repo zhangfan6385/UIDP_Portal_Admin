@@ -427,3 +427,9 @@ export default {
     border: 0;
 }
 </style>
+<style lang="scss" >
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+  background-color:rgb(170, 166, 166) !important;
+  }
+  .el-tree-node__content:hover{background-color:#c5c7c9 !important;}
+</style>
