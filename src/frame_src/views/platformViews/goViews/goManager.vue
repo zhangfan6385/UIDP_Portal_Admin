@@ -233,7 +233,7 @@ import panel from "@/frame_src/components/TreeList/panel.vue";
 import selectTree from "@/frame_src/components/TreeList/selectTree.vue";
 import treeter from "@/frame_src/components/TreeList/treeter";
 import merge from "element-ui/src/utils/merge";
-import Treeselect from "@riophae/vue-treeselect";
+import { Treeselect, LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 //import quillEditor from "@/frame_src/components/QuillEditor";
 import UE from "../../../components/ue.vue";
