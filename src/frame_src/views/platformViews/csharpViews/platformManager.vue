@@ -233,7 +233,7 @@ import panel from "@/frame_src/components/TreeList/panel.vue";
 import selectTree from "@/frame_src/components/TreeList/selectTree.vue";
 import treeter from "@/frame_src/components/TreeList/treeter";
 import merge from "element-ui/src/utils/merge";
-import Treeselect from "@riophae/vue-treeselect";
+import { Treeselect, LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 //import quillEditor from "@/frame_src/components/QuillEditor";
 import UE from "../../../components/ue.vue";
@@ -265,6 +265,7 @@ var fonts = [
 // var Font = Quill.import("formats/font");
 // Font.whitelist = fonts; //将字体加入到白名单
 // Quill.register(Font, true);
+
 export default {
     name: "uidpPlatformManager",
     directives: {
@@ -398,44 +399,12 @@ export default {
     },
     methods: {
         loadOptions({ action, parentNode, callback }) {
-            // Typically, do the AJAX stuff here.
-            // Once the server has responded,
-            // assign children options to the parent node & call the callback.
-            this.loadPartyA()
             if (action === LOAD_CHILDREN_OPTIONS) {
-                switch (parentNode.id) {
-                    case "success": {
-                        simulateAsyncOperation(() => {
-                            parentNode.children = [
-                                {
-                                    id: "child",
-                                    label: ""
-                                }
-                            ];
-                            callback();
-                        });
-                        break;
-                    }
-                    case "no-children": {
-                        simulateAsyncOperation(() => {
-                            parentNode.children = null;
-                            callback();
-                        });
-                        break;
-                    }
-                    case "failure": {
-                        simulateAsyncOperation(() => {
-                            callback(
-                                new Error(
-                                    "Failed to load options: network error."
-                                )
-                            );
-                        });
-                        break;
-                    }
-                    default: /* empty */
+                if(parentNode.children==null){
+                    parentNode.children=undefined
+                    callback()
                 }
-            }
+             }
         },
         loadPartyA() {
             const query = { sysCode: "100" };

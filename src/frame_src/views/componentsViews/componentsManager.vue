@@ -425,44 +425,12 @@ export default {
 
     methods: {
         loadOptions({ action, parentNode, callback }) {
-            // Typically, do the AJAX stuff here.
-            // Once the server has responded,
-            // assign children options to the parent node & call the callback.
-            this.loadPartyA()
             if (action === LOAD_CHILDREN_OPTIONS) {
-                switch (parentNode.id) {
-                    case "success": {
-                        simulateAsyncOperation(() => {
-                            parentNode.children = [
-                                {
-                                    id: "child",
-                                    label: ""
-                                }
-                            ];
-                            callback();
-                        });
-                        break;
-                    }
-                    case "no-children": {
-                        simulateAsyncOperation(() => {
-                            parentNode.children = null;
-                            callback();
-                        });
-                        break;
-                    }
-                    case "failure": {
-                        simulateAsyncOperation(() => {
-                            callback(
-                                new Error(
-                                    "Failed to load options: network error."
-                                )
-                            );
-                        });
-                        break;
-                    }
-                    default: /* empty */
+                if(parentNode.children==null){
+                    parentNode.children=undefined
+                    callback()
                 }
-            }
+             }
         },
         loadPartyA() {
             const query = { sysCode: "100" };

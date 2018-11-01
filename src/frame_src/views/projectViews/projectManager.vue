@@ -135,6 +135,7 @@
  :disable-branch-nodes="false"
   placeholder="甲方单位"
   noResultsText="未搜索到结果"
+  :loadOptions="loadOptions"
 />
                             </el-form-item>
                         </el-col>
@@ -151,6 +152,7 @@
  :disable-branch-nodes="false"
   placeholder="乙方单位"
   noResultsText="未搜索到结果"
+  :loadOptions="loadOptions"
 />
                             </el-form-item>
                         </el-col>
@@ -229,7 +231,7 @@ import panel from '@/frame_src/components/TreeList/panel.vue'
 import selectTree from '@/frame_src/components/TreeList/selectTree.vue'
 import treeter from '@/frame_src/components/TreeList/treeter'
 import merge from 'element-ui/src/utils/merge'
-import Treeselect from '@riophae/vue-treeselect'
+import { Treeselect, LOAD_CHILDREN_OPTIONS } from "@riophae/vue-treeselect"
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {
     fetchProjectList,
@@ -346,6 +348,14 @@ export default {
         };
     },
     methods: {
+         loadOptions({ action, parentNode, callback }) {
+            if (action === LOAD_CHILDREN_OPTIONS) {
+                if(parentNode.children==null){
+                    parentNode.children=undefined
+                    callback()
+                }
+             }
+        },
            dateFormat:function(row, column) {
                var date = row[column.property];
           if (date == undefined) {
