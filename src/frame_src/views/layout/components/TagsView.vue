@@ -32,6 +32,9 @@ export default {
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
+    },
+    getTabsColour(){
+      return this.$store.state.user.themClass
     }
   },
   watch: {
@@ -47,7 +50,7 @@ export default {
       }
     }
   },
-  mounted() {
+  beforeMount() {
     this.addViewTags()
   },
   methods: {
@@ -67,7 +70,7 @@ export default {
         return false
       }
       var activeTag = document.querySelector('.tags-view-container .tags-view-wrapper .tags-view-item.active')
-      var activeColor = '#3A8EE6'
+      var activeColor = this.getTabsColour;
       if (activeTag != null) {
         activeColor = activeTag.style.backgroundColor
         activeTag.removeAttribute('style')
@@ -76,7 +79,6 @@ export default {
         var newActiveTag = document.querySelector('.tags-view-container .tags-view-wrapper .tags-view-item.active')
         newActiveTag.style.cssText = 'background-color:' + activeColor + ';border-color:' + activeColor// 替换颜色
       })
-
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag

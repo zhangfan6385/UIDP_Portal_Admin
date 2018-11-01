@@ -1,5 +1,6 @@
 import { loginByUsername, getUserInfo } from '@/frame_src/api/login'
 import { getToken, setToken, removeToken } from '@/frame_src/utils/auth'
+import { GetColor } from '@/frame_src/api/title'
 
 const user = {
   state: {
@@ -26,6 +27,7 @@ const user = {
     userSex: '',
     roleLevel: '',
     UseOrg:'',
+    themClass:'#3A8EE6'
   },
 
   mutations: {
@@ -86,6 +88,9 @@ const user = {
     SET_ROLE_LEVEL: (state, roleLevel) => {
       state.roleLevel = roleLevel
     },
+    SET_THEMECLS:(state,themClass)=>{
+      state.themClass=themClass
+    }
   },
 
   actions: {
@@ -128,6 +133,23 @@ const user = {
             reject(response.data.message)
           }
         }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    //获取皮肤颜色
+    GetColor({commit}){
+      return new Promise((resolve,reject)=>{
+        GetColor('').then(response=>{
+          if(response.data.code===2000){
+            const data=response.data
+            commit('SET_THEMECLS',data.item.CONF_VALUE)
+            //console.log(data.item.CONF_VALUE)
+            resolve(response)
+          }else{
+            reject(response.data.message)
+          }
+        }).catch(error=>{
           reject(error)
         })
       })
