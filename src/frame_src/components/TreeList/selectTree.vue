@@ -303,6 +303,10 @@ export default {
         this.visible = false
         this.selectedLabel = nodeData[this.propNames.label]
         this.selected = nodeData
+        //this.$store.dispatch('getnodeinfo',nodeData);
+        //this.$parent.roleTree.nodeClick();
+        //this.$parent.roleTree.form.orgNameFull=this.selected;
+        this.$emit('nodeClick',nodeData)
         this.handleResize()
       },
       handleCheckChange(data, checked, indeterminate) {

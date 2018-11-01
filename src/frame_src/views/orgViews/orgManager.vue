@@ -17,7 +17,7 @@
 
       <el-row slot="body" :gutter="24" style="margin-bottom: 20px;">
         <el-col :span="6" :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 20px;">
-          <el-tree v-if="roleTree" :data="roleTree" ref="roleTree" :render-content="renderContent" highlight-current @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps"></el-tree>
+          <el-tree   v-if="roleTree" :data="roleTree" ref="roleTree" :render-content="renderContent" highlight-current clearable node-key="id" :props="defaultProps" ></el-tree>
         </el-col>
         <el-col :span="18" :xs="24" :sm="24" :md="18" :lg="18">
           <el-card class="box-card">
@@ -26,7 +26,7 @@
               <el-form :rules="rules" :model="form" ref="form">
                 <el-form-item :label="$t('orgTable.parent')" :label-width="formLabelWidth">
                   <!--<el-input v-model="form.parentId" auto-complete="off"></el-input>-->
-                  <el-select-tree v-model="form.parentId" :treeData="roleTree" :propNames="defaultProps" clearable @nodeClick="nodeClick()" placeholder="请选择父级" prop="">
+                  <el-select-tree v-model="form.parentId" :treeData="roleTree" :propNames="defaultProps" clearable  @nodeClick="nodeClick" placeholder="请选择父级" prop="" >
                   </el-select-tree>
                 </el-form-item>
                 <el-form-item :label="$t('orgTable.orgCode')" prop="orgCode" :label-width="formLabelWidth">
@@ -207,8 +207,8 @@ export default {
             console.log(data);
             this.form = data
         },
-        nodeClick(){
-          console.log('1');
+        nodeClick(data){
+            this.form.orgName=data.orgName;
         },
         newAdd() {
             // 增加新的角色数据

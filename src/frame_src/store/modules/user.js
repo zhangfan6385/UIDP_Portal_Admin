@@ -25,7 +25,7 @@ const user = {
     userId: '',
     userSex: '',
     roleLevel: '',
-    UseOrg:''
+    UseOrg:'',
   },
 
   mutations: {
@@ -85,7 +85,7 @@ const user = {
     },
     SET_ROLE_LEVEL: (state, roleLevel) => {
       state.roleLevel = roleLevel
-    }
+    },
   },
 
   actions: {
