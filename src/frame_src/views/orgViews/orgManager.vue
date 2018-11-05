@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="app-container calendar-list-container">
     <imp-panel>
       <h3 class="box-title" slot="header" style="width: 25%;">
@@ -12,12 +12,12 @@
 
         <!-- <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange"> -->
         <!--  <el-button style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
-                   -->
+  :render-content="renderContent"-->
       </h3>
 
       <el-row slot="body" :gutter="24" style="margin-bottom: 20px;">
         <el-col :span="6" :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 20px;">
-          <el-tree   v-if="roleTree" :data="roleTree" ref="roleTree" :render-content="renderContent" highlight-current clearable node-key="id" :props="defaultProps" ></el-tree>
+          <el-tree v-if="roleTree" :data="roleTree" ref="roleTree" highlight-current  @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps"></el-tree>
         </el-col>
         <el-col :span="18" :xs="24" :sm="24" :md="18" :lg="18">
           <el-card class="box-card">
@@ -26,7 +26,7 @@
               <el-form :rules="rules" :model="form" ref="form">
                 <el-form-item :label="$t('orgTable.parent')" :label-width="formLabelWidth">
                   <!--<el-input v-model="form.parentId" auto-complete="off"></el-input>-->
-                  <el-select-tree v-model="form.parentId" :treeData="roleTree" :propNames="defaultProps" clearable  @nodeClick="nodeClick" placeholder="请选择父级" prop="" >
+                  <el-select-tree v-model="form.parentId" :treeData="roleTree" :propNames="defaultProps" clearable placeholder="请选择父级" prop="" @nodeClick="nodeClick">
                   </el-select-tree>
                 </el-form-item>
                 <el-form-item :label="$t('orgTable.orgCode')" prop="orgCode" :label-width="formLabelWidth">
@@ -76,9 +76,9 @@
 
                   <el-button v-if="form.id==null&&!Useorg" size="mini" type="primary" @click="onOkSubmit">{{$t('orgTable.add')}}
                   </el-button>
-                  <el-button v-if="form.id!=null" size="mini" type="primary" @click="onUpdateSubmit">{{$t('orgTable.edit')}}
+                  <el-button v-if="form.id!=null&&!Useorg" size="mini" type="primary" @click="onUpdateSubmit">{{$t('orgTable.edit')}}
                   </el-button>
-                  <el-button size="mini" type="danger" @click="deleteSelected" v-show="form.id && form.id!=null">{{$t('orgTable.delete')}}
+                  <el-button size="mini" type="danger" @click="deleteSelected" v-show="form.id && form.id!=null&&!Useorg">{{$t('orgTable.delete')}}
                   </el-button>
 
                 </el-form-item>
@@ -181,10 +181,10 @@ export default {
                 orgCode: "", // name: '',
                 orgName: "", // enName
                 orgNameFull: "", // enName
-                //orgAddr: '', // enName
+                orgAddr: "", // enName
                 phone: "", // enName
-                orgShortName: "", // enName
-                //phoneFax: '',
+                phoneS: "", // enName
+                phoneFax: "",
                 ISINVALID: "",
                 remark: "",
                 orgShortName: null
@@ -193,19 +193,14 @@ export default {
     },
     methods: {
         getorg() {
-            const query = {
-                CONF_CODE:
-                    "'PTR_IDENT','LOCAL_IDENT','SYS_NAME','CopyRight','CLOUD_ORG'"
-            };
-            GetTitle(query).then(response => {
+            GetTitle().then(response => {
                 this.Useorg = Boolean(response.data.cloudorg.CONF_VALUE);
             });
         },
 
         handleNodeClick(data) {
             // 把左侧树的选中数据赋值到右边form表单里。
-            console.log(data);
-            this.form = data
+            this.form = data;
         },
         nodeClick(data){
             this.form.orgName=data.orgName;
@@ -219,10 +214,10 @@ export default {
                 orgCode: "", // name: '',
                 orgName: "", // enName
                 orgNameFull: "", // enName
-                //orgAddr: '', // enName
+                orgAddr: "", // enName
                 phone: "", // enName
-                //phoneS: '', // enName
-                //phoneFax: '',
+                phoneS: "", // enName
+                phoneFax: "",
                 ISINVALID: "1",
                 remark: "",
                 orgShortName: ""
@@ -239,6 +234,8 @@ export default {
                         if (response.data.code === 2000) {
                             title = "成功";
                             type = "success";
+                            this.newAdd();
+                            this.load();
                         }
                         this.$notify({
                             position: "bottom-right",
@@ -247,8 +244,6 @@ export default {
                             type: type,
                             duration: 2000
                         });
-                        this.newAdd();
-                        this.load();
                         this.$refs["form"].resetFields();
                     });
                 }
@@ -282,7 +277,8 @@ export default {
         },
         deleteSelected(id) {
             // 删除方法
-            this.$confirm("确认删除记录吗?", "提示", {
+
+            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
@@ -364,23 +360,18 @@ export default {
                 // this.roleTree.push(...defaultValue.roleList);
             });
         },
-        // renderContent(h, { node, data, store }) { // 左侧树的遍历
-        //   return (
-        //     <span>
-        //       <span>
-        //         <span>{node.label}</span>
-        //       </span>
-        //       <span class='render-content'>
-        //         <i class='fa fa-trash' on-click={ () => this.deleteSelected(data.id) }></i>
-        //       </span>
-        //     </span>)
-        // }
         renderContent(h, { node, data, store }) {
-            // 给左边树进行遍历
+            // 左侧树的遍历
             return (
                 <span>
                     <span>
                         <span>{node.label}</span>
+                    </span>
+                    <span class="render-content">
+                        <i
+                            class="fa fa-trash"
+                            on-click={() => this.deleteSelected(data.id)}
+                        />
                     </span>
                 </span>
             );
@@ -426,6 +417,7 @@ export default {
 .select-tree .el-tree {
     border: 0;
 }
+
 </style>
 <style lang="scss" >
 .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
