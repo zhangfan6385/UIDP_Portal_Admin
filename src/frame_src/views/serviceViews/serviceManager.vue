@@ -105,6 +105,21 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
+                       <el-row>
+                        <el-col :span="12">
+                            <el-form-item :label="$t('platformTable.manage_org_name')+':'">
+                                <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
+                                  style="width: 100%;" >
+                                </el-select-tree> -->
+                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果"  :loadOptions="loadOptions" :maxHeight=240 />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="管理部门电话：" prop="MANAGE_TEL">
+                                <el-input v-model="temp.MANAGE_TEL"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="服务版本：" prop="SERVER_VERSION">
@@ -156,21 +171,7 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row>
-                        <el-col :span="12">
-                            <el-form-item :label="$t('platformTable.manage_org_name')+':'">
-                                <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
-                                  style="width: 100%;" >
-                                </el-select-tree> -->
-                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果"  :loadOptions="loadOptions"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="12">
-                            <el-form-item label="管理部门电话：" prop="MANAGE_TEL">
-                                <el-input v-model="temp.MANAGE_TEL"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
+                 
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="服务说明" prop="SERVICE_CONTENT">

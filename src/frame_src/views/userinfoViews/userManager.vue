@@ -50,7 +50,7 @@
         </template>
        </el-table-column>
 
-      <el-table-column width="200px" align="center" label="密码">
+      <!-- <el-table-column width="200px" align="center" label="密码">
         <template slot-scope="scope">
           <span>{{scope.row.USER_PASS}}</span>
         </template>
@@ -60,7 +60,7 @@
         <template slot-scope="scope" >
           <span>{{scope.row.USER_PASS}}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
         <el-table-column width="200px" align="center" label="姓名">
         <template slot-scope="scope">
