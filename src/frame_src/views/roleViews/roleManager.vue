@@ -9,6 +9,7 @@
       <el-col :span="6" :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 20px;">
         <el-tree v-if="roleTree"
                  :data="roleTree"
+                 style="font-size:14px"
                  ref="roleTree" 
                  highlight-current
                  :render-content="renderContent"

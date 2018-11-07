@@ -7,6 +7,7 @@
         <el-tree v-if="roleTree"
                  :data="roleTree"
                  ref="roleTree" 
+                 style="font-size:14px"
                  highlight-current
                  :render-content="renderContent"
                  @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps"></el-tree>

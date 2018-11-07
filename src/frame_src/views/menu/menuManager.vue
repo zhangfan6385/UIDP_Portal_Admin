@@ -10,6 +10,7 @@
           <el-tree v-if="menuTree"
                   ref="menuTree"
                   :data="menuTree"
+                  style="font-size:14px"
                   show-checkbox
                   highlight-current
                   :render-content="renderContent"

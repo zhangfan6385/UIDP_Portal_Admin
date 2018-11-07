@@ -11,7 +11,7 @@
                     :expand-on-click-node='false'
                     :show-checkbox='false'
                     highlight-current
-                    :render-content="renderContent"
+                    style="font-size:14px"
                     @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps"></el-tree>
         </el-col>
         <el-col :span="16">
@@ -22,7 +22,7 @@
                         ref="resourceTree"
                         :default-expand-all='false'
                         show-checkbox
-                        
+                        style="font-size:14px"
                         node-key="id"
                         v-loading="dialogLoading"
                         :props="defaultMenuProps">
