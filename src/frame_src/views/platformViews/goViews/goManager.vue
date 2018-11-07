@@ -105,7 +105,7 @@
                                 <!-- <el-select-tree v-model="temp.MANAGE_ORG_ID" :treeData.sync="menuSelectATree" :propNames="defaultProps" clearable
                                   style="width: 100%;" >
                                 </el-select-tree> -->
-                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果" :load-options="loadOptions" :loadOptions="loadOptions" :maxHeight=240 />
+                                <treeselect v-model="temp.MANAGE_ORG_ID" :multiple="false" :options="menuSelectATree" :normalizer="normalizer" :disable-branch-nodes="false" placeholder="管理部门" noResultsText="未搜索到结果" :load-options="loadOptions" :maxHeight=240 />
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
