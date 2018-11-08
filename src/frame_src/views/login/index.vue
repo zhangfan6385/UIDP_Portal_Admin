@@ -142,7 +142,7 @@ export default {
             radio: "",
             code: "",
             list: [],
-            sysmessage: "测试平台",
+            sysmessage: "",
             copyright: "",
             CONF_CODE:
                 "'PTR_IDENT','LOCAL_IDENT','SYS_NAME','CopyRight','CLOUD_ORG'",
