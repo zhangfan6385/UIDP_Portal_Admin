@@ -11,7 +11,6 @@
                   ref="menuTree"
                   :data="menuTree"
                   style="font-size:14px"
-                  show-checkbox
                   highlight-current
                   :render-content="renderContent"
                   @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps"></el-tree>
