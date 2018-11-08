@@ -36,9 +36,9 @@
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" width="475px" :visible.sync="dialogFormVisible">
     
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 400px; margin-left:20px;'>
+      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="90px" style='width: 400px; margin-left:20px;'>
         
     <el-form-item v-if="dialogStatus=='create'"  label="操作编码" prop="OPER_TYPE">
        <el-input v-model="temp.OPER_TYPE"></el-input>
@@ -55,7 +55,7 @@
 
          
       </el-form> 
-        <div slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button @click="dialogFormVisible = false">{{$t('commonTable.cancel')}}</el-button>
         <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('commonTable.confirm')}}</el-button>
         <el-button v-else type="primary" @click="updateData">{{$t('commonTable.confirm')}}</el-button>

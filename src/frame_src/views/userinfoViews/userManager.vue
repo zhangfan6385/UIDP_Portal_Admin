@@ -252,7 +252,7 @@
                   </el-input>
                 </el-form-item>
               </el-form>
-              <div style="text-align:right">
+              <div style="text-align:center">
                 <el-button @click="dialogFormVisible = false">{{$t('userTable.cancel')}}</el-button>
                 <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('userTable.confirm')}}</el-button>
                 <el-button v-else type="primary" @click="updateData">{{$t('userTable.confirm')}}</el-button>
