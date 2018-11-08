@@ -166,7 +166,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="调用次数：" prop="SERVICE_TIMES">
+                            <el-form-item label="申请次数：" prop="SERVICE_TIMES">
                                 <el-input v-model="temp.SERVICE_TIMES"></el-input>
                             </el-form-item>
                         </el-col>
