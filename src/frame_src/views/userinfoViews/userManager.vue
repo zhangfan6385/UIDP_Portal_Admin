@@ -135,7 +135,7 @@
           <span>{{scope.row.orgName}}</span>
         </template>
        </el-table-column>
-        <el-table-column width="150px" align="center" label="关联账号">
+        <el-table-column width="200px" show-overflow-tooltip="true" align="center" label="关联账号">
         <template slot-scope="scope">
           <span>{{scope.row.ASSOCIATED_ACCOUNT}}</span>
         </template>
@@ -648,6 +648,7 @@ export default {
       this.listLoading = true;
       this.orgkey = this.$refs.roleTree.getCurrentKey();
       this.listQuery.orgId = this.orgkey;
+      this.listQuery.page=1
       fetchUserOrgList(this.listQuery).then(response => {
         if (response.data.code === 2000) {
           this.list = response.data.items;
@@ -1049,13 +1050,49 @@ export default {
     },
     handleSizeChange(val) {
       this.listQuery.limit = val;
-      this.listQuery.orgId = this.orgKey;
-      this.getParentUser(this.listUserQuery);
+     if(this.listQuery.orgId ==undefined||this.listQuery.orgId ==null||this.listQuery.orgId ==""){
+        this.getList(this.listQuery);
+      }
+      else{
+          fetchUserOrgList(this.listQuery).then(response => {
+        if (response.data.code === 2000) {
+          this.list = response.data.items;
+          this.total = response.data.total;
+          this.listLoading = false;
+        } else {
+          this.listLoading = false;
+          this.$notify({   position: 'bottom-right',
+            title: "失败",
+            message: response.data.message,
+            type: "error",
+            duration: 2000
+          });
+        }
+      });
+      }
     },
     handleCurrentChange(val) {
       this.listQuery.page = val;
-      this.listQuery.orgId = this.orgKey;
-     this.getParentUser(this.listUserQuery);
+      if(this.listQuery.orgId ==undefined||this.listQuery.orgId ==null||this.listQuery.orgId ==""){
+        this.getList(this.listQuery);
+      }
+      else{
+          fetchUserOrgList(this.listQuery).then(response => {
+        if (response.data.code === 2000) {
+          this.list = response.data.items;
+          this.total = response.data.total;
+          this.listLoading = false;
+        } else {
+          this.listLoading = false;
+          this.$notify({   position: 'bottom-right',
+            title: "失败",
+            message: response.data.message,
+            type: "error",
+            duration: 2000
+          });
+        }
+      });
+      }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
