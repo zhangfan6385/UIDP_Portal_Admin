@@ -174,7 +174,7 @@
                  
                     <el-row>
                         <el-col :span="24">
-                            <el-form-item label="服务说明" prop="SERVICE_CONTENT">
+                            <el-form-item label="服务说明：" prop="SERVICE_CONTENT">
                                 <!-- <el-input v-model="temp.SERVICE_CONTENT" type="textarea" :rows="5"></el-input> -->
                                 <!-- <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.SERVICE_CONTENT" v-bind:apiUrl="urlPicUpload">
                                 </quillEditor> -->
