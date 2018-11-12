@@ -18,6 +18,7 @@
             <el-card class="box-card">
                 <div class="select-tree">
                     <el-tree
+                        check-strictly="true"
                         :data="resourceTree"
                         ref="resourceTree"
                         :default-expand-all='false'
