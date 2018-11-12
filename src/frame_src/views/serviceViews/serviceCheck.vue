@@ -274,14 +274,29 @@ export default {
         }
         var timestamp=this.timeFormate(new Date())
         var result="";
+        var telephone="&Telephone";
+         if(this.managetel!=null&&this.managetel.length>0){
+                   telephone=this.managetel;
+        }
         // if(this.temp.CHECK_STATE=="1"&& this.temp.APPLY_TYPE=="2"){
         //     result="("+this.platUrl+")"+"审核通过！请到软件开发平台资源库网站自行使用。"
         // }
-        if(this.temp.CHECK_STATE=="1"&& this.temp.APPLY_TYPE=="2"){
-            result="审核通过！请到软件开发平台资源库网站自行使用。"
+        if(this.temp.CHECK_STATE=="1"){
+            // result="审核通过！请到软件开发平台资源库网站自行使用。"
+            if(this.temp.CHECK_CONTENT!=null&&this.temp.CHECK_CONTENT.length>0){
+            result="审核通过，审核原因："+this.temp.CHECK_CONTENT+",&Content3，&Content4"+telephone
+            }
+            else{
+            result="审核通过，&Content4"+telephone
+            }
         }
         else if(this.temp.CHECK_STATE=="2"){
-            result="审核未通过，审核原因："+this.temp.CHECK_CONTENT+"，如有问题请联系管理员,联系电话："+this.managetel
+           if(this.temp.CHECK_CONTENT!=null&&this.temp.CHECK_CONTENT.length>0){
+            result="审核未通过，审核原因："+this.temp.CHECK_CONTENT+"，&Content4"+telephone
+            }
+            else{
+            result="审核未通过，&Content4"+telephone
+            }
         }
         var sendTitle="尊敬的开发者"
         if(this.applycompany!="")
@@ -304,8 +319,8 @@ export default {
                                 <tr>
                                     <td>
                                         <p style="width: 100%;margin:0;font-size:14px;font-family:"微软雅黑",Helvetica,Arial,sans-serif;word-wrap:break-word;word-break:break-all;margin-bottom:20px">`+sendTitle+`：<br/>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您在`+this.projectName+`项目申请的<lable style="word-wrap:break-word;word-break:break-all;">`+this.platName+`</lable>`+result+`</p>
-                                        <p style="text-align:right;"><br>大港油田信息中心<br>`+timestamp+`</p>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Content1`+this.projectName+`&Content2<lable style="word-wrap:break-word;word-break:break-all;">`+this.platName+`</lable>`+result+`</p>
+                                        <p style="text-align:right;"><br>&Unit<br>`+timestamp+`</p>
                                     </td>
                                 </tr>
                             </tbody>
