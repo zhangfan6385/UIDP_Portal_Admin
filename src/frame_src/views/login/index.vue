@@ -17,64 +17,64 @@
                     </el-col>
                 </el-row>
             </el-header>
-            <div style="width:100%;height:100%;" class="back">
-                <el-main>
-                    <div class="loginform">
-                        <div class="header">
-                            <div class="logo">
-                                用户登录
-                            </div>
-                        </div>
-                        <div>
-                            <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-                                <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入账号">
-                                    <template slot="prepend">
-                                        <svg-icon icon-class="user" />
-                                    </template>
-                                    <el-dropdown class="show-pwd" @command="handleCommand" slot="append">
-                                        <span class="el-dropdown-link">
-                                            <span style="font-size:8px">{{radio}}</span>
-                                            <i class="el-icon-arrow-down el-icon--right"></i>
-                                        </span>
-                                        <el-dropdown-menu slot="dropdown">
-                                            <div v-for="(item,index) in list" :key="index">
-                                                <el-dropdown-item :command="item.key"><span style="font-size:10px">{{item.key}}</span></el-dropdown-item>
-                                            </div>
-                                        </el-dropdown-menu>
-                                    </el-dropdown>
-                                </el-input>
-                                <div class="verification">
-                                    <span v-if="verification1===1">账号不能为空！</span>
-                                </div>
-
-                                <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码">
-                                    <template slot="prepend">
-                                        <svg-icon icon-class="password" />
-                                    </template>
-                                    <template slot="append">
-                                        <el-button icon="el-icon-view" @click="showPwd" />
-                                    </template>
-                                </el-input>
-                                <div class="verification">
-                                    <span v-if="verification2===1">密码不能为空！</span>
-                                    <span v-if="verification2===2">密码必须大于6位！</span>
-                                </div>
-
-                                <el-button type="primary" class="button" :loading="loading" @click.native.prevent="handleLogin">用户登录</el-button>
-
-                            </el-form>
+            <!-- <div style="width:100%;height:100%;" class="back"> -->
+            <el-main>
+                <div class="loginform">
+                    <div class="header">
+                        <div class="logo">
+                            用户登录
                         </div>
                     </div>
+                    <div>
+                        <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+                            <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入账号">
+                                <template slot="prepend">
+                                    <svg-icon icon-class="user" />
+                                </template>
+                                <el-dropdown class="show-pwd" @command="handleCommand" slot="append">
+                                    <span class="el-dropdown-link">
+                                        <span style="font-size:8px">{{radio}}</span>
+                                        <i class="el-icon-arrow-down el-icon--right"></i>
+                                    </span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <div v-for="(item,index) in list" :key="index">
+                                            <el-dropdown-item :command="item.key"><span style="font-size:10px">{{item.key}}</span></el-dropdown-item>
+                                        </div>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </el-input>
+                            <div class="verification">
+                                <span v-if="verification1===1">账号不能为空！</span>
+                            </div>
 
-                    <el-dialog width="40%" :title="$t('login.loginToUserCode')" :visible.sync="showDialog" append-to-body>
-                        <log-in-user :updateShowDialog='updateShowDialog' />
-                    </el-dialog>
-                </el-main>
-            </div>
+                            <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码">
+                                <template slot="prepend">
+                                    <svg-icon icon-class="password" />
+                                </template>
+                                <template slot="append">
+                                    <el-button icon="el-icon-view" @click="showPwd" />
+                                </template>
+                            </el-input>
+                            <div class="verification">
+                                <span v-if="verification2===1">密码不能为空！</span>
+                                <span v-if="verification2===2">密码必须大于6位！</span>
+                            </div>
+
+                            <el-button type="primary" class="button" :loading="loading" @click.native.prevent="handleLogin">用户登录</el-button>
+
+                        </el-form>
+                    </div>
+                </div>
+
+                <el-dialog width="40%" :title="$t('login.loginToUserCode')" :visible.sync="showDialog" append-to-body>
+                    <log-in-user :updateShowDialog='updateShowDialog' />
+                </el-dialog>
+            </el-main>
+            <!-- </div> -->
 
             <el-footer>
-                <div class="copyright" v-if="copyright!=''">
-                    ©{{copyright}}&nbsp;版权所有
+                <div class="copyright">
+                    <span v-if="copyright!=''">©{{copyright}}&nbsp;版权所有</span>
                 </div>
             </el-footer>
         </el-container>
@@ -138,6 +138,7 @@ export default {
             list: [],
             sysmessage: "",
             copyright: "",
+            currentTime:'',
             CONF_CODE:
                 "'PTR_IDENT','LOCAL_IDENT','SYS_NAME','CopyRight','CLOUD_ORG'",
             verification1: 0,
@@ -293,12 +294,41 @@ export default {
         },
         GetColor() {
             this.$store.dispatch("GetColor", "");
+        },
+        getTime() {
+            let date = new Date();
+            let year = date.getFullYear();
+
+            //由于js的月份是从0开始的,所以月份加上1
+            let month = date.getMonth() + 1;
+
+            //返回的是一个月中的某一天1-31
+            let myDate = date.getDate();
+
+            //返回的是一个星期中的某一天0-6,0是一个星期的第一天星期天
+            let myDay = date.getDay();
+
+            //获取24小时格式的小时
+            let hours = date.getHours();
+            let map1 = [1, 2, 3, 4, 5, 6, 7];
+            let map2 = ["一", "二", "三", "四", "五", "六", "日"];
+            let realDay = "";
+            if (myDay === 0) {
+                realDay = map2[6];
+            } else {
+                realDay = map2[map1.findIndex(t => t === myDay)];
+            }
+            this.currentTime =
+                year + "年" + month + "月" + myDate + "日,星期" + realDay;
         }
     },
-
+    beforeMounted(){
+               this.GetColor();
+    },
     mounted() {
         this.GetTitle();
-        this.GetColor();
+ 
+        this.getTime();
     },
     created() {
         // window.addEventListener('hashchange', this.afterQRScan)
@@ -319,6 +349,9 @@ body {
 }
 .login-container {
     height: 100%;
+    .el-container {
+        height: 100%;
+    }
     .el-header {
         background-color: white;
         height: 85px !important;
@@ -334,9 +367,6 @@ body {
                 height: 50px;
                 width: 50px;
             }
-        }
-        .el-container {
-            height: 100%;
         }
         .info {
             float: right;
@@ -356,10 +386,10 @@ body {
         background: #2f409a;
     }
     .el-main {
-        height: 100%;
         border-left: 0px;
         box-shadow: 0 0 60px 15px #2f409a inset;
         width: 100%; //1100px;
+        height: 100%;
         background: url("../../../frame_src/imgs/loginback.jpg");
         background-repeat: no-repeat;
         //background-size:cover;
@@ -432,7 +462,7 @@ body {
 
     .el-footer {
         background: white;
-        height: 150px;
+        //height: 150px;
         .copyright {
             margin-left: 45%;
             //margin-bottom: 35px;
