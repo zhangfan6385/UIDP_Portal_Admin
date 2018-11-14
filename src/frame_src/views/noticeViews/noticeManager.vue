@@ -114,23 +114,26 @@
         <!--修改-->
         <el-dialog :visible.sync="editVisible" :title="textMap[dialogStatus]" width="800px">
             <el-card>
-                <el-form :rules="rules" ref="dataFormInfo" :model="temp" label-position="left" label-width="120px" style='width: 94%; margin-left:6%;'>
+                <el-form :rules="rules" ref="dataFormInfo" :model="temp" label-position="right" label-width="100px" style='width: 99%;'>
                     <!-- <el-form-item :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
                         <el-input v-model="temp.NOTICE_CODE"></el-input>
                     </el-form-item> -->
-                    <el-form-item v-if="dialogStatus=='create'" :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
-                        <span>系统自动生成编号</span>
-                    </el-form-item>
-                    <el-form-item v-else :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
-                        <el-input v-model="temp.NOTICE_CODE"></el-input>
-                    </el-form-item>
+                    <el-row>
+                        <el-col span="12">
+                            <el-form-item :label="$t('noticeTable.notice_code')+':'" prop="NOTICE_CODE">
+                                <el-input v-model="temp.NOTICE_CODE" style="width:240px;" disabled="true" placeholder="系统自动生成"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col span="12">
+                            <el-form-item :label="$t('noticeTable.notice_datetime')+':'" prop="NOTICE_DATETIME">
+                                <!-- <el-date-picker type="date" placeholder="发布时间" v-model="temp.NOTICE_DATETIME" style="width: 100%;"></el-date-picker> -->
+                                <el-date-picker v-model="temp.NOTICE_DATETIME" style="width:100%;" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00">
+                                </el-date-picker>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                     <el-form-item :label="$t('noticeTable.notice_title')+':'" prop="NOTICE_TITLE">
                         <el-input v-model="temp.NOTICE_TITLE" width="400px"></el-input>
-                    </el-form-item>
-                    <el-form-item :label="$t('noticeTable.notice_datetime')+':'" prop="NOTICE_DATETIME">
-                        <!-- <el-date-picker type="date" placeholder="发布时间" v-model="temp.NOTICE_DATETIME" style="width: 100%;"></el-date-picker> -->
-                        <el-date-picker v-model="temp.NOTICE_DATETIME" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" default-time="12:00:00">
-                        </el-date-picker>
                     </el-form-item>
                     <!-- <el-form-item :label="$t('noticeTable.notice_content')+':'" prop="NOTICE_CONTENT">
                         <quillEditor @listenToEditorChange="EditorChange" v-bind:content="temp.NOTICE_CONTENT" v-bind:apiUrl="urlPicUpload">
@@ -140,7 +143,7 @@
                         <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
                     </div>
                 </el-form>
-                <div style="text-align:center">
+                <div style="text-align:center;margin-top:15px;">
                     <el-button @click="editVisible = false">{{$t('userTable.cancel')}}</el-button>
                     <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{$t('noticeTable.save')}}</el-button>
                     <el-button v-else type="primary" @click="updateData">{{$t('noticeTable.save')}}</el-button>
@@ -321,9 +324,9 @@ export default {
                 this.temp.NOTICE_CONTENT != null ||
                 this.temp.NOTICE_CONTENT != ""
             ) {
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.$refs.ue.setUEContent("&nbsp;");
-                },500)
+                }, 500);
             }
             this.temp = {
                 NOTICE_ID: "",
@@ -370,10 +373,10 @@ export default {
             //this.$refs.ue.setUEContent(this.temp.PLAT_RUNREQUIRE);
             // let first=document.getElementsByClassName('view');
             // first.innerHTML=this.temp.NOTICE_CONTENT
-            setTimeout(()=>{
-                this.$refs.ue.setUEContent(this.temp.NOTICE_CONTENT)
-            },2000);
-            
+            setTimeout(() => {
+                this.$refs.ue.setUEContent(this.temp.NOTICE_CONTENT);
+            }, 2000);
+
             this.$nextTick(() => {
                 this.$refs["dataFormInfo"].clearValidate();
             });
@@ -434,7 +437,7 @@ export default {
                         this.temp.NOTICE_CONTENT === ""
                     ) {
                         this.temp.NOTICE_CONTENT = "&nbsp;";
-                    } 
+                    }
                     createNoticeArticle(this.temp).then(response => {
                         var message = response.data.message;
                         var title = "失败";

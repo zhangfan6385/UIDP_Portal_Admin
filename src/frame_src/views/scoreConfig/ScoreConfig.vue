@@ -13,7 +13,7 @@
           <span>{{scope.row.OPER_TYPE}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="140px" align="center" label="操作类型" :show-overflow-tooltip="true">
+      <el-table-column width="150px" align="center" label="操作类型" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span>{{scope.row.OPER_TYPE_NAME}}</span>
         </template>
@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
      
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('commonTable.edit')}}</el-button>
           <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{$t('commonTable.delete')}}</el-button> -->
@@ -38,18 +38,18 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" width="475px" :visible.sync="dialogFormVisible">
     
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="90px" style='width: 400px; margin-left:20px;'>
+      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="right" label-width="100px" style='width: 400px; margin-left:20px;'>
         
-    <el-form-item v-if="dialogStatus=='create'"  label="操作编码" prop="OPER_TYPE">
+    <el-form-item v-if="dialogStatus=='create'"  label="操作编码：" prop="OPER_TYPE">
        <el-input v-model="temp.OPER_TYPE"></el-input>
     </el-form-item>
-    <el-form-item v-else  label="操作编码"  prop="OPER_TYPE">
+    <el-form-item v-else  label="操作编码："  prop="OPER_TYPE">
      <span>{{temp.OPER_TYPE}}</span>
     </el-form-item>
-            <el-form-item label="操作描述" prop="OPER_TYPE_NAME">
+            <el-form-item label="操作描述：" prop="OPER_TYPE_NAME">
             <el-input v-model="temp.OPER_TYPE_NAME"></el-input>
         </el-form-item>
-        <el-form-item  label="分值" prop="SCORE">
+        <el-form-item  label="分值：" prop="SCORE">
             <el-input v-model="temp.SCORE"></el-input>
         </el-form-item>
 
