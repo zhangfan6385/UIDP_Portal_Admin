@@ -187,10 +187,10 @@ export default {
                 orgCode: null, // name: '',
                 orgName: "", // enName
                 orgNameFull: "", // enName
-                orgAddr: "", // enName
-                phone: "", // enName
-                phoneS: "", // enName
-                phoneFax: "",
+                // orgAddr: "", // enName
+                // phone: "", // enName
+                // phoneS: "", // enName
+                // phoneFax: "",
                 ISINVALID: "",
                 remark: "",
                 orgShortName: "",
@@ -244,10 +244,10 @@ initFullName(value){
                 orgCode: null, // name: '',
                 orgName: "", // enName
                 orgNameFull: "", // enName
-                orgAddr: "", // enName
-                phone: "", // enName
-                phoneS: "", // enName
-                phoneFax: "",
+                // orgAddr: "", // enName
+                // phone: "", // enName
+                // phoneS: "", // enName
+                // phoneFax: "",
                 ISINVALID: "1",
                 remark: "",
                 orgShortName: ""
@@ -263,10 +263,10 @@ initFullName(value){
                 orgCode: "", // name: '',
                 orgName: "", // enName
                 orgNameFull: "", // enName
-                orgAddr: "", // enName
-                phone: "", // enName
-                phoneS: "", // enName
-                phoneFax: "",
+                // orgAddr: "", // enName
+                // phone: "", // enName
+                // phoneS: "", // enName
+                // phoneFax: "",
                 ISINVALID: "1",
                 remark: "",
                 orgShortName: ""
