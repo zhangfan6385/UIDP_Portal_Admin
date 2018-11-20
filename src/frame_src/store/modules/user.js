@@ -27,6 +27,7 @@ const user = {
     userSex: '',
     roleLevel: '',
     UseOrg:'',
+    userType:'0',
     themClass:'#3A8EE6'
   },
 
