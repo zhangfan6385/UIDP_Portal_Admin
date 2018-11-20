@@ -395,7 +395,7 @@ body {
         background-repeat: no-repeat;
         background-position: center;
         padding: 0 0 0 0 !important;
-        background: url("../../../frame_src/imgs/repeat.png") 0 0 repeat-x;
+        background-color:#3e8ddc;
         margin: 0 auto;
         .divbg {
             background: url("../../../frame_src/imgs/loginback1.jpg") fixed
