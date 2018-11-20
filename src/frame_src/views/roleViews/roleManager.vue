@@ -112,9 +112,10 @@ export default {
   methods: {
 
     handleNodeClick(data) { // 点击左侧树给右边form赋值
-      this.form = data
+      this.form =Object.assign({},data);
     },
     newAdd() { // 新增
+    this.refs["form"].resetFields();
       this.form = {
         id: null,
         parentId: null,

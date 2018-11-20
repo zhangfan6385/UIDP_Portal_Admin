@@ -88,6 +88,9 @@ const user = {
     SET_ROLE_LEVEL: (state, roleLevel) => {
       state.roleLevel = roleLevel
     },
+    SET_USERTYPE:(state,userType)=>{
+      state.userType=userType
+    },
     SET_THEMECLS:(state,themClass)=>{
       state.themClass=themClass
     }
